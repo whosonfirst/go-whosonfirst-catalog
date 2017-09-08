@@ -10,10 +10,12 @@ self:   prep rmdeps
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/index
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/probe
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/record
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/utils
 	cp *.go src/github.com/whosonfirst/go-whosonfirst-catalog
 	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/index
 	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/probe
 	cp record/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/record
+	cp utils/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/utils
 	cp -r vendor/* src/
 
 rmdeps:

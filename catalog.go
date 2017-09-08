@@ -8,5 +8,5 @@ type Record interface {
 	Id() int64
 	Source() string
 	URI() string
-	Body() interface{}
+	Body() []byte
 }

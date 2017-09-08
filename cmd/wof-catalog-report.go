@@ -3,6 +3,7 @@ package main
 import (
         "encoding/json"
 	"flag"
+	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/index"
 	"github.com/whosonfirst/go-whosonfirst-catalog/probe"
@@ -30,6 +31,14 @@ func main() {
 
 	indexes = append(indexes, gh)
 
+	s3, err := index.NewS3Index()
+
+	if err != nil {
+		logger.Fatal("Failed to create new GitHub index because %v", err)
+	}
+
+	indexes = append(indexes, s3)
+	
 	pr, err := probe.NewProbe(indexes...)
 
 	if err != nil {
@@ -48,5 +57,5 @@ func main() {
 		logger.Fatal("Failed to serialize results because %v", err)
 	}
 
-	logger.Status("R %s", string(enc))
+	fmt.Println(string(enc))
 }

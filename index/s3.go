@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
+	"github.com/whosonfirst/go-whosonfirst-catalog/utils"	
 	"github.com/whosonfirst/go-whosonfirst-uri"
-	"io/ioutil"
-	"net/http"
 )
 
 type S3Index struct {
@@ -25,7 +24,7 @@ func NewS3Index() (catalog.Index, error) {
 
 func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 
-	root := fmt.Sprintf("http://%s.s3.amazonaws.com/data", e.bucket)
+     	root := fmt.Sprintf("https://s3.amazonaws.com/%s/data/", e.bucket)
 
 	url, err := uri.Id2AbsPath(root, id)
 
@@ -33,16 +32,8 @@ func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
-	rsp, err := http.Get(url)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer rsp.Body.Close()
-
-	body, err := ioutil.ReadAll(rsp.Body)
-
+	body, err := utils.GetURL(url)
+	
 	if err != nil {
 		return nil, err
 	}

@@ -9,7 +9,7 @@ type DefaultRecord struct {
 	RecordSource   string      `json:"source"`	
 	RecordID       int64       `json:"id"`
 	RecordURI      string      `json:"uri"`
-	RecordBody     interface{} `json:"body"`
+	RecordBody     []byte `json:"body"`
 }
 
 func (r *DefaultRecord) Id() int64 {
@@ -24,11 +24,11 @@ func (r *DefaultRecord) URI() string {
 	return r.RecordURI
 }
 
-func (r *DefaultRecord) Body() interface{} {
+func (r *DefaultRecord) Body() []byte {
 	return r.RecordBody
 }
 
-func NewDefaultRecord(source string, id int64, uri string, body interface{}) (catalog.Record, error){
+func NewDefaultRecord(source string, id int64, uri string, body []byte) (catalog.Record, error){
 
 	r := DefaultRecord{
 		RecordSource: source,

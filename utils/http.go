@@ -1,0 +1,40 @@
+package utils
+
+import (
+       "errors"
+	"io/ioutil"
+	"net/http"
+)
+
+func GetURL(url string) ([]byte, error) {
+
+	client := &http.Client{}
+	
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// req.Header.Add("Accept-Encoding", "gzip")
+
+	rsp, err := client.Do(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rsp.Body.Close()
+
+	if rsp.StatusCode != 200 {
+		return nil, errors.New(rsp.Status)
+	}
+	
+	body, err := ioutil.ReadAll(rsp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
