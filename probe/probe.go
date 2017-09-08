@@ -30,7 +30,7 @@ func (p *Probe) GetById(id int64) (ResultSet, error) {
 	done_ch := make(chan bool)
 	record_ch := make(chan catalog.Record)
 
-	for _, i := range p.indexes {
+	for _, idx := range p.indexes {
 
 		go func(idx catalog.Index, id int64) {
 
