@@ -17,26 +17,43 @@ type Tile38Index struct {
 	client     tile38.Tile38Client
 }
 
+type Tile38Feature struct {
+	Type       string      `json:"type"`
+	Geometry   interface{} `json:"geometry"`
+	Properties interface{} `json:"properties"`
+}
+
 func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
 	for _, r := range e.repos {
 
 		geom_key := fmt.Sprintf("%d#%s", id, r)
-		// meta_key := fmt.Sprintf("%d#meta", id)
+		meta_key := fmt.Sprintf("%d#meta", id)
 
-		rsp, err := e.client.Do("GET", e.collection, geom_key)
+		geom_rsp, err := e.client.Do("GET", e.collection, geom_key)
 
 		if err != nil {
 			return nil, err
 		}
 
+		if !geom_rsp.(tile38.Tile38Response).Ok {
+			continue
+		}
+
+		meta_rsp, err := e.client.Do("GET", e.collection, meta_key)
+
 		str_url := fmt.Sprintf("tile38://%s/%s#%d", e.endpoint, e.collection, id)
 
-		r, err := record.NewDefaultRecord("tile38", "tile38", id, str_url, rsp)
-
-		if err == nil {
-			return r, nil
+		feature := Tile38Feature{
+			Type:     "Feature",
+			Geometry: geom_rsp.(tile38.Tile38Response).Object,
 		}
+
+		if meta_rsp.(tile38.Tile38Response).Ok {
+			feature.Properties = meta_rsp.(tile38.Tile38Response).Object
+		}
+
+		return record.NewDefaultRecord("tile38", "tile38", id, str_url, feature)
 	}
 
 	msg := fmt.Sprintf("can't find record for ID %d", id)

@@ -62,7 +62,7 @@ func (fl Tile38Flags) ToIndexes() ([]catalog.Index, error) {
 			port = p
 		}
 
-		repos := []string{ "whosonfirst-data" }
+		repos := []string{"whosonfirst-data"}
 
 		idx, err := index.NewTile38Index(host, port, collection, repos...)
 
