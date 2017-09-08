@@ -13,10 +13,12 @@ func main() {
 
 	var github_flags flags.GitHubFlags
 	var s3_flags flags.S3Flags
+	var es_flags flags.ElasticsearchFlags
 	var wof_flags flags.WOFFlags
 
 	flag.Var(&github_flags, "github", "...")
 	flag.Var(&s3_flags, "s3", "...")
+	flag.Var(&es_flags, "es", "...")
 	flag.Var(&wof_flags, "wof", "...")
 
 	wofid := flag.Int64("id", -1, "...")
@@ -28,7 +30,11 @@ func main() {
 		logger.Fatal("Invalid WOF ID")
 	}
 
-	indexes, err := flags.ToIndexes(github_flags, s3_flags, wof_flags)
+	indexes, err := flags.ToIndexes(github_flags, s3_flags, wof_flags, es_flags)
+
+	if err != nil {
+		logger.Fatal("Failed to create indexes because %v", err)
+	}
 
 	pr, err := probe.NewDefaultProbe(indexes...)
 
