@@ -42,5 +42,5 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
-	return record.NewDefaultRecord("github", id, url, rsp)
+	return record.NewDefaultRecord("geojson", "github", id, url, rsp)
 }

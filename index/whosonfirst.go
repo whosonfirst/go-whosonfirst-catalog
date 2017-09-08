@@ -34,5 +34,5 @@ func (e *WOFIndex) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
-	return record.NewDefaultRecord("whosonfirst", id, url, rsp)
+	return record.NewDefaultRecord("geojson", "whosonfirst", id, url, rsp)
 }

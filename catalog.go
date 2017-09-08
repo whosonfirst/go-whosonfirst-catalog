@@ -14,9 +14,11 @@ type Probe interface {
 
 type Record interface {
 	Id() int64
+	Type() string
 	Source() string
 	URI() string
 	Body() interface{}
+	Hash() string
 }
 
 type RecordSet interface {

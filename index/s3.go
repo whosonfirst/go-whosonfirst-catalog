@@ -38,5 +38,5 @@ func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
-	return record.NewDefaultRecord("s3", id, url, rsp)
+	return record.NewDefaultRecord("geojson", "s3", id, url, rsp)
 }

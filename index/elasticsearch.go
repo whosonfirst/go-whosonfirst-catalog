@@ -39,7 +39,7 @@ func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
-	return record.NewDefaultRecord("elasticsearch", id, str_url, rsp)
+	return record.NewDefaultRecord("elasticsearch", "elasticsearch", id, str_url, rsp)
 }
 
 func NewElasticsearchIndex(host string, port int, idx string) (catalog.Index, error) {
