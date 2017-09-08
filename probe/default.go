@@ -10,8 +10,8 @@ type DefaultProbe struct {
 }
 
 type DefaultRecordSet struct {
-	catalog.RecordSet
-	DefaultRecords []catalog.Record `json:"records"`
+	catalog.RecordSet `json:",omitempty"`
+	DefaultRecords    []catalog.Record `json:"records"`
 }
 
 func (r *DefaultRecordSet) Records() []catalog.Record {
@@ -51,7 +51,11 @@ func (p *DefaultProbe) GetById(id int64) (catalog.RecordSet, error) {
 				return
 			}
 
-			record_ch <- r
+			// for example in a GitHub context we might be polling multiple repos...
+
+			if r != nil {
+				record_ch <- r
+			}
 
 		}(idx, id)
 

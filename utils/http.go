@@ -17,8 +17,6 @@ func GetURL(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	// req.Header.Add("Accept-Encoding", "gzip")
-
 	rsp, err := client.Do(req)
 
 	if err != nil {
