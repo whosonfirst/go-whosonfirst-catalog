@@ -25,26 +25,25 @@ func (fl ElasticsearchFlags) ToIndexes() ([]catalog.Index, error) {
 
 	indexes := make([]catalog.Index, 0)
 
-	for _, pointer := range fl.flags {
+	for _, addr := range fl.flags {
 
-		var endpoint string
 		var host string
 		var port int
-		var es_idx string
+		var es_index string
 
 		var tmp []string
 
-		tmp = strings.Split(pointer, "#")
+		tmp = strings.Split(addr, "#")
 
 		if len(tmp) == 1 {
-			endpoint = tmp[0]
-			es_idx = "whosonfirst"
+			addr = tmp[0]
+			es_index = "spelunker"
 		} else {
-			endpoint = tmp[0]
-			es_idx = tmp[1]
+			addr = tmp[0]
+			es_index = tmp[1]
 		}
 
-		tmp = strings.Split(endpoint, ":")
+		tmp = strings.Split(addr, ":")
 
 		if len(tmp) == 1 {
 			host = tmp[0]
@@ -62,7 +61,7 @@ func (fl ElasticsearchFlags) ToIndexes() ([]catalog.Index, error) {
 			port = p
 		}
 
-		idx, err := index.NewElasticsearchIndex(host, port, es_idx)
+		idx, err := index.NewElasticsearchIndex(host, port, es_index)
 
 		if err != nil {
 			return nil, err

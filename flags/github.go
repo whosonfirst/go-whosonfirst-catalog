@@ -26,7 +26,8 @@ func (fl GitHubFlags) ToIndexes() ([]catalog.Index, error) {
 
 	for _, repo := range fl.flags {
 
-		idx, err := index.NewGitHubIndex(repo)
+		repos := strings.Split(repo, ",")
+		idx, err := index.NewGitHubIndex(repos...)
 
 		if err != nil {
 			return nil, err

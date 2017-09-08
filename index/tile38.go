@@ -42,7 +42,7 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
 		meta_rsp, err := e.client.Do("GET", e.collection, meta_key)
 
-		str_url := fmt.Sprintf("tile38://%s/%s#%d", e.endpoint, e.collection, id)
+		str_url := fmt.Sprintf("tile38://%s/%s/%s", e.endpoint, e.collection, geom_key)
 
 		feature := Tile38Feature{
 			Type:     "Feature",

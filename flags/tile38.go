@@ -25,26 +25,36 @@ func (fl Tile38Flags) ToIndexes() ([]catalog.Index, error) {
 
 	indexes := make([]catalog.Index, 0)
 
-	for _, pointer := range fl.flags {
+	for _, addr := range fl.flags {
 
-		var endpoint string
 		var host string
 		var port int
 		var collection string
+		var repos []string
 
 		var tmp []string
 
-		tmp = strings.Split(pointer, "#")
+		tmp = strings.Split(addr, "#")
 
 		if len(tmp) == 1 {
-			endpoint = tmp[0]
+			addr = tmp[0]
+			repos = []string{"whosonfirst-data"}
+		} else {
+			addr = tmp[0]
+			repos = strings.Split(tmp[1], ",")
+		}
+
+		tmp = strings.Split(addr, "/")
+
+		if len(tmp) == 1 {
+			addr = tmp[0]
 			collection = "whosonfirst"
 		} else {
-			endpoint = tmp[0]
+			addr = tmp[0]
 			collection = tmp[1]
 		}
 
-		tmp = strings.Split(endpoint, ":")
+		tmp = strings.Split(addr, ":")
 
 		if len(tmp) == 1 {
 			host = tmp[0]
@@ -61,8 +71,6 @@ func (fl Tile38Flags) ToIndexes() ([]catalog.Index, error) {
 
 			port = p
 		}
-
-		repos := []string{"whosonfirst-data"}
 
 		idx, err := index.NewTile38Index(host, port, collection, repos...)
 
