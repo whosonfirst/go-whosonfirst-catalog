@@ -1,16 +1,23 @@
 package main
 
 import (
-        "encoding/json"
+	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/index"
+	"github.com/whosonfirst/go-whosonfirst-catalog/flags"
 	"github.com/whosonfirst/go-whosonfirst-catalog/probe"
 	"github.com/whosonfirst/go-whosonfirst-log"
 )
 
 func main() {
+
+	var github_flags flags.GitHubFlags
+	var s3_flags flags.S3Flags
+	var wof_flags flags.WOFFlags
+
+	flag.Var(&github_flags, "github", "...")
+	flag.Var(&s3_flags, "s3", "...")
+	flag.Var(&wof_flags, "wof", "...")
 
 	wofid := flag.Int64("id", -1, "...")
 	flag.Parse()
@@ -21,24 +28,8 @@ func main() {
 		logger.Fatal("Invalid WOF ID")
 	}
 
-	indexes := make([]catalog.Index, 0)
+	indexes, err := flags.ToIndexes(github_flags, s3_flags, wof_flags)
 
-	gh, err := index.NewGitHubIndex("whosonfirst-data")
-
-	if err != nil {
-		logger.Fatal("Failed to create new GitHub index because %v", err)
-	}
-
-	indexes = append(indexes, gh)
-
-	s3, err := index.NewS3Index()
-
-	if err != nil {
-		logger.Fatal("Failed to create new GitHub index because %v", err)
-	}
-
-	indexes = append(indexes, s3)
-	
 	pr, err := probe.NewProbe(indexes...)
 
 	if err != nil {

@@ -1,15 +1,15 @@
 package record
 
 import (
-       "github.com/whosonfirst/go-whosonfirst-catalog"
+	"github.com/whosonfirst/go-whosonfirst-catalog"
 )
 
 type DefaultRecord struct {
 	catalog.Record `json:",omitempty"`
-	RecordSource   string      `json:"source"`	
+	RecordSource   string      `json:"source"`
 	RecordID       int64       `json:"id"`
 	RecordURI      string      `json:"uri"`
-	RecordBody     []byte `json:"body"`
+	RecordBody     interface{} `json:"body"`
 }
 
 func (r *DefaultRecord) Id() int64 {
@@ -24,11 +24,11 @@ func (r *DefaultRecord) URI() string {
 	return r.RecordURI
 }
 
-func (r *DefaultRecord) Body() []byte {
+func (r *DefaultRecord) Body() interface{} {
 	return r.RecordBody
 }
 
-func NewDefaultRecord(source string, id int64, uri string, body []byte) (catalog.Record, error){
+func NewDefaultRecord(source string, id int64, uri string, body interface{}) (catalog.Record, error) {
 
 	r := DefaultRecord{
 		RecordSource: source,

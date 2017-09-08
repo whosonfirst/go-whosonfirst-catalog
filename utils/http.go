@@ -1,6 +1,7 @@
 package utils
 
 import (
+       "encoding/json"
        "errors"
 	"io/ioutil"
 	"net/http"
@@ -37,4 +38,23 @@ func GetURL(url string) ([]byte, error) {
 	}
 
 	return body, nil
+}
+
+func GetURLAsJSON(url string) (interface{}, error) {
+
+	body, err := GetURL(url)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var rsp interface{}
+	
+	err = json.Unmarshal(body, &rsp)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rsp, nil
 }

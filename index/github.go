@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
-	"github.com/whosonfirst/go-whosonfirst-catalog/utils"	
+	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 )
 
@@ -36,11 +36,11 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
-	body, err := utils.GetURL(url)
-	
+	rsp, err := utils.GetURLAsJSON(url)
+
 	if err != nil {
 		return nil, err
 	}
 
-	return record.NewDefaultRecord("github", id, url, body)
+	return record.NewDefaultRecord("github", id, url, rsp)
 }
