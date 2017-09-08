@@ -7,12 +7,12 @@ import (
 
 type DefaultRecord struct {
 	catalog.Record `json:",omitempty"`
-	RecordType   string      `json:"type"`
+	RecordType     string      `json:"type"`
 	RecordSource   string      `json:"source"`
 	RecordID       int64       `json:"id"`
 	RecordURI      string      `json:"uri"`
 	RecordBody     interface{} `json:"body"`
-	RecordHash     string	   `json:"hash"`
+	RecordHash     string      `json:"hash"`
 }
 
 func (r *DefaultRecord) Id() int64 {
@@ -37,14 +37,14 @@ func (r *DefaultRecord) Body() interface{} {
 
 func NewDefaultRecord(rtype string, source string, id int64, uri string, body interface{}) (catalog.Record, error) {
 
-     	hash, err := utils.HashInterface(body)
+	hash, err := utils.HashInterface(body)
 
 	if err != nil {
 		return nil, err
 	}
 
 	r := DefaultRecord{
-		RecordType: rtype,
+		RecordType:   rtype,
 		RecordSource: source,
 		RecordID:     id,
 		RecordURI:    uri,
