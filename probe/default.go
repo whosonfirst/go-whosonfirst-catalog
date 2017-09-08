@@ -4,24 +4,30 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 )
 
-type Probe struct {
+type DefaultProbe struct {
+	catalog.Probe
 	indexes []catalog.Index
 }
 
-type RecordSet struct {
-	Records []catalog.Record `json:"records"`
+type DefaultRecordSet struct {
+	catalog.RecordSet
+	DefaultRecords []catalog.Record `json:"records"`
 }
 
-func NewProbe(indexes ...catalog.Index) (*Probe, error) {
+func (r *DefaultRecordSet) Records() []catalog.Record {
+	return r.DefaultRecords
+}
 
-	p := Probe{
+func NewDefaultProbe(indexes ...catalog.Index) (catalog.Probe, error) {
+
+	p := DefaultProbe{
 		indexes: indexes,
 	}
 
 	return &p, nil
 }
 
-func (p *Probe) GetById(id int64) (*RecordSet, error) {
+func (p *DefaultProbe) GetById(id int64) (catalog.RecordSet, error) {
 
 	records := make([]catalog.Record, 0)
 	pending := len(p.indexes)
@@ -63,8 +69,8 @@ func (p *Probe) GetById(id int64) (*RecordSet, error) {
 		}
 	}
 
-	rs := RecordSet{
-		Records: records,
+	rs := DefaultRecordSet{
+		DefaultRecords: records,
 	}
 
 	return &rs, nil

@@ -30,7 +30,7 @@ func main() {
 
 	indexes, err := flags.ToIndexes(github_flags, s3_flags, wof_flags)
 
-	pr, err := probe.NewProbe(indexes...)
+	pr, err := probe.NewDefaultProbe(indexes...)
 
 	if err != nil {
 		logger.Fatal("Failed to create new probe because %v", err)

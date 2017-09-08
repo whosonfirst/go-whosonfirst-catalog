@@ -8,12 +8,14 @@ self:   prep rmdeps
 	if test -d src; then rm -rf src; fi
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/flags
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/http
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/index
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/probe
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/record
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/utils
 	cp *.go src/github.com/whosonfirst/go-whosonfirst-catalog
 	cp flags/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/flags
+	cp http/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/http
 	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/index
 	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/probe
 	cp record/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/record
@@ -26,6 +28,7 @@ rmdeps:
 build:	fmt bin
 
 deps:
+	@GOPATH=$(GOPATH) go get -u "github.com/facebookgo/grace/gracehttp"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-log"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-uri"
 	# @GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-tile38"
@@ -47,3 +50,4 @@ fmt:
 
 bin: 	self
 	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report cmd/wof-catalog-report.go
+	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report-server cmd/wof-catalog-report-server.go
