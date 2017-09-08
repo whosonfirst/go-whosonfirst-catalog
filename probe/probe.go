@@ -9,7 +9,7 @@ type Probe struct {
 }
 
 type RecordSet struct {
-	Records []catalog.Record
+	Records []catalog.Record `json:"records"`
 }
 
 func NewProbe(indexes ...catalog.Index) (*Probe, error) {
@@ -21,7 +21,7 @@ func NewProbe(indexes ...catalog.Index) (*Probe, error) {
 	return &p, nil
 }
 
-func (p *Probe) GetById(id int64) (ResultSet, error) {
+func (p *Probe) GetById(id int64) (*RecordSet, error) {
 
 	records := make([]catalog.Record, 0)
 	pending := len(p.indexes)
@@ -35,7 +35,7 @@ func (p *Probe) GetById(id int64) (ResultSet, error) {
 		go func(idx catalog.Index, id int64) {
 
 			defer func() {
-				done_ch <- bool
+				done_ch <- true
 			}()
 
 			r, err := idx.GetById(id)
@@ -67,5 +67,5 @@ func (p *Probe) GetById(id int64) (ResultSet, error) {
 		Records: records,
 	}
 
-	return *rs, nil
+	return &rs, nil
 }

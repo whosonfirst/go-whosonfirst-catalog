@@ -3,6 +3,7 @@ package index
 import (
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
+	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io/ioutil"
 	"net/http"
@@ -13,30 +14,6 @@ type GitHubIndex struct {
 	org    string
 	repo   string
 	branch string
-}
-
-type GitHubRecord struct {
-	catalog.Record `json:",omitempty"`
-	RecordID       int64       `json:"id"`
-	RecordURI      string      `json:"uri"`
-	RecordSource   string      `json:"source"`
-	RecordBody     interface{} `json:"body"`
-}
-
-func (r *GitHubRecord) Id() int64 {
-	return r.RecordID
-}
-
-func (r *GitHubRecord) Source() string {
-	return r.RecordSource
-}
-
-func (r *GitHubRecord) URI() string {
-	return r.RecordURI
-}
-
-func (r *GitHubRecord) Body() interface{} {
-	return r.RecordBody
 }
 
 func NewGitHubIndex(repo string) (catalog.Index, error) {
@@ -54,7 +31,7 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 
 	root := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/%s/data/", e.org, e.repo, e.branch)
 
-	url, err := uri.IdToAbsPath(root, id)
+	url, err := uri.Id2AbsPath(root, id)
 
 	if err != nil {
 		return nil, err
@@ -68,18 +45,11 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 
 	defer rsp.Body.Close()
 
-	body, err := ioutil.ReadAll(rsp)
+	body, err := ioutil.ReadAll(rsp.Body)
 
 	if err != nil {
 		return nil, err
 	}
 
-	r := GitHubRecord{
-		RecordID:     id,
-		RecordSource: "github",
-		RecordURI:    url,
-		RecordBody:   body,
-	}
-
-	return &r, nil
+	return record.NewDefaultRecord("github", id, url, body)
 }

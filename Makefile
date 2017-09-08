@@ -8,10 +8,12 @@ self:   prep rmdeps
 	if test -d src; then rm -rf src; fi
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/index
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-names/probe
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/probe
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/record
 	cp *.go src/github.com/whosonfirst/go-whosonfirst-catalog
 	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/index
 	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/probe
+	cp record/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/record
 	cp -r vendor/* src/
 
 rmdeps:
@@ -20,6 +22,7 @@ rmdeps:
 build:	fmt bin
 
 deps:
+	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-log"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-uri"
 	# @GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-tile38"
 	# @GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-pgis"
@@ -31,9 +34,10 @@ vendor-deps: rmdeps deps
 	rm -rf src
 
 fmt:
+	go fmt cmd/*.go
 	go fmt index/*.go
 	go fmt probe/*.go
 	go fmt *.go
 
 bin: 	self
-	# @GOPATH=$(GOPATH) go build -o bin/wof-names-parse cmd/wof-names-parse.go
+	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report cmd/wof-catalog-report.go

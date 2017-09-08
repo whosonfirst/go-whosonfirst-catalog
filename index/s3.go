@@ -3,6 +3,7 @@ package index
 import (
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
+	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io/ioutil"
 	"net/http"
@@ -11,30 +12,6 @@ import (
 type S3Index struct {
 	catalog.Index
 	bucket string
-}
-
-type S3Record struct {
-	catalog.Record `json:",omitempty"`
-	id             int64       `json:"id"`
-	uri            string      `json:"uri"`
-	address        string      `json:"address"`
-	body           interface{} `json:"body"`
-}
-
-func (r *S3Record) Id() int64 {
-	return r.id
-}
-
-func (r *S3Record) Source() string {
-	return r.source
-}
-
-func (r *S3Record) URI() string {
-	return r.uri
-}
-
-func (r *S3Record) Body() interface{} {
-	return r.body
 }
 
 func NewS3Index() (catalog.Index, error) {
@@ -50,13 +27,13 @@ func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 
 	root := fmt.Sprintf("http://%s.s3.amazonaws.com/data", e.bucket)
 
-	abs_root, err := uri.IdToAbsPath(root, id)
+	url, err := uri.Id2AbsPath(root, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	rsp, err := http.Get(abs_root)
+	rsp, err := http.Get(url)
 
 	if err != nil {
 		return nil, err
@@ -64,18 +41,11 @@ func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 
 	defer rsp.Body.Close()
 
-	body, err := ioutil.ReadAll(rsp)
+	body, err := ioutil.ReadAll(rsp.Body)
 
 	if err != nil {
 		return nil, err
 	}
 
-	r := S3Record{
-		id:       id,
-		"source": "S3",
-		"uri":    url,
-		"body":   body,
-	}
-
-	return &r, nil
+	return record.NewDefaultRecord("s3", id, url, body)
 }
