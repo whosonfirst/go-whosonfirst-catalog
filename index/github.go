@@ -17,26 +17,26 @@ type GitHubIndex struct {
 
 type GitHubRecord struct {
 	catalog.Record `json:",omitempty"`
-	id             int64       `json:"id"`
-	uri            string      `json:"uri"`
-	address        string      `json:"address"`
-	body           interface{} `json:"body"`
+	RecordID       int64       `json:"id"`
+	RecordURI      string      `json:"uri"`
+	RecordSource   string      `json:"source"`
+	RecordBody     interface{} `json:"body"`
 }
 
 func (r *GitHubRecord) Id() int64 {
-	return r.id
+	return r.RecordID
 }
 
 func (r *GitHubRecord) Source() string {
-	return r.source
+	return r.RecordSource
 }
 
 func (r *GitHubRecord) URI() string {
-	return r.uri
+	return r.RecordURI
 }
 
 func (r *GitHubRecord) Body() interface{} {
-	return r.body
+	return r.RecordBody
 }
 
 func NewGitHubIndex(repo string) (catalog.Index, error) {
@@ -75,10 +75,10 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 	}
 
 	r := GitHubRecord{
-		id:       id,
-		"source": "github",
-		"uri":    url,
-		"body":   body,
+		RecordID:     id,
+		RecordSource: "github",
+		RecordURI:    url,
+		RecordBody:   body,
 	}
 
 	return &r, nil

@@ -8,9 +8,10 @@ self:   prep rmdeps
 	if test -d src; then rm -rf src; fi
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog
 	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/index
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-names/utils
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-names/probe
 	cp *.go src/github.com/whosonfirst/go-whosonfirst-catalog
 	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/index
+	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/probe
 	cp -r vendor/* src/
 
 rmdeps:
@@ -30,8 +31,8 @@ vendor-deps: rmdeps deps
 	rm -rf src
 
 fmt:
-	# go fmt cmd/*.go
 	go fmt index/*.go
+	go fmt probe/*.go
 	go fmt *.go
 
 bin: 	self
