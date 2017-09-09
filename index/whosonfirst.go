@@ -22,17 +22,17 @@ func (e *WOFIndex) GetById(id int64) (catalog.Record, error) {
 
 	root := "https://whosonfirst.mapzen.com/data/"
 
-	url, err := uri.Id2AbsPath(root, id)
+	uri, err := uri.Id2AbsPath(root, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	rsp, err := utils.GetURLAsJSON(url)
+	rsp, err := utils.GetURLAsJSON(uri)
 
 	if err != nil {
-		return nil, err
+		return record.NewErrorRecord("whosonfirst", id, uri, err)
 	}
 
-	return record.NewDefaultRecord("geojson", "whosonfirst", id, url, rsp)
+	return record.NewDefaultRecord("geojson", "whosonfirst", id, uri, rsp)
 }

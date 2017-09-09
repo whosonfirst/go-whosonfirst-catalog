@@ -30,10 +30,12 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 		geom_key := fmt.Sprintf("%d#%s", id, r)
 		meta_key := fmt.Sprintf("%d#meta", id)
 
+		uri := fmt.Sprintf("tile38://%s/%s/%s", e.endpoint, e.collection, geom_key)
+
 		geom_rsp, err := e.client.Do("GET", e.collection, geom_key)
 
 		if err != nil {
-			return nil, err
+			return record.NewErrorRecord("tile38", id, uri, err)
 		}
 
 		if !geom_rsp.(tile38.Tile38Response).Ok {
@@ -41,8 +43,6 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 		}
 
 		meta_rsp, err := e.client.Do("GET", e.collection, meta_key)
-
-		str_url := fmt.Sprintf("tile38://%s/%s/%s", e.endpoint, e.collection, geom_key)
 
 		// not sure we don't just want to return an array of raw
 		// T38 responses... (20170908/thisisaaronland)
@@ -56,11 +56,14 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 			feature.Properties = meta_rsp.(tile38.Tile38Response).Object
 		}
 
-		return record.NewDefaultRecord("tile38", "tile38", id, str_url, feature)
+		return record.NewDefaultRecord("tile38", "tile38", id, uri, feature)
 	}
 
-	msg := fmt.Sprintf("can't find record for ID %d", id)
-	return nil, errors.New(msg)
+	msg := fmt.Sprintf("can't find tile38 record for ID %d", id)
+	err := errors.New(msg)
+
+	uri := fmt.Sprintf("x-tile38-%d", id)
+	return record.NewErrorRecord("tile38", id, uri, err)
 }
 
 func NewTile38Index(host string, port int, collection string, repos ...string) (catalog.Index, error) {

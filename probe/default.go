@@ -2,11 +2,26 @@ package probe
 
 import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
+	"time"
 )
 
 type DefaultProbe struct {
 	catalog.Probe
 	indexes []catalog.Index
+}
+
+type DefaultProbeResults struct {
+	catalog.ProbeResults
+	ProbeRecordSet catalog.RecordSet `json:"recordset"`
+	ProbeTimings   time.Duration     `json:"timings"`
+}
+
+func (r *DefaultProbeResults) RecordSet() catalog.RecordSet {
+	return r.ProbeRecordSet
+}
+
+func (r *DefaultProbeResults) Timings() time.Duration {
+	return r.ProbeTimings
 }
 
 type DefaultRecordSet struct {
@@ -27,7 +42,7 @@ func NewDefaultProbe(indexes ...catalog.Index) (catalog.Probe, error) {
 	return &p, nil
 }
 
-func (p *DefaultProbe) GetById(id int64) (catalog.RecordSet, error) {
+func (p *DefaultProbe) GetById(id int64) (catalog.ProbeResults, error) {
 
 	records := make([]catalog.Record, 0)
 	pending := len(p.indexes)
@@ -35,6 +50,8 @@ func (p *DefaultProbe) GetById(id int64) (catalog.RecordSet, error) {
 	err_ch := make(chan error)
 	done_ch := make(chan bool)
 	record_ch := make(chan catalog.Record)
+
+	t1 := time.Now()
 
 	for _, idx := range p.indexes {
 
@@ -51,11 +68,7 @@ func (p *DefaultProbe) GetById(id int64) (catalog.RecordSet, error) {
 				return
 			}
 
-			// for example in a GitHub context we might be polling multiple repos...
-
-			if r != nil {
-				record_ch <- r
-			}
+			record_ch <- r
 
 		}(idx, id)
 
@@ -73,9 +86,16 @@ func (p *DefaultProbe) GetById(id int64) (catalog.RecordSet, error) {
 		}
 	}
 
+	t2 := time.Since(t1)
+
 	rs := DefaultRecordSet{
 		DefaultRecords: records,
 	}
 
-	return &rs, nil
+	pr := DefaultProbeResults{
+		ProbeRecordSet: &rs,
+		ProbeTimings:   t2,
+	}
+
+	return &pr, nil
 }

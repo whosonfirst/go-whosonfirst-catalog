@@ -9,18 +9,20 @@ import (
 
 type PgSQLIndex struct {
 	catalog.Index
-	client *pgis.PgisClient
+	endpoint string
+	db       string
+	client   *pgis.PgisClient
 }
 
 func (e *PgSQLIndex) GetById(id int64) (catalog.Record, error) {
 
+	uri := fmt.Sprintf("postgis://%s/%s#%d", e.endpoint, e.db, id)
+
 	row, err := e.client.GetById(id)
 
 	if err != nil {
-		return nil, err
+		return record.NewErrorRecord("postgis", id, uri, err)
 	}
-
-	uri := fmt.Sprintf("postgis://%d", id)
 
 	return record.NewDefaultRecord("postgis", "postgis", id, uri, row)
 }
@@ -33,8 +35,12 @@ func NewPgSQLIndex(host string, port int, user string, password string, dbname s
 		return nil, err
 	}
 
+	endpoint := fmt.Sprintf("%s:%d", host, port)
+
 	e := PgSQLIndex{
-		client: client,
+		client:   client,
+		endpoint: endpoint,
+		db:       dbname,
 	}
 
 	return &e, nil

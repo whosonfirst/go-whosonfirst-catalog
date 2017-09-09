@@ -31,15 +31,15 @@ func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
 		Scheme:   "http",
 	}
 
-	str_url := url.String()
+	uri := url.String()
 
-	rsp, err := utils.GetURLAsJSON(str_url)
+	rsp, err := utils.GetURLAsJSON(uri)
 
 	if err != nil {
-		return nil, err
+		return record.NewErrorRecord("elasticsearch", id, uri, err)
 	}
 
-	return record.NewDefaultRecord("elasticsearch", "elasticsearch", id, str_url, rsp)
+	return record.NewDefaultRecord("elasticsearch", "elasticsearch", id, uri, rsp)
 }
 
 func NewElasticsearchIndex(host string, port int, idx string) (catalog.Index, error) {

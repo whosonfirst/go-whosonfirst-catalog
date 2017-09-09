@@ -26,17 +26,17 @@ func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 
 	root := fmt.Sprintf("https://s3.amazonaws.com/%s/data/", e.bucket)
 
-	url, err := uri.Id2AbsPath(root, id)
+	uri, err := uri.Id2AbsPath(root, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	rsp, err := utils.GetURLAsJSON(url)
+	rsp, err := utils.GetURLAsJSON(uri)
 
 	if err != nil {
-		return nil, err
+		return record.NewErrorRecord("s3", id, uri, err)
 	}
 
-	return record.NewDefaultRecord("geojson", "s3", id, url, rsp)
+	return record.NewDefaultRecord("geojson", "s3", id, uri, rsp)
 }

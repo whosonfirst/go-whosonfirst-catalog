@@ -34,13 +34,13 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 
 		root := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/%s/data/", e.org, repo, e.branch)
 
-		url, err := uri.Id2AbsPath(root, id)
+		uri, err := uri.Id2AbsPath(root, id)
 
 		if err != nil {
 			return nil, err
 		}
 
-		rsp, err := utils.GetURLAsJSON(url)
+		rsp, err := utils.GetURLAsJSON(uri)
 
 		if err != nil {
 
@@ -48,12 +48,15 @@ func (e *GitHubIndex) GetById(id int64) (catalog.Record, error) {
 				continue
 			}
 
-			return nil, err
+			return record.NewErrorRecord("github", id, uri, err)
 		}
 
-		return record.NewDefaultRecord("geojson", "github", id, url, rsp)
+		return record.NewDefaultRecord("geojson", "github", id, uri, rsp)
 	}
 
-	msg := fmt.Sprintf("can't find record for ID %d", id)
-	return nil, errors.New(msg)
+	msg := fmt.Sprintf("can't find github record for ID %d", id)
+	err := errors.New(msg)
+
+	uri := fmt.Sprintf("x-github-%d", id)
+	return record.NewErrorRecord("github", id, uri, err)
 }

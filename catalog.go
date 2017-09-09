@@ -1,5 +1,9 @@
 package catalog
 
+import (
+	"time"
+)
+
 type Flags interface {
 	ToIndexes() ([]Index, error)
 }
@@ -9,7 +13,12 @@ type Index interface {
 }
 
 type Probe interface {
-	GetById(int64) (RecordSet, error)
+	GetById(int64) (ProbeResults, error)
+}
+
+type ProbeResults interface {
+	RecordSet() RecordSet
+	Timings() time.Duration
 }
 
 type Record interface {
