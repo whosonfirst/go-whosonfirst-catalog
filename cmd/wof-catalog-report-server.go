@@ -14,12 +14,18 @@ import (
 
 func main() {
 
-	var github_flags flags.GitHubFlags
+	var es_flags flags.ElasticsearchFlags
+	var gh_flags flags.GitHubFlags
+	var pg_flags flags.PgSQLFlags
 	var s3_flags flags.S3Flags
+	var t38_flags flags.Tile38Flags
 	var wof_flags flags.WOFFlags
 
-	flag.Var(&github_flags, "github", "...")
+	flag.Var(&gh_flags, "gh", "...")
 	flag.Var(&s3_flags, "s3", "...")
+	flag.Var(&es_flags, "es", "...")
+	flag.Var(&pg_flags, "pg", "...")
+	flag.Var(&t38_flags, "t38", "...")
 	flag.Var(&wof_flags, "wof", "...")
 
 	var host = flag.String("host", "localhost", "The hostname to listen for requests on")
@@ -29,7 +35,7 @@ func main() {
 
 	logger := log.SimpleWOFLogger()
 
-	indexes, err := flags.ToIndexes(github_flags, s3_flags, wof_flags)
+	indexes, err := flags.ToIndexes(gh_flags, s3_flags, wof_flags, es_flags, t38_flags, pg_flags)
 
 	pr, err := probe.NewDefaultProbe(indexes...)
 
@@ -37,24 +43,32 @@ func main() {
 		logger.Fatal("Failed to create new probe because %v", err)
 	}
 
-	idhandler, err := http.IDHandler(pr)
+	id_handler, err := http.IDHandler(pr)
 
 	if err != nil {
 		logger.Fatal("failed to create ID handler because %s", err)
 	}
 
-	pinghandler, err := http.PingHandler()
+	query_handler, err := http.QueryHandler()
 
 	if err != nil {
-		logger.Fatal("failed to create Ping handler because %s", err)
+		logger.Fatal("failed to create query handler because %s", err)
+	}
+
+	ping_handler, err := http.PingHandler()
+
+	if err != nil {
+		logger.Fatal("failed to create ping handler because %s", err)
 	}
 
 	endpoint := fmt.Sprintf("%s:%d", *host, *port)
 	logger.Status("listening on %s", endpoint)
 
 	mux := gohttp.NewServeMux()
-	mux.Handle("/", idhandler)
-	mux.Handle("/ping", pinghandler)
+
+	mux.Handle("/id/", id_handler)
+	mux.Handle("/ping", ping_handler)
+	mux.Handle("/", query_handler)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
 

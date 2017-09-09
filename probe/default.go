@@ -11,9 +11,9 @@ type DefaultProbe struct {
 }
 
 type DefaultProbeResults struct {
-	catalog.ProbeResults
-	ProbeRecordSet catalog.RecordSet `json:"recordset"`
-	ProbeTimings   time.Duration     `json:"timings"`
+	catalog.ProbeResults `json:",omitempty"`
+	ProbeRecordSet       catalog.RecordSet `json:"recordset"`
+	ProbeTimings         time.Duration     `json:"timings"`
 }
 
 func (r *DefaultProbeResults) RecordSet() catalog.RecordSet {

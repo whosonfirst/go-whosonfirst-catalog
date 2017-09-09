@@ -5,30 +5,34 @@ import (
        "github.com/whosonfirst/go-whosonfirst-catalog"
 	gohttp "net/http"
 	"strconv"
+	"strings"
 )
 
 func IDHandler(pr catalog.Probe) (gohttp.Handler, error) {
 
 	fn := func(rsp gohttp.ResponseWriter, req *gohttp.Request) {
 
-		query := req.URL.Query()
+		path := req.URL.Path
 
-		str_id := query.Get("id")
+		str_id := strings.Replace(path, "/id/", "", -1)
 
 		if str_id == "" {
-			gohttp.Error(rsp, "Missing 'id' parameter", gohttp.StatusBadRequest)
+			gohttp.Error(rsp, "Missing ID", gohttp.StatusBadRequest)
+			return
 		}
 		
 		id, err := strconv.ParseInt(str_id, 10, 64)
 
 		if err != nil {
 			gohttp.Error(rsp, err.Error(), gohttp.StatusBadRequest)
+			return
 		}
 
 		results, err := pr.GetById(id)
 
 		if err != nil {
-			gohttp.Error(rsp, err.Error(), gohttp.StatusInternalServerError)		
+			gohttp.Error(rsp, err.Error(), gohttp.StatusInternalServerError)
+			return
 		}
 
 		js, err := json.Marshal(results)
