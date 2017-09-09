@@ -7,12 +7,12 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-pgis/client"
 )
 
-type PgisIndex struct {
+type PgSQLIndex struct {
 	catalog.Index
 	client *pgis.PgisClient
 }
 
-func (e *PgisIndex) GetById(id int64) (catalog.Record, error) {
+func (e *PgSQLIndex) GetById(id int64) (catalog.Record, error) {
 
 	row, err := e.client.GetById(id)
 
@@ -25,7 +25,7 @@ func (e *PgisIndex) GetById(id int64) (catalog.Record, error) {
 	return record.NewDefaultRecord("postgis", "postgis", id, uri, row)
 }
 
-func NewPgisIndex(host string, port int, user string, password string, dbname string, maxconns int) (catalog.Index, error) {
+func NewPgSQLIndex(host string, port int, user string, password string, dbname string, maxconns int) (catalog.Index, error) {
 
 	client, err := pgis.NewPgisClient(host, port, user, password, dbname, maxconns)
 
@@ -33,7 +33,7 @@ func NewPgisIndex(host string, port int, user string, password string, dbname st
 		return nil, err
 	}
 
-	e := PgisIndex{
+	e := PgSQLIndex{
 		client: client,
 	}
 
