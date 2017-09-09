@@ -49,7 +49,8 @@ func main() {
 		logger.Fatal("failed to create ID handler because %s", err)
 	}
 
-	query_handler, err := http.QueryHandler()
+	query_root := "../www"
+	query_handler, err := http.QueryHandler(query_root)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
