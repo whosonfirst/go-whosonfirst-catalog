@@ -51,6 +51,10 @@ fmt:
 	go fmt record/*.go
 	go fmt *.go
 
+assets:
+	go-bindata-assetfs -pkg http ./www/
+	mv bindata_assetfs.go http/assets.go
+
 bin: 	self
 	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report cmd/wof-catalog-report.go
 	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report-server cmd/wof-catalog-report-server.go
