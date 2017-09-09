@@ -44,6 +44,9 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
 		str_url := fmt.Sprintf("tile38://%s/%s/%s", e.endpoint, e.collection, geom_key)
 
+		// not sure we don't just want to return an array of raw
+		// T38 responses... (20170908/thisisaaronland)
+
 		feature := Tile38Feature{
 			Type:     "Feature",
 			Geometry: geom_rsp.(tile38.Tile38Response).Object,
