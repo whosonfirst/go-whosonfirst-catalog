@@ -13,7 +13,7 @@ func main() {
 
 	var es_flags flags.ElasticsearchFlags
 	var gh_flags flags.GitHubFlags
-	var pg_flags flags.PostGISFlags
+	var pg_flags flags.PgisFlags
 	var s3_flags flags.S3Flags
 	var t38_flags flags.Tile38Flags
 	var wof_flags flags.WOFFlags

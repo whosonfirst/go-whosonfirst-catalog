@@ -8,21 +8,21 @@ import (
 	"strings"
 )
 
-type PostGISFlags struct {
+type PgisFlags struct {
 	catalog.Flags
 	flags []string
 }
 
-func (fl *PostGISFlags) String() string {
+func (fl *PgisFlags) String() string {
 	return strings.Join(fl.flags, "\n")
 }
 
-func (fl *PostGISFlags) Set(value string) error {
+func (fl *PgisFlags) Set(value string) error {
 	fl.flags = append(fl.flags, value)
 	return nil
 }
 
-func (fl PostGISFlags) ToIndexes() ([]catalog.Index, error) {
+func (fl PgisFlags) ToIndexes() ([]catalog.Index, error) {
 
 	indexes := make([]catalog.Index, 0)
 
@@ -71,7 +71,7 @@ func (fl PostGISFlags) ToIndexes() ([]catalog.Index, error) {
 			}
 		}
 
-		idx, err := index.NewPostGISIndex(host, port, user, password, dbname, maxconns)
+		idx, err := index.NewPgisIndex(host, port, user, password, dbname, maxconns)
 
 		if err != nil {
 			return nil, err
