@@ -49,14 +49,11 @@ func main() {
 		logger.Fatal("failed to create ID handler because %s", err)
 	}
 
-	/*
-	query_root := "/usr/local/acope/go-whosonfirst-catalog/www/"
-	query_handler, err := http.QueryHandler(query_root)
+	query_handler, err := http.QueryHandler()
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
 	}
-	*/
 
 	ping_handler, err := http.PingHandler()
 
@@ -71,10 +68,7 @@ func main() {
 
 	mux.Handle("/id/", id_handler)
 	mux.Handle("/ping", ping_handler)
-
-	/*
 	mux.Handle("/", query_handler)
-	*/
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
 
