@@ -36,6 +36,7 @@ deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-uri"
 	# @GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-tile38"
 	# @GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-pgis"
+	rm -rf vendor/github.com/jteeuwen/go-bindata/testdata
 
 vendor-deps: rmdeps deps
 	if test -d vendor; then rm -rf vendor; fi
@@ -51,8 +52,10 @@ fmt:
 	go fmt record/*.go
 	go fmt *.go
 
-assets:
-	go-bindata-assetfs -pkg http ./www/
+assets:	self
+	@GOPATH=$(GOPATH) go build -o bin/go-bindata ./vendor/github.com/jteeuwen/go-bindata/go-bindata/
+	@GOPATH=$(GOPATH) go build -o bin/go-bindata-assetfs vendor/github.com/elazarl/go-bindata-assetfs/go-bindata-assetfs/main.go
+	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -pkg http ./www/
 	mv bindata_assetfs.go http/assets.go
 
 bin: 	self
