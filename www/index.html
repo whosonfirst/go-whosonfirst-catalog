@@ -1,8 +1,29 @@
 <html>
   <head>
     <title>test</title>
+    <link type="text/css" rel="stylesheet" href="css/mapzen.js.css" />
+    <script type="text/javascript" src="javascript/mapzen.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/mapzen.whosonfirst.catalog.css" />    
   </head>
   <body>
-    HELLO WORLD
+    <div id="canvas">
+      <div id="map"></div>
+    </div>
   </body>
+  <script type="text/javascript">
+
+    L.Mapzen.apiKey = "mapzen-xxxxxx";
+    
+    var map = L.Mapzen.map('map', {
+    
+	    tangramOptions: {
+    		scene: "tangram/refill-style.zip",
+    		tangramURL: "javascript/tangram.js",
+    	    }
+    });
+
+    map.setView([29.817632,-95.462296], 15);
+    
+  </script>
 </html>

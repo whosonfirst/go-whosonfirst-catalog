@@ -68,6 +68,10 @@ func main() {
 
 	mux.Handle("/id/", id_handler)
 	mux.Handle("/ping", ping_handler)
+
+	mux.Handle("/javascript/", query_handler)
+	mux.Handle("/css/", query_handler)
+	mux.Handle("/tangram/", query_handler)	
 	mux.Handle("/", query_handler)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
