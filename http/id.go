@@ -1,8 +1,8 @@
 package http
 
 import (
-       "encoding/json"
-       "github.com/whosonfirst/go-whosonfirst-catalog"
+	"encoding/json"
+	"github.com/whosonfirst/go-whosonfirst-catalog"
 	gohttp "net/http"
 	"strconv"
 	"strings"
@@ -20,7 +20,7 @@ func IDHandler(pr catalog.Probe) (gohttp.Handler, error) {
 			gohttp.Error(rsp, "Missing ID", gohttp.StatusBadRequest)
 			return
 		}
-		
+
 		id, err := strconv.ParseInt(str_id, 10, 64)
 
 		if err != nil {

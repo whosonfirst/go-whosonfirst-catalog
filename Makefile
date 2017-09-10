@@ -29,6 +29,7 @@ build:	fmt bin
 
 deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/facebookgo/grace/gracehttp"
+	@GOPATH=$(GOPATH) go get -u "golang.org/x/net/html"
 	@GOPATH=$(GOPATH) go get -u "github.com/jteeuwen/go-bindata/"
 	@GOPATH=$(GOPATH) go get -u "github.com/elazarl/go-bindata-assetfs/"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-hash"
@@ -47,6 +48,7 @@ vendor-deps: rmdeps deps
 fmt:
 	go fmt cmd/*.go
 	go fmt flags/*.go
+	go fmt http/*.go
 	go fmt index/*.go
 	go fmt probe/*.go
 	go fmt record/*.go
@@ -55,6 +57,7 @@ fmt:
 assets:	self
 	@GOPATH=$(GOPATH) go build -o bin/go-bindata ./vendor/github.com/jteeuwen/go-bindata/go-bindata/
 	@GOPATH=$(GOPATH) go build -o bin/go-bindata-assetfs vendor/github.com/elazarl/go-bindata-assetfs/go-bindata-assetfs/main.go
+	rm -f www/*~ www/css/*~ www/javascript/*~ www/tangram/*~
 	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -pkg http www www/javascript www/css www/tangram
 	mv bindata_assetfs.go http/assets.go
 
