@@ -30,7 +30,7 @@ func main() {
 
 	var host = flag.String("host", "localhost", "The hostname to listen for requests on")
 	var port = flag.Int("port", 8080, "The port number to listen for requests on")
-	var api_key = flag.String("api-key", "mapzen-12345", "")	
+	var api_key = flag.String("api-key", "mapzen-12345", "")
 
 	flag.Parse()
 
@@ -50,13 +50,13 @@ func main() {
 		logger.Fatal("failed to create ID handler because %s", err)
 	}
 
-	fs_handler, err := http.FSHandler()
+	www_handler, err := http.WWWHandler()
 
 	if err != nil {
 		logger.Fatal("failed to create fs handler because %s", err)
 	}
 
-	key_handler, err := http.APIKeyHandler(fs_handler, *api_key)
+	key_handler, err := http.APIKeyHandler(www_handler, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
@@ -76,9 +76,9 @@ func main() {
 	mux.Handle("/id/", id_handler)
 	mux.Handle("/ping", ping_handler)
 
-	mux.Handle("/javascript/", fs_handler)
-	mux.Handle("/css/", fs_handler)
-	mux.Handle("/tangram/", fs_handler)
+	mux.Handle("/javascript/", www_handler)
+	mux.Handle("/css/", www_handler)
+	mux.Handle("/tangram/", www_handler)
 	mux.Handle("/", key_handler)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
