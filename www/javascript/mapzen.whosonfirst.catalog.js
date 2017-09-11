@@ -83,9 +83,6 @@ mapzen.whosonfirst.catalog = (function(){
 					var uri = el.getAttribute("data-uri");
 
 					var details = document.getElementById("details-" + uri);
-					
-					console.log(uri);
-					console.log(details, );
 
 					if (details.style.display == "block"){
 						details.style.display = "none";
@@ -105,7 +102,6 @@ mapzen.whosonfirst.catalog = (function(){
 				details_cell.appendChild(details);
 
 				var details_row = document.createElement("tr");	
-				
 				details_row.setAttribute("id", "details-" + uri);
 				details_row.setAttribute("class", "details");				
 				details_row.appendChild(details_cell);
