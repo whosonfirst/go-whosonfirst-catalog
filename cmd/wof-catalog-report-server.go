@@ -16,6 +16,7 @@ import (
 func main() {
 
 	var es_flags flags.ElasticsearchFlags
+	var fs_flags flags.FSFlags	
 	var gh_flags flags.GitHubFlags
 	var pg_flags flags.PgSQLFlags
 	var s3_flags flags.S3Flags
@@ -23,6 +24,7 @@ func main() {
 	var wof_flags flags.WOFFlags
 
 	flag.Var(&gh_flags, "gh", "...")
+	flag.Var(&fs_flags, "fs", "...")	
 	flag.Var(&s3_flags, "s3", "...")
 	flag.Var(&es_flags, "es", "...")
 	flag.Var(&pg_flags, "pg", "...")
@@ -37,7 +39,7 @@ func main() {
 
 	logger := log.SimpleWOFLogger()
 
-	indexes, err := flags.ToIndexes(gh_flags, s3_flags, wof_flags, es_flags, t38_flags, pg_flags)
+	indexes, err := flags.ToIndexes(gh_flags, s3_flags, wof_flags, es_flags, t38_flags, pg_flags, fs_flags)
 
 	pr, err := probe.NewDefaultProbe(indexes...)
 

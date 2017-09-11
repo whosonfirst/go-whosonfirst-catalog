@@ -1,0 +1,35 @@
+ul {
+    list-style-type: none;
+    margin:0px;
+    padding:0px;
+}
+
+table {
+    width:100%;
+    line-height:2em;
+    font-family: sans-serif;
+}
+
+tr {
+    vertical-align: top;
+    padding: 0px;
+    margin: 0px;    
+}
+
+th {
+    background-color:#ededed;
+    border: solid thin;
+    text-align:left;
+    margin: 0px;
+    padding: 0px;    
+}
+
+td {
+    border-bottom: 1px solid #ededed;
+    text-align:left;
+    border: solid thin;    
+    min-width:65%;
+    max-width:65%;
+    padding: 0px;
+    margin: 0px;
+}

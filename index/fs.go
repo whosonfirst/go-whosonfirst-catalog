@@ -1,11 +1,13 @@
 package index
 
 import (
+       	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-uri"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -62,13 +64,32 @@ func (e *FSIndex) GetById(id int64) (catalog.Record, error) {
 			continue
 		}
 
-		return nil, errors.New("Please finish me")
+		fh, err := os.Open(uri)
+
+		if err != nil {
+			return record.NewErrorRecord("fs", id, uri, err)		
+		}
+
+		body, err := ioutil.ReadAll(fh)
+
+		if err != nil {
+			return record.NewErrorRecord("fs", id, uri, err)		
+		}
+
+		var stub interface{}
+
+		err = json.Unmarshal(body, &stub)
+
+		if err != nil {
+			return record.NewErrorRecord("fs", id, uri, err)		
+		}
+
+		return record.NewDefaultRecord("fs", "fs", id, uri, stub)
 	}
 
 	msg := fmt.Sprintf("can't find filesystem record for ID %d", id)
 	err := errors.New(msg)
 
 	uri := fmt.Sprintf("x-fs-%d", id)
-	return record.NewErrorRecord("github", id, uri, err)
-
+	return record.NewErrorRecord("fs", id, uri, err)
 }
