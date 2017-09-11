@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/facebookgo/grace/gracehttp"
+	mz "github.com/whosonfirst/go-mapzen-js/http"	
 	"github.com/whosonfirst/go-whosonfirst-catalog/flags"
 	"github.com/whosonfirst/go-whosonfirst-catalog/http"
 	"github.com/whosonfirst/go-whosonfirst-catalog/probe"
@@ -53,10 +54,18 @@ func main() {
 	www_handler, err := http.WWWHandler()
 
 	if err != nil {
-		logger.Fatal("failed to create fs handler because %s", err)
+		logger.Fatal("failed to create www handler because %s", err)
 	}
 
-	key_handler, err := http.APIKeyHandler(www_handler, *api_key)
+	fs := http.WWWFileSystem()
+
+	mapzenjs_handler, err := mz.MapzenJSHandler()
+
+	if err != nil {
+		logger.Fatal("failed to create mapzen.js handler because %s", err)
+	}
+
+	key_handler, err := mz.MapzenAPIKeyHandler(www_handler, fs, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
@@ -76,9 +85,11 @@ func main() {
 	mux.Handle("/id/", id_handler)
 	mux.Handle("/ping", ping_handler)
 
-	mux.Handle("/javascript/", www_handler)
-	mux.Handle("/css/", www_handler)
-	mux.Handle("/tangram/", www_handler)
+	mux.Handle("/javascript/mapzen.min.js", mapzenjs_handler)
+	mux.Handle("/javascript/tangram.min.js", mapzenjs_handler)	
+	mux.Handle("/css/mapzen.js.css", mapzenjs_handler)
+	mux.Handle("/tangram/refill-style.zip", mapzenjs_handler)
+	
 	mux.Handle("/", key_handler)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})

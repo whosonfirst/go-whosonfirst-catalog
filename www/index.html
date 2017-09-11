@@ -4,13 +4,21 @@
     <link type="text/css" rel="stylesheet" href="css/mapzen.js.css" />
     <script type="text/javascript" src="javascript/mapzen.min.js"></script>
 
-    <link type="text/css" rel="stylesheet" href="css/mapzen.whosonfirst.catalog.css" />    
+    <link type="text/css" rel="stylesheet" href="css/mapzen.whosonfirst.catalog.css" />
+    <script type="text/javascript" src="javascript/mapzen.whosonfirst.catalog.js"></script>
+    <script type="text/javascript" src="javascript/mapzen.whosonfirst.catalog.init.js"></script>        
   </head>
   <body>
     <div id="canvas">
-      <div id="map"></div>
+      <form>
+	<input type="text" id="wof_id" name="wof_id" value="" placeholder="Enter a WOF ID" />
+	<button type="submit" id="lookup">Lookup</button>
+      </form>
+      <div id="results"></div>
     </div>
   </body>
+
+  <!--
   <script type="text/javascript">
 
     var api_key = document.body.getAttribute("data-mapzen-api-key");
@@ -20,11 +28,12 @@
     
 	    tangramOptions: {
     		scene: "tangram/refill-style.zip",
-    		tangramURL: "javascript/tangram.js",
+    		tangramURL: "javascript/tangram.min.js",
     	    }
     });
 
     map.setView([29.817632,-95.462296], 15);
     
   </script>
+  -->
 </html>
