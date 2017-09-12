@@ -18,22 +18,19 @@ Too soon. Move along.
 
 ## Example
 
-### MapzenJSHandler
+### MapzenJSHandler() (gohttp.Handler, error)
 
 ```
 import (
-	mz "github.com/whosonfirst/go-mapzen-js/http"
+	mapzen_http "github.com/whosonfirst/go-mapzen-js/http"
+	go_http "net/http"
 )
 
 func main(){
 
-	mapzenjs_handler, err := mz.MapzenJSHandler()
+	mapzenjs_handler, _ := mapzen_http.MapzenJSHandler()
 
-	if err != nil {
-		logger.Fatal("failed to create mapzen.js handler because %s", err)
-	}
-
-	mux := gohttp.NewServeMux()
+	mux := go_http.NewServeMux()
 
 	mux.Handle("/javascript/mapzen.js", mapzenjs_handler)
 	mux.Handle("/javascript/mapzen.min.js", mapzenjs_handler)
@@ -44,3 +41,79 @@ func main(){
 
 }
 ```
+
+### MapzenAPIKeyHandler(next gohttp.Handler, fs gohttp.FileSystem, api_key string) (gohttp.Handler, error)
+
+This will insert to value of `api_key` in to the `data-mapzen-api-key` attribute of the body element for all HTML pages.
+
+```
+import (
+	mapzen_http "github.com/whosonfirst/go-mapzen-js/http"
+	go_http "net/http"
+)
+
+func main(){
+
+     	api_key := "mapzen-xxxxxxx"
+	
+	fs := go_http.Dir("/usr/local/www")
+	www_handler := go_http.FileServer(fs)
+	
+        key_handler, _ := mapzen_http.MapzenAPIKeyHandler(www_handler, fs, api_key)
+
+	mux := go_http.NewServeMux()
+        mux.Handle("/", key_handler)
+}
+```
+
+It's gets a little more involved if you're trying to use the `MapzenAPIKeyHandler` with an `assetfs.AssetFS` derived file system, mostly because the generated code (containing your assets) doesn't export a public function for the filesystem itself.
+
+So, you'll need to do something like this:
+
+* Assume that we're going to create a local `http` namespace in our package
+* Export your `assetfs.AssetFS` derived file system to the `http` namespace
+* Create a `www.go` package, also in the `http` namespace thus allowing you to invoke the `assetFS()` function
+
+For example:
+
+```
+package http
+
+import (
+        go_http "net/http"
+)
+
+func WWWFileSystem() go_http.FileSystem {
+     return assetFS()
+}
+
+func WWWHandler() (go_http.Handler, error) {
+
+        fs := assetFS()
+	return go_http.FileServer(fs), nil
+}
+```
+
+And then you would invoke it all, like this:
+
+```
+import (
+	my_http "example.com/my/http"
+	mapzen_http "github.com/whosonfirst/go-mapzen-js/http"
+	go_http "net/http"
+	
+)
+
+func main(){
+
+	api_key := "mapzen-xxxxxx"
+	
+        www_handler, _ := my_http.WWWHandler()
+        fs := my_http.WWWFileSystem()
+
+        key_handler, _ := mapzen_http.MapzenAPIKeyHandler(www_handler, fs,*api_key)
+
+	mux := go_http.NewServeMux()
+        mux.Handle("/", key_handler)
+}
+```	

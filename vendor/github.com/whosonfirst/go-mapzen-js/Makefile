@@ -12,6 +12,7 @@ self:   prep rmdeps
 build:	maps assets
 
 assets:	self
+	if test ! -d bin; then mkdir bin; fi
 	@GOPATH=$(GOPATH) go build -o bin/go-bindata ./vendor/github.com/jteeuwen/go-bindata/go-bindata/
 	@GOPATH=$(GOPATH) go build -o bin/go-bindata-assetfs vendor/github.com/elazarl/go-bindata-assetfs/go-bindata-assetfs/main.go
 	rm -f www/*~ www/css/*~ www/javascript/*~ www/tangram/*~
@@ -34,7 +35,7 @@ vendor-deps: rmdeps deps
 	find vendor -name '.git' -print -type d -exec rm -rf {} +
 	rm -rf src
 
-maps: wwwdirs mapzenjs tangram refill
+maps: wwwdirs mapzenjs tangram styles
 
 wwwdirs:
 	if test ! -d www/javascript; then mkdir www/javascript; fi
@@ -45,8 +46,13 @@ tangram:
 	curl -s -o www/javascript/tangram.js https://mapzen.com/tangram/tangram.debug.js
 	curl -s -o www/javascript/tangram.min.js https://mapzen.com/tangram/tangram.min.js
 
+styles: refill walkabout
+
 refill:
 	curl -s -o www/tangram/refill-style.zip https://mapzen.com/carto/refill-style/refill-style.zip
+
+walkabout:
+	curl -s -o www/tangram/walkabout-style.zip https://mapzen.com/carto/refill-style/walkabout-style.zip
 
 mapzenjs:
 	curl -s -o www/css/mapzen.js.css https://mapzen.com/js/mapzen.css

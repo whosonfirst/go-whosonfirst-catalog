@@ -17,9 +17,9 @@ func MapzenAPIKeyHandler(next gohttp.Handler, fs gohttp.FileSystem, api_key stri
 		path := req.URL.Path
 
 		if strings.HasSuffix(path, "/"){
-			path = "index.html"
+			path = path + "index.html"
 		}
-
+		
 		if !strings.HasSuffix(path, "index.html"){
 			next.ServeHTTP(rsp, req)
 			return
