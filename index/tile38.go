@@ -1,6 +1,7 @@
 package index
 
 import (
+       "encoding/json"
 	"errors"
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
@@ -17,11 +18,7 @@ type Tile38Index struct {
 	client     tile38.Tile38Client
 }
 
-type Tile38Feature struct {
-	Type       string      `json:"type"`
-	Geometry   interface{} `json:"geometry"`
-	Properties interface{} `json:"properties"`
-}
+type Tile38Response map[string]interface{}
 
 func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
@@ -32,7 +29,7 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
 		uri := fmt.Sprintf("tile38://%s/%s/%s", e.endpoint, e.collection, geom_key)
 
-		geom_rsp, err := e.client.Do("GET", e.collection, geom_key)
+		geom_rsp, err := e.client.Do("GET", e.collection, geom_key, "WITHFIELDS")
 
 		if err != nil {
 			return record.NewErrorRecord("tile38", id, uri, err)
@@ -42,21 +39,30 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 			continue
 		}
 
+		rsp := make(map[string]interface{})
+
+		rsp[geom_key] = map[string]interface{}{
+			"object": geom_rsp.(tile38.Tile38Response).Object,
+			"fields": geom_rsp.(tile38.Tile38Response).Fields,
+		}
+
 		meta_rsp, err := e.client.Do("GET", e.collection, meta_key)
 
-		// not sure we don't just want to return an array of raw
-		// T38 responses... (20170908/thisisaaronland)
-
-		feature := Tile38Feature{
-			Type:     "Feature",
-			Geometry: geom_rsp.(tile38.Tile38Response).Object,
-		}
-
 		if meta_rsp.(tile38.Tile38Response).Ok {
-			feature.Properties = meta_rsp.(tile38.Tile38Response).Object
+
+			var meta interface{}
+			obj := meta_rsp.(tile38.Tile38Response).Object
+
+			err = json.Unmarshal([]byte(obj.(string)), &meta)
+
+			if err != nil {
+				rsp[meta_key] = obj
+			} else {
+				rsp[meta_key] = meta
+			}
 		}
 
-		return record.NewDefaultRecord("tile38", "tile38", id, uri, feature)
+		return record.NewDefaultRecord("tile38", "tile38", id, uri, rsp)
 	}
 
 	msg := fmt.Sprintf("can't find tile38 record for ID %d", id)
