@@ -5,7 +5,7 @@ import (
 )
 
 func WWWFileSystem() gohttp.FileSystem {
-     return assetFS()
+	return assetFS()
 }
 
 func WWWHandler() (gohttp.Handler, error) {

@@ -1,13 +1,14 @@
 package index
 
 import (
-       "encoding/json"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-tile38"
 	"github.com/whosonfirst/go-whosonfirst-tile38/client"
+	"log"
 )
 
 type Tile38Index struct {
@@ -32,6 +33,7 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 		geom_rsp, err := e.client.Do("GET", e.collection, geom_key, "WITHFIELDS")
 
 		if err != nil {
+			log.Println("FFFFUUUUU")
 			return record.NewErrorRecord("tile38", id, uri, err)
 		}
 

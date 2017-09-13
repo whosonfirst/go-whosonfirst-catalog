@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/facebookgo/grace/gracehttp"
-	mz "github.com/whosonfirst/go-mapzen-js/http"	
+	mz "github.com/whosonfirst/go-mapzen-js/http"
 	"github.com/whosonfirst/go-whosonfirst-catalog/flags"
 	"github.com/whosonfirst/go-whosonfirst-catalog/http"
 	"github.com/whosonfirst/go-whosonfirst-catalog/probe"
@@ -16,7 +16,7 @@ import (
 func main() {
 
 	var es_flags flags.ElasticsearchFlags
-	var fs_flags flags.FSFlags	
+	var fs_flags flags.FSFlags
 	var gh_flags flags.GitHubFlags
 	var pg_flags flags.PgSQLFlags
 	var s3_flags flags.S3Flags
@@ -24,7 +24,7 @@ func main() {
 	var wof_flags flags.WOFFlags
 
 	flag.Var(&gh_flags, "gh", "...")
-	flag.Var(&fs_flags, "fs", "...")	
+	flag.Var(&fs_flags, "fs", "...")
 	flag.Var(&s3_flags, "s3", "...")
 	flag.Var(&es_flags, "es", "...")
 	flag.Var(&pg_flags, "pg", "...")
@@ -88,10 +88,10 @@ func main() {
 	mux.Handle("/ping", ping_handler)
 
 	mux.Handle("/javascript/mapzen.min.js", mapzenjs_handler)
-	mux.Handle("/javascript/tangram.min.js", mapzenjs_handler)	
+	mux.Handle("/javascript/tangram.min.js", mapzenjs_handler)
 	mux.Handle("/css/mapzen.js.css", mapzenjs_handler)
 	mux.Handle("/tangram/refill-style.zip", mapzenjs_handler)
-	
+
 	mux.Handle("/", key_handler)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})

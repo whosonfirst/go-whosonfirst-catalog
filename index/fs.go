@@ -1,7 +1,7 @@
 package index
 
 import (
-       	"encoding/json"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
@@ -67,13 +67,13 @@ func (e *FSIndex) GetById(id int64) (catalog.Record, error) {
 		fh, err := os.Open(uri)
 
 		if err != nil {
-			return record.NewErrorRecord("fs", id, uri, err)		
+			return record.NewErrorRecord("fs", id, uri, err)
 		}
 
 		body, err := ioutil.ReadAll(fh)
 
 		if err != nil {
-			return record.NewErrorRecord("fs", id, uri, err)		
+			return record.NewErrorRecord("fs", id, uri, err)
 		}
 
 		var stub interface{}
@@ -81,7 +81,7 @@ func (e *FSIndex) GetById(id int64) (catalog.Record, error) {
 		err = json.Unmarshal(body, &stub)
 
 		if err != nil {
-			return record.NewErrorRecord("fs", id, uri, err)		
+			return record.NewErrorRecord("fs", id, uri, err)
 		}
 
 		return record.NewDefaultRecord("fs", "fs", id, uri, stub)

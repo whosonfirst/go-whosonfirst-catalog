@@ -28,12 +28,12 @@ func (fl FSFlags) ToIndexes() ([]catalog.Index, error) {
 
 		var root string
 		var repos []string
-		
+
 		parts := strings.Split(fs, "#")
 
 		if len(parts) == 1 {
 			root = parts[0]
-			repos = []string{ "whosonfirst-data" }
+			repos = []string{"whosonfirst-data"}
 		} else {
 			root = parts[0]
 			repos = strings.Split(parts[1], ",")
