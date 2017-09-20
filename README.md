@@ -15,3 +15,13 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 ## Important
 
 Too soon. Move along.
+
+## Example
+
+### Simple
+
+```
+./bin/wof-catalog-report -s3 whosonfirst.mapzen.com -id 420546521 -gh whosonfirst-data | jq '.recordset.records[].body.properties["wof:parent_id"]'
+-1
+-1
+```
