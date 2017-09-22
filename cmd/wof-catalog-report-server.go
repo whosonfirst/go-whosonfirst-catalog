@@ -105,8 +105,16 @@ func main() {
 
 	mux := gohttp.NewServeMux()
 
-	mux.Handle("/id/", id_handler)
-	mux.Handle("/ping", ping_handler)
+	id_path := "/id/"
+	ping_path := "/ping/"
+
+	if *root != "/" {
+		id_path = *root + id_path
+		ping_path = *root + ping_path
+	}
+
+	mux.Handle(id_path, id_handler)
+	mux.Handle(ping_path, ping_handler)
 
 	mux.Handle("/javascript/mapzen.min.js", mapzenjs_handler)
 	mux.Handle("/javascript/tangram.min.js", mapzenjs_handler)

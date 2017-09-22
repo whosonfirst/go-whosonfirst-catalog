@@ -4,17 +4,18 @@ import (
 	"encoding/json"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	gohttp "net/http"
+	"path/filepath"
 	"strconv"
-	"strings"
+	_ "strings"
 )
 
 func IDHandler(pr catalog.Probe) (gohttp.Handler, error) {
 
 	fn := func(rsp gohttp.ResponseWriter, req *gohttp.Request) {
 
-		path := req.URL.Path
+		req_path := req.URL.Path
 
-		str_id := strings.Replace(path, "/id/", "", -1)
+		str_id := filepath.Base(req_path)
 
 		if str_id == "" {
 			gohttp.Error(rsp, "Missing ID", gohttp.StatusBadRequest)

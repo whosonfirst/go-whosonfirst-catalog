@@ -7,7 +7,8 @@ mapzen.whosonfirst.catalog = (function(){
 
 		'lookup': function(id, cb){
 
-			var url = 'http://' + location.host + '/id/' + id;
+		    	var proto = document.location.protocol;
+			var url = proto + '//' + location.host + location.pathname + 'id/' + id;
 
 			var onload = function(rsp){
 			
@@ -44,22 +45,50 @@ mapzen.whosonfirst.catalog = (function(){
 		},
 
 		'render': function(rsp){
+		    
+		    var records = rsp["recordset"]["records"];
+		    var count = records.length;
+		    
+		    var table = document.createElement("table");
 
-			var records = rsp["recordset"]["records"];
-			var count = records.length;
-			
-			var table = document.createElement("table");
+		    var source_header = document.createElement("th");
+		    source_header.appendChild(document.createTextNode("source"));
+		    
+		    var type_header = document.createElement("th");
+		    type_header.appendChild(document.createTextNode("type"));
+		    
+		    var hash_header = document.createElement("th");
+		    hash_header.appendChild(document.createTextNode("hash"));
+		    
+		    var uri_header = document.createElement("th");
+		    uri_header.appendChild(document.createTextNode("uri"));
+		    
+		    var show_header = document.createElement("th");
+		    show_header.appendChild(document.createTextNode("-"));
+		    
+		    var header_row = document.createElement("tr");
+		    header_row.appendChild(source_header);
+		    header_row.appendChild(type_header);
+		    header_row.appendChild(hash_header);
+		    header_row.appendChild(uri_header);
+		    header_row.appendChild(show_header);								
+		    
+		    table.appendChild(header_row);
 
 			for (var i=0; i < count; i++){
 
 				var data = records[i];
 
 				var source = data["source"];				
+				var type = data["type"];				
 				var uri = data["uri"];
 				var hash = data["hash"];			
 
 				var source_cell = document.createElement("td");
 				source_cell.appendChild(document.createTextNode(source));
+
+				var type_cell = document.createElement("td");
+				type_cell.appendChild(document.createTextNode(type));
 
 				var hash_cell = document.createElement("td");
 				hash_cell.appendChild(document.createTextNode(hash));
@@ -73,6 +102,7 @@ mapzen.whosonfirst.catalog = (function(){
 				
 				var meta_row = document.createElement("tr");
 				meta_row.appendChild(source_cell);
+				meta_row.appendChild(type_cell);
 				meta_row.appendChild(hash_cell);
 				meta_row.appendChild(uri_cell);
 				meta_row.appendChild(show_cell);								
@@ -98,7 +128,7 @@ mapzen.whosonfirst.catalog = (function(){
 				var details = mapzen.whosonfirst.render.render_data(data);
 				
 				var details_cell = document.createElement("td");
-				details_cell.setAttribute("colspan", "4");				
+				details_cell.setAttribute("colspan", "5");				
 				details_cell.appendChild(details);
 
 				var details_row = document.createElement("tr");	
