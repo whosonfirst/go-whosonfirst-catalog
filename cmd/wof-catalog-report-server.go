@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/facebookgo/grace/gracehttp"
-	mz "github.com/whosonfirst/go-mapzen-js/http"
+	"github.com/whosonfirst/go-http-mapzenjs"
+	"github.com/whosonfirst/go-http-rewrite"
 	"github.com/whosonfirst/go-whosonfirst-catalog/flags"
 	"github.com/whosonfirst/go-whosonfirst-catalog/http"
 	"github.com/whosonfirst/go-whosonfirst-catalog/probe"
@@ -64,13 +65,13 @@ func main() {
 
 	fs := http.WWWFileSystem()
 
-	root_handler, err := mz.MapzenAPIKeyHandler(www_handler, fs, *api_key)
+	root_handler, err := mapzenjs.MapzenAPIKeyHandler(www_handler, fs, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
 	}
 
-	mapzenjs_handler, err := mz.MapzenJSHandler()
+	mapzenjs_handler, err := mapzenjs.MapzenJSHandler()
 
 	if err != nil {
 		logger.Fatal("failed to create mapzen.js handler because %s", err)
@@ -94,13 +95,15 @@ func main() {
 
 	if *root != "/" {
 
-		rule := http.RemovePrefixRewriteRule(*root)
-		rules := []http.RewriteRule{rule}
+		opts := rewrite.DefaultRewriteRuleOptions()
+
+		rule := rewrite.RemovePrefixRewriteRule(*root, opts)
+		rules := []rewrite.RewriteRule{rule}
 
 		for path, handler := range handlers {
 
 			rw_path := *root + path
-			rw_handler, err := http.RewriteHandler(rules, handler)
+			rw_handler, err := rewrite.RewriteHandler(rules, handler)
 
 			if err != nil {
 				logger.Fatal("failed to create rewrite handler for %s (%s) because %s", rw_path, path, err)
