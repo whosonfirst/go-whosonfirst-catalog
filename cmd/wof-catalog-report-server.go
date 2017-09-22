@@ -33,7 +33,10 @@ func main() {
 
 	var host = flag.String("host", "localhost", "The hostname to listen for requests on")
 	var port = flag.Int("port", 8080, "The port number to listen for requests on")
-	var api_key = flag.String("api-key", "mapzen-12345", "")
+
+	var root = flag.String("root", "/", "")
+	
+	var api_key = flag.String("api-key", "mapzen-xxxxxxx", "")
 
 	flag.Parse()
 
@@ -67,10 +70,28 @@ func main() {
 		logger.Fatal("failed to create mapzen.js handler because %s", err)
 	}
 
-	key_handler, err := mz.MapzenAPIKeyHandler(www_handler, fs, *api_key)
+	var root_handler gohttp.Handler
+	
+	apikey_handler, err := mz.MapzenAPIKeyHandler(www_handler, fs, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
+	}
+
+	root_handler = apikey_handler
+
+	if *root != "/" {
+
+                rule := http.RemovePrefixRewriteRule(*root)
+                rules := []http.RewriteRule{rule}
+
+		rewrite_handler, err := http.RewriteHandler(rules, apikey_handler)
+
+		if err != nil {
+			logger.Fatal("failed to create rewrite handler because %s", err)
+		}
+
+		root_handler = rewrite_handler
 	}
 
 	ping_handler, err := http.PingHandler()
@@ -92,7 +113,7 @@ func main() {
 	mux.Handle("/css/mapzen.js.css", mapzenjs_handler)
 	mux.Handle("/tangram/refill-style.zip", mapzenjs_handler)
 
-	mux.Handle("/", key_handler)
+	mux.Handle("/", root_handler)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
 
