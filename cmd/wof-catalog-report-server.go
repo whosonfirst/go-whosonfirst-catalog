@@ -35,7 +35,7 @@ func main() {
 	var port = flag.Int("port", 8080, "The port number to listen for requests on")
 
 	var root = flag.String("root", "/", "")
-	
+
 	var api_key = flag.String("api-key", "mapzen-xxxxxxx", "")
 
 	flag.Parse()
@@ -64,34 +64,16 @@ func main() {
 
 	fs := http.WWWFileSystem()
 
-	mapzenjs_handler, err := mz.MapzenJSHandler()
-
-	if err != nil {
-		logger.Fatal("failed to create mapzen.js handler because %s", err)
-	}
-
-	var root_handler gohttp.Handler
-	
-	apikey_handler, err := mz.MapzenAPIKeyHandler(www_handler, fs, *api_key)
+	root_handler, err := mz.MapzenAPIKeyHandler(www_handler, fs, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
 	}
 
-	root_handler = apikey_handler
+	mapzenjs_handler, err := mz.MapzenJSHandler()
 
-	if *root != "/" {
-
-                rule := http.RemovePrefixRewriteRule(*root)
-                rules := []http.RewriteRule{rule}
-
-		rewrite_handler, err := http.RewriteHandler(rules, apikey_handler)
-
-		if err != nil {
-			logger.Fatal("failed to create rewrite handler because %s", err)
-		}
-
-		root_handler = rewrite_handler
+	if err != nil {
+		logger.Fatal("failed to create mapzen.js handler because %s", err)
 	}
 
 	ping_handler, err := http.PingHandler()
@@ -100,28 +82,44 @@ func main() {
 		logger.Fatal("failed to create ping handler because %s", err)
 	}
 
-	endpoint := fmt.Sprintf("%s:%d", *host, *port)
-	logger.Status("listening on %s", endpoint)
+	handlers := map[string]gohttp.Handler{
+		"/":                          root_handler,
+		"/id/":                       id_handler,
+		"/ping/":                     ping_handler,
+		"/javascript/mapzen.min.js":  mapzenjs_handler,
+		"/javascript/tangram.min.js": mapzenjs_handler,
+		"/css/mapzen.js.css":         mapzenjs_handler,
+		"/tangram/refill-style.zip":  mapzenjs_handler,
+	}
+
+	if *root != "/" {
+
+		rule := http.RemovePrefixRewriteRule(*root)
+		rules := []http.RewriteRule{rule}
+
+		for path, handler := range handlers {
+
+			rw_path := *root + path
+			rw_handler, err := http.RewriteHandler(rules, handler)
+
+			if err != nil {
+				logger.Fatal("failed to create rewrite handler for %s (%s) because %s", rw_path, path, err)
+			}
+
+			delete(handlers, path)
+			handlers[rw_path] = rw_handler
+		}
+	}
 
 	mux := gohttp.NewServeMux()
 
-	id_path := "/id/"
-	ping_path := "/ping/"
-
-	if *root != "/" {
-		id_path = *root + id_path
-		ping_path = *root + ping_path
+	for path, handler := range handlers {
+		logger.Status("configure %s handler", path)
+		mux.Handle(path, handler)
 	}
 
-	mux.Handle(id_path, id_handler)
-	mux.Handle(ping_path, ping_handler)
-
-	mux.Handle("/javascript/mapzen.min.js", mapzenjs_handler)
-	mux.Handle("/javascript/tangram.min.js", mapzenjs_handler)
-	mux.Handle("/css/mapzen.js.css", mapzenjs_handler)
-	mux.Handle("/tangram/refill-style.zip", mapzenjs_handler)
-
-	mux.Handle("/", root_handler)
+	endpoint := fmt.Sprintf("%s:%d", *host, *port)
+	logger.Status("listening on %s", endpoint)
 
 	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
 
