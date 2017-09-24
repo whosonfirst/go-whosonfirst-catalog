@@ -6,28 +6,35 @@ mapzen.whosonfirst.render = (function(){
 	var self = {
 
 		'render_data': function(d, ctx){
+
+			var wrapper = document.createElement("div");
+			wrapper.setAttribute("class", "dumper");
+
+			var render;
 			
 			if (Array.isArray(d)){
-				return self.render_list(d, ctx);
+				render = self.render_list(d, ctx);
 			}
 	    
 			else if (typeof(d) == "object"){
-				return self.render_dict(d, ctx);
+				render = self.render_dict(d, ctx);
 			}
 
 			else {
 				var content = self.render_text(d, ctx);
 
-				var wrapper = document.createElement("span");				
-				wrapper.appendChild(content);
-				return wrapper;
+				render = document.createElement("span");				
+				render.appendChild(content);
 			}
+
+			wrapper.appendChild(render);
+			return wrapper;			
 		},
 
 		'render_dict': function(d, ctx){
 	    
 			var table = document.createElement("table");
-			table.setAttribute("class", "table");
+			table.setAttribute("class", "table table-details");
 	    
 			for (k in d){
 		
@@ -41,7 +48,7 @@ mapzen.whosonfirst.render = (function(){
 				header.appendChild(label);
 		
 				var content = document.createElement("td");
-
+				
 				var body = self.render_data(d[k], _ctx);
 				content.appendChild(body);
 				

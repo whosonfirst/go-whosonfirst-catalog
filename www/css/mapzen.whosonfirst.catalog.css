@@ -6,3 +6,32 @@
 .details {
     display:none;
 }
+
+table {
+    line-height:2em;
+    font-family: sans-serif;
+    width:100%;
+    border-spacing: unset;
+}
+
+tr {
+    vertical-align: top;
+    padding: 0px;
+    margin: 0px;    
+}
+
+th {
+    background-color:#ededed;
+    border-top: solid thin;
+    border-bottom: solid thin;    
+    text-align:left;
+    margin: 0px;
+    padding: .25em
+}
+
+td {
+    text-align:left;
+    padding: .25em;
+    margin: 0px;
+}
+

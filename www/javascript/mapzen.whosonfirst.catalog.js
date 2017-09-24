@@ -97,8 +97,12 @@ mapzen.whosonfirst.catalog = (function(){
 				uri_cell.appendChild(document.createTextNode(uri));
 
 				var show_cell = document.createElement("td");
-				show_cell.setAttribute("data-uri", uri);				
-				show_cell.appendChild(document.createTextNode("show"));
+
+				var show_button = document.createElement("button");
+				show_button.setAttribute("data-uri", uri);				
+				show_button.appendChild(document.createTextNode("show"));
+
+				show_cell.appendChild(show_button);
 				
 				var meta_row = document.createElement("tr");
 				meta_row.appendChild(source_cell);
@@ -107,33 +111,33 @@ mapzen.whosonfirst.catalog = (function(){
 				meta_row.appendChild(uri_cell);
 				meta_row.appendChild(show_cell);								
 
-				show_cell.onclick = function(e){
+				show_button.onclick = function(e){
 
 					var el = e.target;
 					var uri = el.getAttribute("data-uri");
 
 					var details = document.getElementById("details-" + uri);
 
-					if (details.style.display == "block"){
-						details.style.display = "none";
-						el.innerText = "show";						
+					if (details.style.display == "none"){
+						details.style.display = "block";
+						el.innerText = "hide";						
 					}
 
 					else {
-						details.style.display = "block";
-						el.innerText = "hide";
+						details.style.display = "none";
+						el.innerText = "show";						
 					}
 				};
 				
 				var details = mapzen.whosonfirst.render.render_data(data);
 				
 				var details_cell = document.createElement("td");
-				details_cell.setAttribute("colspan", "5");				
+				details_cell.setAttribute("colspan", "5");
+				details_cell.setAttribute("id", "details-" + uri);
+				details_cell.setAttribute("class", "details");
 				details_cell.appendChild(details);
 
-				var details_row = document.createElement("tr");	
-				details_row.setAttribute("id", "details-" + uri);
-				details_row.setAttribute("class", "details");				
+				var details_row = document.createElement("tr");
 				details_row.appendChild(details_cell);
 				
 				table.append(meta_row);
