@@ -19,7 +19,8 @@ ul {
 
 .dumper th {
     background-color:#ededed;
-    border: none !important;
+    border-top: none;
+    border-bottom: none;    
     border-left: solid thin !important;
     border-right: solid thin !important;    
     text-align:left;
@@ -32,7 +33,7 @@ ul {
 }
 
 .dumper th:last-child {
-    border-top: solid thin !important;
+    border-bottom: solid thin !important;
 }
 
 .dumper table td {
