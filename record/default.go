@@ -3,6 +3,7 @@ package record
 import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
+	"time"
 )
 
 type DefaultRecord struct {
@@ -13,6 +14,7 @@ type DefaultRecord struct {
 	RecordURI      string      `json:"uri"`
 	RecordBody     interface{} `json:"body"`
 	RecordHash     string      `json:"hash"`
+	RecordTiming   time.Duration	`json:"timing"`
 }
 
 func (r *DefaultRecord) Id() int64 {
@@ -35,7 +37,11 @@ func (r *DefaultRecord) Body() interface{} {
 	return r.RecordBody
 }
 
-func NewDefaultRecord(rtype string, source string, id int64, uri string, body interface{}) (catalog.Record, error) {
+func (r *DefaultRecord) Timing() time.Duration {
+	return r.RecordTiming
+}
+
+func NewDefaultRecord(rtype string, source string, id int64, uri string, body interface{}, t time.Duration) (catalog.Record, error) {
 
 	hash, err := utils.HashInterface(body)
 
@@ -50,6 +56,7 @@ func NewDefaultRecord(rtype string, source string, id int64, uri string, body in
 		RecordURI:    uri,
 		RecordBody:   body,
 		RecordHash:   hash,
+		RecordTiming: t,
 	}
 
 	return &r, nil

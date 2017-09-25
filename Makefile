@@ -62,7 +62,7 @@ assets:	self
 	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -pkg http www www/javascript www/css
 	mv bindata_assetfs.go http/assets.go
 
-bin: 	self
+bin: 	assets
 	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report cmd/wof-catalog-report.go
 	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report-server cmd/wof-catalog-report-server.go
 

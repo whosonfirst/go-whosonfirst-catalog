@@ -22,10 +22,10 @@ tr {
 
 th {
     background-color:#ededed;
-    border-top: solid thin;
-    border-bottom: solid thin;    
+    border: solid thin;
     text-align:left;
     margin: 0px;
+    margin-bottom:.2em;
     padding: .25em
 }
 
@@ -33,5 +33,11 @@ td {
     text-align:left;
     padding: .25em;
     margin: 0px;
+    border:solid thin !important;
+}
+
+pre {
+    background-color: #adadad;
+    font-size:small;
 }
 

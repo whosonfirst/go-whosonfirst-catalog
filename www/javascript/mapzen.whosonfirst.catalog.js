@@ -48,7 +48,30 @@ mapzen.whosonfirst.catalog = (function(){
 		    
 		    var records = rsp["recordset"]["records"];
 		    var count = records.length;
-		    
+
+		    var by_type = {};
+		    var types = [];
+		    var sources = [];
+
+		    for (var i=0; i < count; i++){
+
+			var r = records[i];
+			var t = r["type"];
+
+			if (! by_type[t]){
+
+			    by_type[t] = [ r ];
+			    types.push(t);
+			}
+
+			else {
+			    by_type[t].push(r);
+			}
+		    }
+
+		    types.sort();
+		    console.log("TYPES", types);
+
 		    var table = document.createElement("table");
 
 		    var source_header = document.createElement("th");
@@ -62,6 +85,9 @@ mapzen.whosonfirst.catalog = (function(){
 		    
 		    var uri_header = document.createElement("th");
 		    uri_header.appendChild(document.createTextNode("uri"));
+
+		    var timing_header = document.createElement("th");
+		    timing_header.appendChild(document.createTextNode("timing"));
 		    
 		    var show_header = document.createElement("th");
 		    show_header.appendChild(document.createTextNode("-"));
@@ -71,17 +97,30 @@ mapzen.whosonfirst.catalog = (function(){
 		    header_row.appendChild(type_header);
 		    header_row.appendChild(hash_header);
 		    header_row.appendChild(uri_header);
+		    header_row.appendChild(timing_header);
 		    header_row.appendChild(show_header);								
 		    
 		    table.appendChild(header_row);
 
-			for (var i=0; i < count; i++){
+		    for (var t in types){
 
-				var data = records[i];
+			t = types[t];
+			var type_records = by_type[t];
+
+			var count_records = type_records.length;
+
+			var by_source = {};
+			var sources = [];
+
+			for (var i=0; i < count_records; i++){
+
+				var data = type_records[i];
 
 				var source = data["source"];				
 				var type = data["type"];				
 				var uri = data["uri"];
+				var timing = data["timing"] / 1000000000;	// nanoseconds
+
 				var hash = data["hash"];			
 
 				var source_cell = document.createElement("td");
@@ -96,6 +135,9 @@ mapzen.whosonfirst.catalog = (function(){
 				var uri_cell = document.createElement("td");
 				uri_cell.appendChild(document.createTextNode(uri));
 
+			    	var timing_cell = document.createElement("td");
+				timing_cell.appendChild(document.createTextNode(timing.toFixed(3) + "s"));
+
 				var show_cell = document.createElement("td");
 
 				var show_button = document.createElement("button");
@@ -109,6 +151,7 @@ mapzen.whosonfirst.catalog = (function(){
 				meta_row.appendChild(type_cell);
 				meta_row.appendChild(hash_cell);
 				meta_row.appendChild(uri_cell);
+				meta_row.appendChild(timing_cell);
 				meta_row.appendChild(show_cell);								
 
 				show_button.onclick = function(e){
@@ -118,7 +161,7 @@ mapzen.whosonfirst.catalog = (function(){
 
 					var details = document.getElementById("details-" + uri);
 
-					if (details.style.display == "none"){
+				    if ((! details.style.display) || (details.style.display == "none")){
 						details.style.display = "block";
 						el.innerText = "hide";						
 					}
@@ -129,8 +172,17 @@ mapzen.whosonfirst.catalog = (function(){
 					}
 				};
 				
-				var details = mapzen.whosonfirst.render.render_data(data);
+				table.append(meta_row);
+
+			    /*
+
+			    // var details = mapzen.whosonfirst.render.render_data(data);
 				
+			    var pretty = JSON.stringify(data, null, 2);
+
+			    var details = document.createElement("pre");
+			    details.appendChild(document.createTextNode(pretty));
+
 				var details_cell = document.createElement("td");
 				details_cell.setAttribute("colspan", "5");
 				details_cell.setAttribute("id", "details-" + uri);
@@ -140,8 +192,10 @@ mapzen.whosonfirst.catalog = (function(){
 				var details_row = document.createElement("tr");
 				details_row.appendChild(details_cell);
 				
-				table.append(meta_row);
 				table.append(details_row);				
+				*/
+
+			}
 			}
 
 			return table;

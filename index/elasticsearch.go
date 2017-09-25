@@ -7,12 +7,14 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 type ElasticsearchIndex struct {
 	catalog.Index
 	endpoint string
 	index    string
+	timing	 time.Duration
 }
 
 func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
@@ -33,13 +35,17 @@ func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
 
 	uri := url.String()
 
+	t1 := time.Now()
+
 	rsp, err := utils.GetURLAsJSON(uri)
 
+	t2 := time.Since(t1)
+
 	if err != nil {
-		return record.NewErrorRecord("elasticsearch", id, uri, err)
+		return record.NewErrorRecord("elasticsearch", id, uri, err, t2)
 	}
 
-	return record.NewDefaultRecord("elasticsearch", "elasticsearch", id, uri, rsp)
+	return record.NewDefaultRecord("elasticsearch", "elasticsearch", id, uri, rsp, t2)
 }
 
 func NewElasticsearchIndex(host string, port int, idx string) (catalog.Index, error) {

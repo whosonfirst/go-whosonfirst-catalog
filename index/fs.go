@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type FSIndex struct {
@@ -40,6 +41,9 @@ func NewFSIndex(root string, repos ...string) (catalog.Index, error) {
 
 func (e *FSIndex) GetById(id int64) (catalog.Record, error) {
 
+	t1 := time.Now()
+	var t2 time.Duration
+
 	for _, repo := range e.repos {
 
 		root := filepath.Join(e.root, repo)
@@ -66,30 +70,38 @@ func (e *FSIndex) GetById(id int64) (catalog.Record, error) {
 
 		fh, err := os.Open(uri)
 
+		t2 = time.Since(t1)
+
 		if err != nil {
-			return record.NewErrorRecord("fs", id, uri, err)
+			return record.NewErrorRecord("fs", id, uri, err, t2)
 		}
 
 		body, err := ioutil.ReadAll(fh)
 
+		t2 = time.Since(t1)
+
 		if err != nil {
-			return record.NewErrorRecord("fs", id, uri, err)
+			return record.NewErrorRecord("fs", id, uri, err, t2)
 		}
 
 		var stub interface{}
 
 		err = json.Unmarshal(body, &stub)
 
+		t2 = time.Since(t1)
+
 		if err != nil {
-			return record.NewErrorRecord("fs", id, uri, err)
+			return record.NewErrorRecord("fs", id, uri, err, t2)
 		}
 
-		return record.NewDefaultRecord("fs", "fs", id, uri, stub)
+		return record.NewDefaultRecord("fs", "fs", id, uri, stub, t2)
 	}
+
+	t2 = time.Since(t1)
 
 	msg := fmt.Sprintf("can't find filesystem record for ID %d", id)
 	err := errors.New(msg)
 
 	uri := fmt.Sprintf("x-fs-%d", id)
-	return record.NewErrorRecord("fs", id, uri, err)
+	return record.NewErrorRecord("fs", id, uri, err, t2)
 }

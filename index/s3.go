@@ -6,6 +6,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	"github.com/whosonfirst/go-whosonfirst-uri"
+	"time"
 )
 
 type S3Index struct {
@@ -32,11 +33,15 @@ func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 		return nil, err
 	}
 
+	t1 := time.Now()
+
 	rsp, err := utils.GetURLAsJSON(uri)
 
+	t2 := time.Since(t1)
+
 	if err != nil {
-		return record.NewErrorRecord("s3", id, uri, err)
+		return record.NewErrorRecord("s3", id, uri, err, t2)
 	}
 
-	return record.NewDefaultRecord("geojson", "s3", id, uri, rsp)
+	return record.NewDefaultRecord("geojson", "s3", id, uri, rsp, t2)
 }

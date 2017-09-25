@@ -18,7 +18,7 @@ type Probe interface {
 
 type ProbeResults interface {
 	RecordSet() RecordSet
-	Timings() time.Duration
+	Timing() time.Duration
 }
 
 type Record interface {
@@ -28,6 +28,7 @@ type Record interface {
 	URI() string
 	Body() interface{}
 	Hash() string
+	Timing() time.Duration
 }
 
 type RecordSet interface {

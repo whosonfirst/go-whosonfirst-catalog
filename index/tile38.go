@@ -8,7 +8,8 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-tile38"
 	"github.com/whosonfirst/go-whosonfirst-tile38/client"
-	"log"
+	_ "log"
+	"time"
 )
 
 type Tile38Index struct {
@@ -23,6 +24,9 @@ type Tile38Response map[string]interface{}
 
 func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
+     t1 := time.Now()
+     var t2 time.Duration
+
 	for _, r := range e.repos {
 
 		geom_key := fmt.Sprintf("%d#%s", id, r)
@@ -32,9 +36,10 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
 		geom_rsp, err := e.client.Do("GET", e.collection, geom_key, "WITHFIELDS")
 
+		t2 = time.Since(t1)
+
 		if err != nil {
-			log.Println("FFFFUUUUU")
-			return record.NewErrorRecord("tile38", id, uri, err)
+			return record.NewErrorRecord("tile38", id, uri, err, t2)
 		}
 
 		if !geom_rsp.(tile38.Tile38Response).Ok {
@@ -64,14 +69,18 @@ func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 			}
 		}
 
-		return record.NewDefaultRecord("tile38", "tile38", id, uri, rsp)
+		t2 = time.Since(t1)
+
+		return record.NewDefaultRecord("tile38", "tile38", id, uri, rsp, t2)
 	}
+
+	t2 = time.Since(t1)
 
 	msg := fmt.Sprintf("can't find tile38 record for ID %d", id)
 	err := errors.New(msg)
 
 	uri := fmt.Sprintf("x-tile38-%d", id)
-	return record.NewErrorRecord("tile38", id, uri, err)
+	return record.NewErrorRecord("tile38", id, uri, err, t2)
 }
 
 func NewTile38Index(host string, port int, collection string, repos ...string) (catalog.Index, error) {

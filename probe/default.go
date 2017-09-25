@@ -13,15 +13,15 @@ type DefaultProbe struct {
 type DefaultProbeResults struct {
 	catalog.ProbeResults `json:",omitempty"`
 	ProbeRecordSet       catalog.RecordSet `json:"recordset"`
-	ProbeTimings         time.Duration     `json:"timings"`
+	ProbeTiming         time.Duration     `json:"timings"`
 }
 
 func (r *DefaultProbeResults) RecordSet() catalog.RecordSet {
 	return r.ProbeRecordSet
 }
 
-func (r *DefaultProbeResults) Timings() time.Duration {
-	return r.ProbeTimings
+func (r *DefaultProbeResults) Timing() time.Duration {
+	return r.ProbeTiming
 }
 
 type DefaultRecordSet struct {
@@ -94,7 +94,7 @@ func (p *DefaultProbe) GetById(id int64) (catalog.ProbeResults, error) {
 
 	pr := DefaultProbeResults{
 		ProbeRecordSet: &rs,
-		ProbeTimings:   t2,
+		ProbeTiming:   t2,
 	}
 
 	return &pr, nil
