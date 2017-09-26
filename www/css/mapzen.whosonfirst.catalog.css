@@ -36,8 +36,14 @@ td {
     border:solid thin !important;
 }
 
+#details table tr td {
+    width:48% !important;
+    overflow: scroll;
+}
+
 pre {
-    background-color: #adadad;
     font-size:small;
+    height: 500px !important;
+    max-height: 500px !important;
 }
 
