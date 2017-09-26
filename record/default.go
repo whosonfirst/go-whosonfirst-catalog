@@ -8,13 +8,13 @@ import (
 
 type DefaultRecord struct {
 	catalog.Record `json:",omitempty"`
-	RecordType     string      `json:"type"`
-	RecordSource   string      `json:"source"`
-	RecordID       int64       `json:"id"`
-	RecordURI      string      `json:"uri"`
-	RecordBody     interface{} `json:"body"`
-	RecordHash     string      `json:"hash"`
-	RecordTiming   time.Duration	`json:"timing"`
+	RecordType     string        `json:"type"`
+	RecordSource   string        `json:"source"`
+	RecordID       int64         `json:"id"`
+	RecordURI      string        `json:"uri"`
+	RecordBody     interface{}   `json:"body"`
+	RecordHash     string        `json:"hash"`
+	RecordTiming   time.Duration `json:"timing"`
 }
 
 func (r *DefaultRecord) Id() int64 {

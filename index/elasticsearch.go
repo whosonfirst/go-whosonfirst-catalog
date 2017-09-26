@@ -14,7 +14,7 @@ type ElasticsearchIndex struct {
 	catalog.Index
 	endpoint string
 	index    string
-	timing	 time.Duration
+	timing   time.Duration
 }
 
 func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {

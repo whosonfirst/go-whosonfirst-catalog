@@ -24,8 +24,8 @@ type Tile38Response map[string]interface{}
 
 func (e *Tile38Index) GetById(id int64) (catalog.Record, error) {
 
-     t1 := time.Now()
-     var t2 time.Duration
+	t1 := time.Now()
+	var t2 time.Duration
 
 	for _, r := range e.repos {
 

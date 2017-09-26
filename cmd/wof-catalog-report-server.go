@@ -35,6 +35,7 @@ func main() {
 	var host = flag.String("host", "localhost", "The hostname to listen for requests on")
 	var port = flag.Int("port", 8080, "The port number to listen for requests on")
 
+	var local = flag.String("local", "", "")
 	var root = flag.String("root", "/", "")
 
 	var api_key = flag.String("api-key", "mapzen-xxxxxxx", "")
@@ -57,15 +58,36 @@ func main() {
 		logger.Fatal("failed to create ID handler because %s", err)
 	}
 
-	www_handler, err := http.WWWHandler()
+	var www_handler gohttp.Handler
+	var www_fs gohttp.FileSystem
 
-	if err != nil {
-		logger.Fatal("failed to create www handler because %s", err)
+	if *local == "" {
+
+		asset_handler, err := http.WWWHandler()
+
+		if err != nil {
+			logger.Fatal("failed to create www handler because %s", err)
+		}
+
+		asset_fs := http.WWWFileSystem()
+
+		www_handler = asset_handler
+		www_fs = asset_fs
+
+	} else {
+
+		local_fs := http.LocalFileSystem(*local)
+		local_handler, err := http.LocalHandler(local_fs)
+
+		if err != nil {
+			logger.Fatal("failed to create www handler because %s", err)
+		}
+
+		www_handler = local_handler
+		www_fs = local_fs
 	}
 
-	fs := http.WWWFileSystem()
-
-	root_handler, err := mapzenjs.MapzenAPIKeyHandler(www_handler, fs, *api_key)
+	root_handler, err := mapzenjs.MapzenAPIKeyHandler(www_handler, www_fs, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)

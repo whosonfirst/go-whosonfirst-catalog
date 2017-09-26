@@ -28,7 +28,7 @@ func (e *WOFIndex) GetById(id int64) (catalog.Record, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	t1 := time.Now()
 
 	rsp, err := utils.GetURLAsJSON(uri)
