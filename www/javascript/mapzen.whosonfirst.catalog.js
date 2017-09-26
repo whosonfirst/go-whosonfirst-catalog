@@ -160,15 +160,7 @@ mapzen.whosonfirst.catalog = (function(){
 			var el = e.target;
 			var uri = el.getAttribute("data-uri");
 		
-			if ((! details.style.display) || (details.style.display == "none")){
-			    self.show_details(uri);
-			    el.innerText = "hide";						
-			}
-			
-			else {
-			    self.hide_details();
-			    el.innerText = "show";						
-			}
+			self.show_details(uri);
 		    };
 		    
 		    table.append(meta_row);
@@ -193,10 +185,20 @@ mapzen.whosonfirst.catalog = (function(){
 	    var data = cache[uri];
 	    var body = data["body"];
 
-	    var pretty = JSON.stringify(body, null, 2);
-	    
+	    /*
+	    var pretty = JSON.stringify(body, null, 2);	    
 	    var dump = document.createElement("pre");
 	    dump.appendChild(document.createTextNode(pretty));
+	    */
+
+	    var geom = mapzen.whosonfirst.render.render_data(body["geometry"]);
+	    var props = mapzen.whosonfirst.render.render_data(body["properties"]);
+
+	    var wrapper = document.createElement("div");
+	    wrapper.setAttribute("style", "max-height: 500px !important; height: 500px !important; overflow: scroll !important;");
+
+	    wrapper.appendChild(props);
+	    // wrapper.appendChild(geom);
 
 	    var map = document.createElement("div");
 	    map.setAttribute("id", "map");
@@ -208,7 +210,7 @@ mapzen.whosonfirst.catalog = (function(){
 	    var right_cell = document.createElement("td");
 
 	    left_cell.append(map);
-	    right_cell.append(dump);
+	    right_cell.append(wrapper);
 
 	    tr.appendChild(left_cell);
 	    tr.appendChild(right_cell);
