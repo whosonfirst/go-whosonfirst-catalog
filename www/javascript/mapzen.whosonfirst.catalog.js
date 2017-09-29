@@ -93,13 +93,16 @@ mapzen.whosonfirst.catalog = (function(){
 	    var show_header = document.createElement("th");
 	    show_header.appendChild(document.createTextNode("-"));
 	    
+	    var details_header = document.createElement("th");
+	    details_header.appendChild(document.createTextNode("-"));
+	    
 	    var header_row = document.createElement("tr");
 	    header_row.appendChild(source_header);
 	    header_row.appendChild(type_header);
 	    header_row.appendChild(hash_header);
 	    header_row.appendChild(uri_header);
 	    header_row.appendChild(timing_header);
-	    header_row.appendChild(show_header);								
+	    header_row.appendChild(details_header);
 	    
 	    table.appendChild(header_row);
 	    
@@ -124,7 +127,7 @@ mapzen.whosonfirst.catalog = (function(){
 		    
 		    var hash = data["hash"];			
 		    
-		    var source_cell = document.createElement("td");
+		    var source_cell = document.createElement("th");
 		    source_cell.appendChild(document.createTextNode(source));
 		    
 		    var type_cell = document.createElement("td");
@@ -132,30 +135,33 @@ mapzen.whosonfirst.catalog = (function(){
 		    
 		    var hash_cell = document.createElement("td");
 		    hash_cell.appendChild(document.createTextNode(hash));
-		    
+
 		    var uri_cell = document.createElement("td");
+		    uri_cell.setAttribute("data-uri", uri);		  
 		    uri_cell.appendChild(document.createTextNode(uri));
 		    
 		    var timing_cell = document.createElement("td");
 		    timing_cell.appendChild(document.createTextNode(timing.toFixed(3) + "s"));
-		    
-		    var show_cell = document.createElement("td");
-		    
-		    var show_button = document.createElement("button");
-		    show_button.setAttribute("data-uri", uri);				
-		    show_button.appendChild(document.createTextNode("show"));
-		    
-		    show_cell.appendChild(show_button);
-		    
+
+		    var details_cell = document.createElement("td");
+		    details_cell.setAttribute("class", "click-me");
+		    details_cell.setAttribute("data-uri", uri);		  
+		    details_cell.appendChild(document.createTextNode("details"));
+
 		    var meta_row = document.createElement("tr");
+
+		    if (type == "error"){
+			meta_row.setAttribute("class", "error");
+		    }
+
 		    meta_row.appendChild(source_cell);
 		    meta_row.appendChild(type_cell);
 		    meta_row.appendChild(hash_cell);
 		    meta_row.appendChild(uri_cell);
 		    meta_row.appendChild(timing_cell);
-		    meta_row.appendChild(show_cell);								
+		    meta_row.appendChild(details_cell);
 		    
-		    show_button.onclick = function(e){
+		    details_cell.onclick = function(e){
 			
 			var el = e.target;
 			var uri = el.getAttribute("data-uri");
@@ -189,7 +195,7 @@ mapzen.whosonfirst.catalog = (function(){
 	    // CONVERT ALL THE NOT-GEOJSON STUFF TO GEOJSON HERE...
 
 	    var wrapper = document.createElement("div");
-	    wrapper.setAttribute("style", "max-height: 500px !important; height: 500px !important; overflow: scroll !important;");
+	    wrapper.setAttribute("id", "source");
 
 	    var props;
 
@@ -198,6 +204,11 @@ mapzen.whosonfirst.catalog = (function(){
 	    }
 
 	    else {
+
+		if (type == "postgis"){
+		    body["Meta"] = JSON.parse(body["Meta"]);
+		}
+
 		props = mapzen.whosonfirst.render.render_data(body);
 	    }
 	    
