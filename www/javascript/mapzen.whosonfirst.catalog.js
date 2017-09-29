@@ -71,7 +71,6 @@ mapzen.whosonfirst.catalog = (function(){
 	    }
 	    
 	    types.sort();
-	    console.log("TYPES", types);
 	    
 	    var table = document.createElement("table");
 	    
@@ -121,7 +120,7 @@ mapzen.whosonfirst.catalog = (function(){
 		    var data = type_records[i];
 		    
 		    var source = data["source"];				
-		    var type = data["type"];				
+		    var type = data["type"];
 		    var uri = data["uri"];
 		    var timing = data["timing"] / 1000000000;	// nanoseconds
 		    
@@ -192,30 +191,14 @@ mapzen.whosonfirst.catalog = (function(){
 	    var body = data["body"];
 	    var type = data["type"];
 
-	    // CONVERT ALL THE NOT-GEOJSON STUFF TO GEOJSON HERE...
-
 	    var wrapper = document.createElement("div");
 	    wrapper.setAttribute("id", "source");
 
-	    var props;
+	    var feature = self.data_to_feature(data);
+	    var props = feature["properties"];
 
-	    if (type == "geojson"){
-		props = mapzen.whosonfirst.render.render_data(body["properties"]);
-	    }
-
-	    else {
-
-		if (type == "postgis"){
-		    body["Meta"] = JSON.parse(body["Meta"]);
-		}
-
-		props = mapzen.whosonfirst.render.render_data(body);
-	    }
-	    
+	    props = mapzen.whosonfirst.render.render_data(props);
 	    wrapper.appendChild(props);
-
-	    // var geom = mapzen.whosonfirst.render.render_data(body["geometry"]);
-	    // wrapper.appendChild(geom);
 
 	    var map = document.createElement("div");
 	    map.setAttribute("id", "map");
@@ -237,29 +220,149 @@ mapzen.whosonfirst.catalog = (function(){
 	    var details = document.getElementById("details");
 	    details.appendChild(table);
 
-	    self.draw_map(data);
+	    self.draw_map(feature);
 	},
 
-	'draw_map': function(data){
+	'draw_map': function(feature){
 
-	    var feature = data["body"];
 	    var props = feature["properties"];
 
 	    if (! props){
 		return;
 	    }
 
-	    var lat = props["geom:latitude"];
-	    var lon = props["geom:longitude"];
+	    var bbox = mapzen.whosonfirst.geojson.derive_bbox(feature);
+
+	    var sw = L.latLng(bbox[1], bbox[0]);
+	    var ne = L.latLng(bbox[3], bbox[2]);
+
+	    console.log("BOUNDS", sw, ne);
+	    console.log("TEST", (sw == ne));
 
             L.Mapzen.apiKey = document.body.getAttribute("data-mapzen-api-key");
 	    
             map = L.Mapzen.map('map');
-            map.setView([lat, lon], 12);
+
+	    if ((sw["lat"] == ne["lat"]) && (sw["lng"] == ne["lng"])){
+		map.setView(sw, 12);
+	    }
+	    
+	    else {
+		map.fitBounds([sw, ne]);
+	    }
 
 	    var layer = L.geoJSON(feature);
 	    layer.addTo(map);
+	},
+
+	'data_to_feature': function(data){
+	    
+	    var type = data["type"];
+
+	    if (type == "geojson"){
+		return data["body"];
+	    }
+	    
+	    if (type == "postgis"){
+		
+		var body = data["body"];
+		body["Meta"] = JSON.parse(body["Meta"]);
+		
+		var geom;
+		
+		if (body["Geom"]){
+		    geom = JSON.parse(body["Geom"]);
+		}
+		
+		else {
+		    geom = JSON.parse(body["Centroid"]);
+		}
+		
+		// delete(body["Geom"]);
+		// delete(body["Centroid"]);
+		
+		var props = body;
+		
+		var feature = {
+		    type: "Feature",
+		    geometry: geom,
+		    properties: props,
+		}
+		
+		return feature;
+	    }
+
+	    if (type == "elasticsearch"){
+
+		var props = data["body"];
+		var bbox = props["geom:bbox"];
+		bbox = bbox.split(",");
+
+		var swlon = bbox[0];
+		var swlat = bbox[1];
+		var nelon = bbox[2];
+		var nelat = bbox[3];
+
+		var coords = [
+		    [ swlat, swlon ],
+		    [ nelat, swlon ],
+		    [ nelat, nelon ],
+		    [ swlat, nelon ],
+		    [ swlat, swlon ],		    
+		];
+
+		var geom = {
+		    "type": "Polygon",
+		    "coordinates": [ coords ],
+		}
+
+		var feature = {
+		    "type": "Feature",
+		    "geometry": geom,
+		    "properties": props,
+		};
+
+		return feature;
+	    }
+
+	    if (type == "tile38"){
+
+		var props = {};
+		var geom = {};
+
+		var id = data["id"];
+		var re = "^" + id + "#";
+
+		var body = data["body"];
+
+		for (var k in body){
+
+		    if (! k.match(re)){
+			continue;
+		    }
+
+		    if (k != id + "#meta"){
+			
+			geom = body[k]["object"];
+			// delete(body[k]["object"]);
+		    }
+
+		    props[k] = body[k];
+		}
+
+		var feature = {
+		    "type": "Feature",
+		    "geometry": geom,
+		    "properties": props,
+		};
+
+		return feature;
+	    }
+
+	    console.log("FIX ME", data);
+	    return data["body"];
 	}
+
     };
     
     return self;
