@@ -1,10 +1,10 @@
 package record
 
 import (
-       "encoding/json"
-       "errors"
-       "fmt"
-        "github.com/tidwall/gjson"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	_ "log"
@@ -48,11 +48,11 @@ func (r *ElasticsearchRecord) Timing() time.Duration {
 
 func NewElasticsearchRecord(id int64, uri string, body interface{}, t time.Duration) (catalog.Record, error) {
 
-     	b, err := json.Marshal(body)
+	b, err := json.Marshal(body)
 
 	if err != nil {
 		return nil, err
-	}     				            				  
+	}
 
 	// because the cruft surrending this will be different for each
 	// host we call and by extension the hashes will never line up
@@ -61,7 +61,7 @@ func NewElasticsearchRecord(id int64, uri string, body interface{}, t time.Durat
 	path := "hits.hits.0._source"
 	rsp := gjson.GetBytes(b, path)
 
-	if ! rsp.Exists() {
+	if !rsp.Exists() {
 		msg := fmt.Sprintf("Unable to find result for path '%s'", path)
 		return nil, errors.New(msg)
 	}

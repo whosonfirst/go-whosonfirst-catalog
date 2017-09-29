@@ -184,20 +184,26 @@ mapzen.whosonfirst.catalog = (function(){
 
 	    var data = cache[uri];
 	    var body = data["body"];
+	    var type = data["type"];
 
-	    /*
-	    var pretty = JSON.stringify(body, null, 2);	    
-	    var dump = document.createElement("pre");
-	    dump.appendChild(document.createTextNode(pretty));
-	    */
-
-	    var geom = mapzen.whosonfirst.render.render_data(body["geometry"]);
-	    var props = mapzen.whosonfirst.render.render_data(body["properties"]);
+	    // CONVERT ALL THE NOT-GEOJSON STUFF TO GEOJSON HERE...
 
 	    var wrapper = document.createElement("div");
 	    wrapper.setAttribute("style", "max-height: 500px !important; height: 500px !important; overflow: scroll !important;");
 
+	    var props;
+
+	    if (type == "geojson"){
+		props = mapzen.whosonfirst.render.render_data(body["properties"]);
+	    }
+
+	    else {
+		props = mapzen.whosonfirst.render.render_data(body);
+	    }
+	    
 	    wrapper.appendChild(props);
+
+	    // var geom = mapzen.whosonfirst.render.render_data(body["geometry"]);
 	    // wrapper.appendChild(geom);
 
 	    var map = document.createElement("div");
@@ -227,6 +233,10 @@ mapzen.whosonfirst.catalog = (function(){
 
 	    var feature = data["body"];
 	    var props = feature["properties"];
+
+	    if (! props){
+		return;
+	    }
 
 	    var lat = props["geom:latitude"];
 	    var lon = props["geom:longitude"];
