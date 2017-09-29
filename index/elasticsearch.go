@@ -19,7 +19,7 @@ type ElasticsearchIndex struct {
 func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
 
 	path := fmt.Sprintf("%s/_search", e.index)
-	q := fmt.Sprintf("wof\\:id:%d", 890413117)
+	q := fmt.Sprintf("wof\\:id:%d", id)
 
 	query := url.Values{}
 	query.Set("q", q)
