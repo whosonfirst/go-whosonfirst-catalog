@@ -6,7 +6,6 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-catalog/record"
 	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	"net/url"
-	"strconv"
 	"time"
 )
 
@@ -19,12 +18,11 @@ type ElasticsearchIndex struct {
 
 func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
 
-	str_id := strconv.FormatInt(id, 10)
-
 	path := fmt.Sprintf("%s/_search", e.index)
+	q := fmt.Sprintf("wof\\:id:%d", 890413117)
 
 	query := url.Values{}
-	query.Set("wof:id", str_id)
+	query.Set("q", q)
 
 	url := &url.URL{
 		RawQuery: query.Encode(),
@@ -45,7 +43,13 @@ func (e *ElasticsearchIndex) GetById(id int64) (catalog.Record, error) {
 		return record.NewErrorRecord("elasticsearch", id, uri, err, t2)
 	}
 
-	return record.NewDefaultRecord("elasticsearch", "elasticsearch", id, uri, rsp, t2)
+	r, err := record.NewElasticsearchRecord(id, uri, rsp, t2)
+
+	if err != nil {
+		return record.NewErrorRecord("elasticsearch", id, uri, err, t2)
+	}
+
+	return r, nil
 }
 
 func NewElasticsearchIndex(host string, port int, idx string) (catalog.Index, error) {
