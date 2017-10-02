@@ -4,7 +4,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/index"
 	"github.com/whosonfirst/go-whosonfirst-github/organizations"
-	"log"
+	_ "log"
 	"strings"
 )
 
@@ -31,6 +31,9 @@ func (fl GitHubFlags) ToIndexes() ([]catalog.Index, error) {
 
 		switch repo {
 		case "*":
+
+			// please share this code with flags/tile38.go and friends
+			// (20171002/thisisaaronland)
 
 			opts := organizations.NewDefaultListOptions()
 			r, err := organizations.ListRepos("whosonfirst-data", opts)
