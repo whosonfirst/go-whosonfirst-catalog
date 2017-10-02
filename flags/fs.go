@@ -3,6 +3,7 @@ package flags
 import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/index"
+	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	"strings"
 )
 
@@ -37,6 +38,17 @@ func (fl FSFlags) ToIndexes() ([]catalog.Index, error) {
 		} else {
 			root = parts[0]
 			repos = strings.Split(parts[1], ",")
+		}
+
+		if len(repos) == 1 && repos[0] == "*" {
+
+			r, err := utils.ListGitHubRepos()
+
+			if err != nil {
+				return nil, err
+			}
+
+			repos = r
 		}
 
 		idx, err := index.NewFSIndex(root, repos...)
