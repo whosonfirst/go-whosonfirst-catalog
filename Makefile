@@ -34,6 +34,7 @@ deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/tidwall/gjson/"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-http-mapzenjs"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-http-rewrite"
+	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-github/organizations"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-hash"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-log"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-uri"
