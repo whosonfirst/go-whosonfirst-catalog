@@ -3,6 +3,8 @@ package flags
 import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/index"
+	"github.com/whosonfirst/go-whosonfirst-github/organizations"
+	"log"
 	"strings"
 )
 
@@ -23,10 +25,26 @@ func (fl *GitHubFlags) Set(value string) error {
 func (fl GitHubFlags) ToIndexes() ([]catalog.Index, error) {
 
 	indexes := make([]catalog.Index, 0)
+	repos := make([]string, 0)
 
 	for _, repo := range fl.flags {
 
-		repos := strings.Split(repo, ",")
+		switch repo {
+		case "*":
+
+			opts := organizations.NewDefaultListOptions()
+			r, err := organizations.ListRepos("whosonfirst-data", opts)
+
+			if err != nil {
+				return nil, err
+			}
+
+			repos = r
+
+		default:
+			repos = strings.Split(repo, ",")
+		}
+
 		idx, err := index.NewGitHubIndex(repos...)
 
 		if err != nil {
