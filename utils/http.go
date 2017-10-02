@@ -1,8 +1,8 @@
 package utils
 
 import (
-       "encoding/json"
-       "errors"
+	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 )
@@ -10,7 +10,7 @@ import (
 func GetURL(url string) ([]byte, error) {
 
 	client := &http.Client{}
-	
+
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
@@ -28,7 +28,7 @@ func GetURL(url string) ([]byte, error) {
 	if rsp.StatusCode != 200 {
 		return nil, errors.New(rsp.Status)
 	}
-	
+
 	body, err := ioutil.ReadAll(rsp.Body)
 
 	if err != nil {
@@ -47,7 +47,7 @@ func GetURLAsJSON(url string) (interface{}, error) {
 	}
 
 	var rsp interface{}
-	
+
 	err = json.Unmarshal(body, &rsp)
 
 	if err != nil {

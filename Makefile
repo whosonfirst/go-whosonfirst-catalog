@@ -32,6 +32,7 @@ deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/jteeuwen/go-bindata/"
 	@GOPATH=$(GOPATH) go get -u "github.com/elazarl/go-bindata-assetfs/"
 	@GOPATH=$(GOPATH) go get -u "github.com/tidwall/gjson/"
+	@GOPATH=$(GOPATH) go get -u "github.com/patrickmn/go-cache"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-http-mapzenjs"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-http-rewrite"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-github/organizations"
@@ -55,6 +56,7 @@ fmt:
 	go fmt index/*.go
 	go fmt probe/*.go
 	go fmt record/*.go
+	go fmt utils/*.go
 	go fmt *.go
 
 assets:	self

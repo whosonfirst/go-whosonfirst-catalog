@@ -1,19 +1,19 @@
 package utils
 
 import (
-       "encoding/json"
-       "github.com/whosonfirst/go-whosonfirst-hash"
+	"encoding/json"
+	"github.com/whosonfirst/go-whosonfirst-hash"
 )
 
-func HashInterface(i interface{}) (string, error){
+func HashInterface(i interface{}) (string, error) {
 
-     body, err := json.Marshal(i)
+	body, err := json.Marshal(i)
 
-     h, err := hash.NewWOFHash()
+	h, err := hash.NewWOFHash()
 
-     if err != nil {
-     	return "", err
-     }
+	if err != nil {
+		return "", err
+	}
 
-     return h.HashBytes(body)
+	return h.HashBytes(body)
 }

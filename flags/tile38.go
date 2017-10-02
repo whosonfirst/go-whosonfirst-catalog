@@ -3,7 +3,7 @@ package flags
 import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
 	"github.com/whosonfirst/go-whosonfirst-catalog/index"
-	"github.com/whosonfirst/go-whosonfirst-github/organizations"
+	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	"strconv"
 	"strings"
 )
@@ -75,8 +75,7 @@ func (fl Tile38Flags) ToIndexes() ([]catalog.Index, error) {
 
 		if len(repos) == 1 && repos[0] == "*" {
 
-			opts := organizations.NewDefaultListOptions()
-			r, err := organizations.ListRepos("whosonfirst-data", opts)
+			r, err := utils.ListGitHubRepos()
 
 			if err != nil {
 				return nil, err

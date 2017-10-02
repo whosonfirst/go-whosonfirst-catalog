@@ -2,8 +2,8 @@ package flags
 
 import (
 	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/index"
-	"github.com/whosonfirst/go-whosonfirst-github/organizations"
+ 	"github.com/whosonfirst/go-whosonfirst-catalog/index"
+ 	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
 	_ "log"
 	"strings"
 )
@@ -32,11 +32,7 @@ func (fl GitHubFlags) ToIndexes() ([]catalog.Index, error) {
 		switch repo {
 		case "*":
 
-			// please share this code with flags/tile38.go and friends
-			// (20171002/thisisaaronland)
-
-			opts := organizations.NewDefaultListOptions()
-			r, err := organizations.ListRepos("whosonfirst-data", opts)
+			r, err := utils.ListGitHubRepos()
 
 			if err != nil {
 				return nil, err
