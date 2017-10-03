@@ -4,23 +4,37 @@ window.addEventListener("load", function load(event){
 	
 	button.onclick = function(){
 
-		try {
-    			var id = document.getElementById("wof_id");
-			id = parseInt(id.value);
+	    try {
+    		var id = document.getElementById("wof_id");
 
-			mapzen.whosonfirst.catalog.lookup(id, function(rsp){
+		id = id.value;
+		id = id.trim();
 
-				var r = mapzen.whosonfirst.catalog.render(rsp);
-				
-				var results = document.getElementById("results");
-				results.appendChild(r);
-			});
+		if (id == ""){
+		    return false;
 		}
 
-		catch (e){
-			console.log("WHAT", e);
+		id = parseInt(id);
+
+		if (id < 0){
+		    return false;
 		}
-		
-    		return false;
+
+		mapzen.whosonfirst.catalog.lookup(id, function(rsp){
+		    
+		    var r = mapzen.whosonfirst.catalog.render(rsp);
+		    
+		    var results = document.getElementById("results");
+		    results.innerHTML = "";
+
+		    results.appendChild(r);
+		});
+	    }
+	    
+	    catch (e){
+		console.log("WHAT", e);
+	    }
+	    
+    	    return false;
 	};
 });
