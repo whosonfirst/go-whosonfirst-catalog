@@ -137,3 +137,5 @@ _Note: The UI/UX of `wof-inspectord` is in its very early days. Some things it d
 
 ## See also
 
+* https://github.com/whosonfirst/go-whosonfirst-pgis
+* https://github.com/whosonfirst/go-whosonfirst-tile38
