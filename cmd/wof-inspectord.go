@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/facebookgo/grace/gracehttp"
 	"github.com/whosonfirst/go-http-mapzenjs"
 	"github.com/whosonfirst/go-http-rewrite"
 	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
@@ -27,18 +26,18 @@ func main() {
 	flag.Var(&es_flags, "es", "The endpoint of an Elasticsearch database to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + INDEX")
 	flag.Var(&fs_flags, "fs", "The path of a Who's On First data directory to inspect. Paths are defined as ROOT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")
 	flag.Var(&gh_flags, "gh", "The name of a GitHub repos to inspect. If '*' then all the repos in the 'whosonfirst-data' organization will be used.")
-	flag.Var(&pg_flags, "pg", "The DSN of a PostgreSQL endpoints to inspect.")
+	flag.Var(&pg_flags, "pg", "The DSN of a PostgreSQL endpoint to inspect.")
 	flag.Var(&s3_flags, "s3", "The name of an AWS S3 buckets to inspect.")
 	flag.Var(&t38_flags, "t38", "The endpoint of a Tile38 endpoints to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")
 	flag.Var(&wof_flags, "wof", "Inspect records hosted on whosonfirst.mapzen.com/data.")
 
-	var host = flag.String("host", "localhost", "The hostname to listen for requests on")
-	var port = flag.Int("port", 8080, "The port number to listen for requests on")
+	var host = flag.String("host", "localhost", "The hostname to listen for requests on.")
+	var port = flag.Int("port", 8080, "The port number to listen for requests on.")
 
-	var local = flag.String("local", "", "")
-	var root = flag.String("root", "/", "")
+	var local = flag.String("local", "", "The path to a local directory containing HTML (and CSS/Javascript) assets that the wof-inspectord daemon should serve. The default behaviour is to served bundled assets.")
+	var root = flag.String("root", "/", "The root path to host the wof-inspectord daemon on.")
 
-	var api_key = flag.String("api-key", "mapzen-xxxxxxx", "")
+	var api_key = flag.String("api-key", "mapzen-xxxxxxx", "A valid Mapzen API key (necessary for displaying maps).")
 
 	flag.Parse()
 
@@ -146,7 +145,7 @@ func main() {
 	endpoint := fmt.Sprintf("%s:%d", *host, *port)
 	logger.Status("listening on %s", endpoint)
 
-	err = gracehttp.Serve(&gohttp.Server{Addr: endpoint, Handler: mux})
+	err = gohttp.ListenAndServe(endpoint, mux)
 
 	if err != nil {
 		logger.Fatal("failed to start server because %s", err)

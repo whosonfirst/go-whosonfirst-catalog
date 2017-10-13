@@ -28,7 +28,6 @@ rmdeps:
 build:	fmt bin
 
 deps:
-	@GOPATH=$(GOPATH) go get -u "github.com/facebookgo/grace/gracehttp"
 	@GOPATH=$(GOPATH) go get -u "github.com/jteeuwen/go-bindata/"
 	@GOPATH=$(GOPATH) go get -u "github.com/elazarl/go-bindata-assetfs/"
 	@GOPATH=$(GOPATH) go get -u "github.com/tidwall/gjson/"
