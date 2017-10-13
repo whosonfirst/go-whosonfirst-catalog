@@ -17,7 +17,7 @@ import (
 func main() {
 
 	var es_flags flags.ElasticsearchFlags
-	var fs_flags flags.FSFlags	
+	var fs_flags flags.FSFlags
 	var gh_flags flags.GitHubFlags
 	var pg_flags flags.PgSQLFlags
 	var s3_flags flags.S3Flags
@@ -25,12 +25,12 @@ func main() {
 	var wof_flags flags.WOFFlags
 
 	flag.Var(&es_flags, "es", "The endpoint of an Elasticsearch database to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + INDEX")
-	flag.Var(&fs_flags, "fs", "The path of a Who's On First data directory to inspect. Paths are defined as ROOT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")	
+	flag.Var(&fs_flags, "fs", "The path of a Who's On First data directory to inspect. Paths are defined as ROOT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")
 	flag.Var(&gh_flags, "gh", "The name of a GitHub repos to inspect. If '*' then all the repos in the 'whosonfirst-data' organization will be used.")
 	flag.Var(&pg_flags, "pg", "The DSN of a PostgreSQL endpoints to inspect.")
 	flag.Var(&s3_flags, "s3", "The name of an AWS S3 buckets to inspect.")
 	flag.Var(&t38_flags, "t38", "The endpoint of a Tile38 endpoints to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")
-	flag.Var(&wof_flags, "wof", "...")
+	flag.Var(&wof_flags, "wof", "Inspect records hosted on whosonfirst.mapzen.com/data.")
 
 	var host = flag.String("host", "localhost", "The hostname to listen for requests on")
 	var port = flag.Int("port", 8080, "The port number to listen for requests on")

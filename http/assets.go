@@ -12,10 +12,10 @@
 package http
 
 import (
-	"github.com/elazarl/go-bindata-assetfs"
 	"bytes"
 	"compress/gzip"
 	"fmt"
+	"github.com/elazarl/go-bindata-assetfs"
 	"io"
 	"io/ioutil"
 	"os"
@@ -267,13 +267,13 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"www/index.html": wwwIndexHtml,
-	"www/javascript/mapzen.whosonfirst.geojson.js": wwwJavascriptMapzenWhosonfirstGeojsonJs,
+	"www/index.html":                                      wwwIndexHtml,
+	"www/javascript/mapzen.whosonfirst.geojson.js":        wwwJavascriptMapzenWhosonfirstGeojsonJs,
 	"www/javascript/mapzen.whosonfirst.inspector.init.js": wwwJavascriptMapzenWhosonfirstInspectorInitJs,
-	"www/javascript/mapzen.whosonfirst.inspector.js": wwwJavascriptMapzenWhosonfirstInspectorJs,
-	"www/javascript/mapzen.whosonfirst.render.js": wwwJavascriptMapzenWhosonfirstRenderJs,
-	"www/css/mapzen.whosonfirst.inspector.css": wwwCssMapzenWhosonfirstInspectorCss,
-	"www/css/mapzen.whosonfirst.render.css": wwwCssMapzenWhosonfirstRenderCss,
+	"www/javascript/mapzen.whosonfirst.inspector.js":      wwwJavascriptMapzenWhosonfirstInspectorJs,
+	"www/javascript/mapzen.whosonfirst.render.js":         wwwJavascriptMapzenWhosonfirstRenderJs,
+	"www/css/mapzen.whosonfirst.inspector.css":            wwwCssMapzenWhosonfirstInspectorCss,
+	"www/css/mapzen.whosonfirst.render.css":               wwwCssMapzenWhosonfirstRenderCss,
 }
 
 // AssetDir returns the file names below a certain
@@ -315,18 +315,19 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
 	"www": &bintree{nil, map[string]*bintree{
 		"css": &bintree{nil, map[string]*bintree{
 			"mapzen.whosonfirst.inspector.css": &bintree{wwwCssMapzenWhosonfirstInspectorCss, map[string]*bintree{}},
-			"mapzen.whosonfirst.render.css": &bintree{wwwCssMapzenWhosonfirstRenderCss, map[string]*bintree{}},
+			"mapzen.whosonfirst.render.css":    &bintree{wwwCssMapzenWhosonfirstRenderCss, map[string]*bintree{}},
 		}},
 		"index.html": &bintree{wwwIndexHtml, map[string]*bintree{}},
 		"javascript": &bintree{nil, map[string]*bintree{
-			"mapzen.whosonfirst.geojson.js": &bintree{wwwJavascriptMapzenWhosonfirstGeojsonJs, map[string]*bintree{}},
+			"mapzen.whosonfirst.geojson.js":        &bintree{wwwJavascriptMapzenWhosonfirstGeojsonJs, map[string]*bintree{}},
 			"mapzen.whosonfirst.inspector.init.js": &bintree{wwwJavascriptMapzenWhosonfirstInspectorInitJs, map[string]*bintree{}},
-			"mapzen.whosonfirst.inspector.js": &bintree{wwwJavascriptMapzenWhosonfirstInspectorJs, map[string]*bintree{}},
-			"mapzen.whosonfirst.render.js": &bintree{wwwJavascriptMapzenWhosonfirstRenderJs, map[string]*bintree{}},
+			"mapzen.whosonfirst.inspector.js":      &bintree{wwwJavascriptMapzenWhosonfirstInspectorJs, map[string]*bintree{}},
+			"mapzen.whosonfirst.render.js":         &bintree{wwwJavascriptMapzenWhosonfirstRenderJs, map[string]*bintree{}},
 		}},
 	}},
 }}
@@ -377,7 +378,6 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-
 
 func assetFS() *assetfs.AssetFS {
 	assetInfo := func(path string) (os.FileInfo, error) {

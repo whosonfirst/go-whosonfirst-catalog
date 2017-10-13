@@ -3,37 +3,34 @@ package flags
 import (
 	"github.com/whosonfirst/go-whosonfirst-inspector"
 	"github.com/whosonfirst/go-whosonfirst-inspector/index"
-	"strings"
 )
 
 type WOFFlags struct {
 	catalog.Flags
-	flags []string
+	flag bool
+}
+
+func (fl *WOFFlags) IsBoolFlag() bool {
+	return true
 }
 
 func (fl *WOFFlags) String() string {
-	return strings.Join(fl.flags, "\n")
+	return "true"
 }
 
 func (fl *WOFFlags) Set(value string) error {
-	fl.flags = append(fl.flags, value)
+	fl.flag = true
 	return nil
 }
 
 func (fl WOFFlags) ToIndexes() ([]catalog.Index, error) {
 
-	indexes := make([]catalog.Index, 0)
+	idx, err := index.NewWOFIndex()
 
-	for range fl.flags {
-
-		idx, err := index.NewWOFIndex()
-
-		if err != nil {
-			return nil, err
-		}
-
-		indexes = append(indexes, idx)
+	if err != nil {
+		return nil, err
 	}
 
+	indexes := []catalog.Index{idx}
 	return indexes, nil
 }

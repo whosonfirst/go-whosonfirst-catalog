@@ -4,15 +4,17 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
 	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
 	"github.com/whosonfirst/go-whosonfirst-inspector/probe"
 	"github.com/whosonfirst/go-whosonfirst-log"
+	"strconv"
 )
 
 func main() {
 
 	var es_flags flags.ElasticsearchFlags
-	var fs_flags flags.FSFlags	
+	var fs_flags flags.FSFlags
 	var gh_flags flags.GitHubFlags
 	var pg_flags flags.PgSQLFlags
 	var s3_flags flags.S3Flags
@@ -20,21 +22,16 @@ func main() {
 	var wof_flags flags.WOFFlags
 
 	flag.Var(&es_flags, "es", "The endpoint of an Elasticsearch database to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + INDEX")
-	flag.Var(&fs_flags, "fs", "The path of a Who's On First data directory to inspect. Paths are defined as ROOT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")	
+	flag.Var(&fs_flags, "fs", "The path of a Who's On First data directory to inspect. Paths are defined as ROOT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")
 	flag.Var(&gh_flags, "gh", "The name of a GitHub repos to inspect. If '*' then all the repos in the 'whosonfirst-data' organization will be used.")
 	flag.Var(&pg_flags, "pg", "The DSN of a PostgreSQL endpoints to inspect.")
 	flag.Var(&s3_flags, "s3", "The name of an AWS S3 buckets to inspect.")
 	flag.Var(&t38_flags, "t38", "The endpoint of a Tile38 endpoints to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + COMMA-SEPARATED LIST OF REPOSITORIES. If the value of list of repositories is '*' then all the repos in the 'whosonfirst-data' origanization will be used.")
-	flag.Var(&wof_flags, "wof", "...")
+	flag.Var(&wof_flags, "wof", "Inspect records hosted on whosonfirst.mapzen.com/data.")
 
-	wofid := flag.Int64("id", -1, "...")
 	flag.Parse()
 
 	logger := log.SimpleWOFLogger()
-
-	if *wofid == -1 {
-		logger.Fatal("Invalid WOF ID")
-	}
 
 	indexes, err := flags.ToIndexes(gh_flags, s3_flags, wof_flags, es_flags, t38_flags, pg_flags)
 
@@ -48,17 +45,31 @@ func main() {
 		logger.Fatal("Failed to create new probe because %v", err)
 	}
 
-	r, err := pr.GetById(*wofid)
+	results := make(map[string]catalog.ProbeResults)
 
-	if err != nil {
-		logger.Fatal("Failed to probe ID %d because %v", *wofid, err)
+	for _, str_id := range flag.Args() {
+
+		wofid, err := strconv.ParseInt(str_id, 10, 64)
+
+		if err != nil {
+			logger.Fatal("Failed to parse ID (%s) %s", str_id, err)
+		}
+
+		r, err := pr.GetById(wofid)
+
+		if err != nil {
+			logger.Fatal("Failed to probe ID %d because %v", wofid, err)
+		}
+
+		results[str_id] = r
 	}
 
-	enc, err := json.Marshal(r)
+	report, err := json.Marshal(results)
 
 	if err != nil {
 		logger.Fatal("Failed to serialize results because %v", err)
 	}
 
-	fmt.Println(string(enc))
+	fmt.Println(string(report))
+
 }
