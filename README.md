@@ -115,5 +115,25 @@ Usage of ./bin/wof-inspectord:
     	Inspect records hosted on whosonfirst.mapzen.com/data.
 ```
 
+For example:
+
+```
+./bin/wof-inspectord -wof -gh '*' -api-key mapzen-xxxxxx -fs /usr/local/data#whosonfirst-data
+15:54:01.191421 [wof-inspectord] STATUS configure /javascript/mapzen.min.js handler
+15:54:01.191577 [wof-inspectord] STATUS configure /javascript/tangram.min.js handler
+15:54:01.191583 [wof-inspectord] STATUS configure /css/mapzen.js.css handler
+15:54:01.191587 [wof-inspectord] STATUS configure /tangram/refill-style.zip handler
+15:54:01.191591 [wof-inspectord] STATUS configure / handler
+15:54:01.191599 [wof-inspectord] STATUS configure /id/ handler
+15:54:01.191605 [wof-inspectord] STATUS configure /ping/ handler
+15:54:01.191617 [wof-inspectord] STATUS listening on localhost:8080
+```
+
+And then if you inspected ID `101736545` you'd see something like this:
+
+![](images/wof-inspectord-geojson.png)
+
+_Note: The UI/UX of `wof-inspectord` is in its very early days. Some things it doesn't do well and some things it can't do at all, yet._
+
 ## See also
 
