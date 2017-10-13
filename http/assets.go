@@ -90,7 +90,7 @@ func wwwIndexHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "www/index.html", size: 1097, mode: os.FileMode(420), modTime: time.Unix(1507930144, 0)}
+	info := bindataFileInfo{name: "www/index.html", size: 1097, mode: os.FileMode(420), modTime: time.Unix(1507930647, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -130,7 +130,7 @@ func wwwJavascriptMapzenWhosonfirstInspectorInitJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "www/javascript/mapzen.whosonfirst.inspector.init.js", size: 689, mode: os.FileMode(420), modTime: time.Unix(1507930163, 0)}
+	info := bindataFileInfo{name: "www/javascript/mapzen.whosonfirst.inspector.init.js", size: 689, mode: os.FileMode(420), modTime: time.Unix(1507930647, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -150,7 +150,7 @@ func wwwJavascriptMapzenWhosonfirstInspectorJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "www/javascript/mapzen.whosonfirst.inspector.js", size: 8107, mode: os.FileMode(420), modTime: time.Unix(1507930176, 0)}
+	info := bindataFileInfo{name: "www/javascript/mapzen.whosonfirst.inspector.js", size: 8107, mode: os.FileMode(420), modTime: time.Unix(1507930647, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -190,7 +190,7 @@ func wwwCssMapzenWhosonfirstInspectorCss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "www/css/mapzen.whosonfirst.inspector.css", size: 1306, mode: os.FileMode(420), modTime: time.Unix(1506712250, 0)}
+	info := bindataFileInfo{name: "www/css/mapzen.whosonfirst.inspector.css", size: 1306, mode: os.FileMode(420), modTime: time.Unix(1507930647, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
