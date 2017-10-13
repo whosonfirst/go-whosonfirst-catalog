@@ -43,6 +43,47 @@ Usage of ./bin/wof-inspector:
     	Inspect records hosted on whosonfirst.mapzen.com/data.
 ```
 
+For example:
+
+```
+./bin/wof-inspector -wof 101736545 | python -mjson.tool
+{
+    "101736545": {
+        "recordset": {
+            "records": [
+                {
+                    "body": {
+                        "bbox": [
+                            -73.9475518701442,
+                            45.41459067767231,
+                            -73.47619754286481,
+                            45.70379826163911
+                        ],
+
+                            "wof:population_rank": 12,
+                            "wof:repo": "whosonfirst-data",
+                            "wof:scale": "1",
+                            "wof:superseded_by": [],
+                            "wof:supersedes": [],
+                            "wof:tags": []
+                        },
+                        "type": "Feature"
+			...more stuff here
+                    },
+                    "hash": "e779be13d587889322fb2702a1e9f7be",
+                    "id": 101736545,
+                    "source": "whosonfirst",
+                    "timing": 715966842,
+                    "type": "geojson",
+                    "uri": "https://whosonfirst.mapzen.com/data/101/736/545/101736545.geojson"
+                }
+            ]
+        },
+        "timings": 725273569
+    }
+}
+```
+
 ### wof-inspectord
 
 ```
