@@ -2,7 +2,7 @@ package http
 
 import (
 	"encoding/json"
-	"github.com/whosonfirst/go-whosonfirst-catalog"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
 	gohttp "net/http"
 	"path/filepath"
 	"strconv"

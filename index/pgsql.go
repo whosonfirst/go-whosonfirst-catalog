@@ -2,8 +2,8 @@ package index
 
 import (
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/record"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
+	"github.com/whosonfirst/go-whosonfirst-inspector/record"
 	"github.com/whosonfirst/go-whosonfirst-pgis/client"
 	"time"
 )

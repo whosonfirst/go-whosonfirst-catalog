@@ -3,9 +3,9 @@ package index
 import (
 	"errors"
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/record"
-	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
+	"github.com/whosonfirst/go-whosonfirst-inspector/record"
+	"github.com/whosonfirst/go-whosonfirst-inspector/utils"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"strings"
 	"time"

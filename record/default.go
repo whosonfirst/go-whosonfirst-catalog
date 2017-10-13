@@ -1,8 +1,8 @@
 package record
 
 import (
-	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
+	"github.com/whosonfirst/go-whosonfirst-inspector/utils"
 	"time"
 )
 

@@ -2,8 +2,8 @@ package flags
 
 import (
 	"errors"
-	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/index"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
+	"github.com/whosonfirst/go-whosonfirst-inspector/index"
 	"strconv"
 	"strings"
 )

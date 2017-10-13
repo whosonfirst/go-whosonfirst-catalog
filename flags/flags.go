@@ -1,7 +1,7 @@
 package flags
 
 import (
-	"github.com/whosonfirst/go-whosonfirst-catalog"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
 )
 
 func ToIndexes(possible_flags ...catalog.Flags) ([]catalog.Index, error) {

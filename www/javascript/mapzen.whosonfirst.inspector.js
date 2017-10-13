@@ -1,7 +1,7 @@
 var mapzen = mapzen || {};
 mapzen.whosonfirst = mapzen.whosonfirst || {};
 
-mapzen.whosonfirst.catalog = (function(){
+mapzen.whosonfirst.inspector = (function(){
 
     var cache = {};
 

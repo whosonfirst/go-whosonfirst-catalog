@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-catalog/flags"
-	"github.com/whosonfirst/go-whosonfirst-catalog/probe"
+	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
+	"github.com/whosonfirst/go-whosonfirst-inspector/probe"
 	"github.com/whosonfirst/go-whosonfirst-log"
 )
 

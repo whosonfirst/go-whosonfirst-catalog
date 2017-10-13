@@ -6,20 +6,20 @@ prep:
 
 self:   prep rmdeps
 	if test -d src; then rm -rf src; fi
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/flags
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/http
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/index
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/probe
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/record
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-catalog/utils
-	cp *.go src/github.com/whosonfirst/go-whosonfirst-catalog
-	cp flags/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/flags
-	cp http/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/http
-	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/index
-	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/probe
-	cp record/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/record
-	cp utils/*.go src/github.com/whosonfirst/go-whosonfirst-catalog/utils
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/flags
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/http
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/index
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/probe
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/record
+	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/utils
+	cp *.go src/github.com/whosonfirst/go-whosonfirst-inspector
+	cp flags/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/flags
+	cp http/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/http
+	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/index
+	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/probe
+	cp record/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/record
+	cp utils/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/utils
 	cp -r vendor/* src/
 
 rmdeps:
@@ -67,8 +67,8 @@ assets:	self
 	mv bindata_assetfs.go http/assets.go
 
 bin: 	assets
-	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report cmd/wof-catalog-report.go
-	@GOPATH=$(GOPATH) go build -o bin/wof-catalog-report-server cmd/wof-catalog-report-server.go
+	@GOPATH=$(GOPATH) go build -o bin/wof-inspector cmd/wof-inspector.go
+	@GOPATH=$(GOPATH) go build -o bin/wof-inspectord cmd/wof-inspectord.go
 
 maps: wwwdirs mapzenjs tangram refill
 

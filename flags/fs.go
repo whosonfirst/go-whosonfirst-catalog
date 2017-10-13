@@ -1,9 +1,9 @@
 package flags
 
 import (
-	"github.com/whosonfirst/go-whosonfirst-catalog"
-	"github.com/whosonfirst/go-whosonfirst-catalog/index"
-	"github.com/whosonfirst/go-whosonfirst-catalog/utils"
+	"github.com/whosonfirst/go-whosonfirst-inspector"
+	"github.com/whosonfirst/go-whosonfirst-inspector/index"
+	"github.com/whosonfirst/go-whosonfirst-inspector/utils"
 	"strings"
 )
 

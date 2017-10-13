@@ -20,9 +20,9 @@ window.addEventListener("load", function load(event){
 		    return false;
 		}
 
-		mapzen.whosonfirst.catalog.lookup(id, function(rsp){
+		mapzen.whosonfirst.inspector.lookup(id, function(rsp){
 		    
-		    var r = mapzen.whosonfirst.catalog.render(rsp);
+		    var r = mapzen.whosonfirst.inspector.render(rsp);
 		    
 		    var results = document.getElementById("results");
 		    results.innerHTML = "";
