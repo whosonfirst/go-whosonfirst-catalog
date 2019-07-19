@@ -131,11 +131,26 @@ For example:
 
 And then if you inspected ID `101736545` you'd see something like this:
 
-![](docs/images/wof-inspectord-geojson.png)
+![](docs/images/2017-inspectord-101736545.png)
 
 _Note: The UI/UX of `wof-inspectord` is in its very early days. Some things it doesn't do well and some things it can't do at all, yet._
 
-## See also
+But actually as of this writing what you'd really see is something like this:
 
-* https://github.com/whosonfirst/go-whosonfirst-pgis
-* https://github.com/whosonfirst/go-whosonfirst-tile38
+```
+./bin/wof-inspectord -gh whosonfirst-data-admin-ca -s3 data.whosonfirst.org
+08:11:16.981933 [wof-inspectord] STATUS configure /id/ handler
+08:11:16.982089 [wof-inspectord] STATUS configure /ping/ handler
+08:11:16.982104 [wof-inspectord] STATUS configure /javascript/mapzen.min.js handler
+08:11:16.982109 [wof-inspectord] STATUS configure /javascript/tangram.min.js handler
+08:11:16.982114 [wof-inspectord] STATUS configure /css/mapzen.js.css handler
+08:11:16.982119 [wof-inspectord] STATUS configure /tangram/refill-style.zip handler
+08:11:16.982123 [wof-inspectord] STATUS configure / handler
+08:11:16.982130 [wof-inspectord] STATUS listening on localhost:8080
+```
+
+And then:
+
+![](docs/images/201907-inspectord-101736545.png)
+
+The missing map tiles is because of all the old Mapzen assumptions that haven't been updated yet. They will be but not today.
