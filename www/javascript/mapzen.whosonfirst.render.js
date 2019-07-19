@@ -32,7 +32,7 @@ mapzen.whosonfirst.render = (function(){
 		},
 
 		'render_dict': function(d, ctx){
-	    
+
 			var table = document.createElement("table");
 			table.setAttribute("class", "table table-details");
 	    
