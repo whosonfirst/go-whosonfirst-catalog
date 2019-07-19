@@ -14,7 +14,7 @@ All of this package's dependencies are bundled with the code in the `vendor` dir
 
 ## Important
 
-Too soon. Move along.
+This works but still has a bunch of old Mapzen-isms baked in to it (like map tiles) so those things... don't work.
 
 ## Usage
 
@@ -131,7 +131,7 @@ For example:
 
 And then if you inspected ID `101736545` you'd see something like this:
 
-![](images/wof-inspectord-geojson.png)
+![](docs/images/wof-inspectord-geojson.png)
 
 _Note: The UI/UX of `wof-inspectord` is in its very early days. Some things it doesn't do well and some things it can't do at all, yet._
 

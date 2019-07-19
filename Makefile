@@ -65,7 +65,7 @@ assets:	self
 	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -pkg http www www/javascript www/css
 	mv bindata_assetfs.go http/assets.go
 
-bin: 	assets
+tools:
 	@GOPATH=$(GOPATH) go build -o bin/wof-inspector cmd/wof-inspector.go
 	@GOPATH=$(GOPATH) go build -o bin/wof-inspectord cmd/wof-inspectord.go
 

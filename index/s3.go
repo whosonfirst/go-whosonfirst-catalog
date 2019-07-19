@@ -25,7 +25,7 @@ func NewS3Index(bucket string) (catalog.Index, error) {
 
 func (e *S3Index) GetById(id int64) (catalog.Record, error) {
 
-	root := fmt.Sprintf("https://s3.amazonaws.com/%s/data/", e.bucket)
+	root := fmt.Sprintf("https://s3.amazonaws.com/%s/", e.bucket)
 
 	uri, err := uri.Id2AbsPath(root, id)
 

@@ -21,7 +21,7 @@ func NewWOFIndex() (catalog.Index, error) {
 
 func (e *WOFIndex) GetById(id int64) (catalog.Record, error) {
 
-	root := "https://whosonfirst.mapzen.com/data/"
+	root := "https://data.whosonfirst.org/"
 
 	uri, err := uri.Id2AbsPath(root, id)
 

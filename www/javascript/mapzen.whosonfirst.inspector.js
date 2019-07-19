@@ -118,14 +118,16 @@ mapzen.whosonfirst.inspector = (function(){
 		for (var i=0; i < count_records; i++){
 		    
 		    var data = type_records[i];
-		    
+
 		    var source = data["source"];				
 		    var type = data["type"];
 		    var uri = data["uri"];
 		    var timing = data["timing"] / 1000000000;	// nanoseconds
-		    
+		   
 		    var hash = data["hash"];			
-		    
+		   
+		    console.log("DATA", uri, hash); 
+
 		    var source_cell = document.createElement("th");
 		    source_cell.appendChild(document.createTextNode(source));
 		    
@@ -136,7 +138,7 @@ mapzen.whosonfirst.inspector = (function(){
 		    hash_cell.appendChild(document.createTextNode(hash));
 
 		    var uri_cell = document.createElement("td");
-		    uri_cell.setAttribute("data-uri", uri);		  
+		    // uri_cell.setAttribute("data-remote-uri", uri);		  
 		    uri_cell.appendChild(document.createTextNode(uri));
 		    
 		    var timing_cell = document.createElement("td");
@@ -144,7 +146,7 @@ mapzen.whosonfirst.inspector = (function(){
 
 		    var details_cell = document.createElement("td");
 		    details_cell.setAttribute("class", "click-me");
-		    details_cell.setAttribute("data-uri", uri);		  
+		    details_cell.setAttribute("data-remote-uri", uri);		  
 		    details_cell.appendChild(document.createTextNode("details"));
 
 		    var meta_row = document.createElement("tr");
@@ -163,11 +165,11 @@ mapzen.whosonfirst.inspector = (function(){
 		    details_cell.onclick = function(e){
 			
 			var el = e.target;
-			var uri = el.getAttribute("data-uri");
+			var uri = el.getAttribute("data-remote-uri");
 		
 			self.show_details(uri);
 		    };
-		    
+
 		    table.append(meta_row);
 
 		    cache[uri] = data;   
