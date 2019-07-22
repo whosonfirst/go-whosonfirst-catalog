@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/whosonfirst/go-http-mapzenjs"
+	"github.com/whosonfirst/go-http-nextjs"
 	"github.com/whosonfirst/go-http-rewrite"
 	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
 	"github.com/whosonfirst/go-whosonfirst-inspector/http"
@@ -37,7 +37,7 @@ func main() {
 	var local = flag.String("local", "", "The path to a local directory containing HTML (and CSS/Javascript) assets that the wof-inspectord daemon should serve. The default behaviour is to served bundled assets.")
 	var root = flag.String("root", "/", "The root path to host the wof-inspectord daemon on.")
 
-	var api_key = flag.String("api-key", "mapzen-xxxxxxx", "A valid Mapzen API key (necessary for displaying maps).")
+	var api_key = flag.String("api-key", "nextzen-xxxxxxx", "A valid Nextzen API key (necessary for displaying maps).")
 
 	flag.Parse()
 
@@ -86,16 +86,16 @@ func main() {
 		www_fs = local_fs
 	}
 
-	root_handler, err := mapzenjs.MapzenAPIKeyHandler(www_handler, www_fs, *api_key)
+	root_handler, err := nextzenjs.NextzenAPIKeyHandler(www_handler, www_fs, *api_key)
 
 	if err != nil {
 		logger.Fatal("failed to create query handler because %s", err)
 	}
 
-	mapzenjs_handler, err := mapzenjs.MapzenJSHandler()
+	nextzenjs_handler, err := nextzenjs.NextzenJSHandler()
 
 	if err != nil {
-		logger.Fatal("failed to create mapzen.js handler because %s", err)
+		logger.Fatal("failed to create nextzen.js handler because %s", err)
 	}
 
 	ping_handler, err := http.PingHandler()
@@ -108,10 +108,10 @@ func main() {
 		"/":                          root_handler,
 		"/id/":                       id_handler,
 		"/ping/":                     ping_handler,
-		"/javascript/mapzen.min.js":  mapzenjs_handler,
-		"/javascript/tangram.min.js": mapzenjs_handler,
-		"/css/mapzen.js.css":         mapzenjs_handler,
-		"/tangram/refill-style.zip":  mapzenjs_handler,
+		"/javascript/nextzen.min.js":  nextzenjs_handler,
+		"/javascript/tangram.min.js": nextzenjs_handler,
+		"/css/nextzen.js.css":         nextzenjs_handler,
+		"/tangram/refill-style.zip":  nextzenjs_handler,
 	}
 
 	if *root != "/" {
