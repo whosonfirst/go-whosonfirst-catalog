@@ -1,0 +1,27 @@
+{{ define "index" }}
+<html>
+  <head>
+    <title>Who's On First Inspector</title>
+    <link type="text/css" rel="stylesheet" href="/css/mapzen.js.css" />
+    <link type="text/css" rel="stylesheet" href="/css/mapzen.whosonfirst.inspector.css" />
+    <link type="text/css" rel="stylesheet" href="/css/mapzen.whosonfirst.render.css" />
+    <script type="text/javascript" src="/javascript/nextzen.min.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.geojson.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.render.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.inspector.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.inspector.init.js"></script>        
+  </head>
+  <body>
+    <div id="canvas">
+      <div id ="query">
+	<form>
+	  <input type="text" id="wof_id" name="wof_id" value="" placeholder="Enter a WOF ID" />
+	  <button type="submit" id="lookup">Inspect</button>
+	</form>
+      </div>
+      <div id="details"></div>
+      <div id="results"></div>
+    </div>
+  </body>
+</html>
+{{ end }}

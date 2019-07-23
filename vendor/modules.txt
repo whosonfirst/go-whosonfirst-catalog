@@ -1,5 +1,5 @@
-# github.com/elazarl/go-bindata-assetfs v1.0.0
-github.com/elazarl/go-bindata-assetfs
+# github.com/aaronland/go-http-rewrite v0.0.1
+github.com/aaronland/go-http-rewrite
 # github.com/garyburd/redigo v1.6.0
 github.com/garyburd/redigo/redis
 github.com/garyburd/redigo/internal
@@ -17,6 +17,8 @@ github.com/lib/pq/scram
 github.com/mmcloughlin/geohash
 # github.com/patrickmn/go-cache v2.1.0+incompatible
 github.com/patrickmn/go-cache
+# github.com/rs/cors v1.6.0
+github.com/rs/cors
 # github.com/skelterjohn/geom v0.0.0-20180103000000-96f3e8a219c5f4276b0dda3568d80c4e02a50116
 github.com/skelterjohn/geom
 # github.com/tidwall/gjson v1.3.2
@@ -25,10 +27,12 @@ github.com/tidwall/gjson
 github.com/tidwall/match
 # github.com/tidwall/pretty v1.0.0
 github.com/tidwall/pretty
-# github.com/whosonfirst/go-http-mapzenjs v0.0.0-20180419175126-3d9284bd66ce
-github.com/whosonfirst/go-http-mapzenjs
-# github.com/whosonfirst/go-http-rewrite v0.0.0-20170922163152-18b1c50538dd
-github.com/whosonfirst/go-http-rewrite
+# github.com/whosonfirst/go-bindata v0.1.0
+github.com/whosonfirst/go-bindata
+# github.com/whosonfirst/go-bindata-assetfs v1.0.1
+github.com/whosonfirst/go-bindata-assetfs
+# github.com/whosonfirst/go-http-nextzenjs v0.1.0
+github.com/whosonfirst/go-http-nextzenjs
 # github.com/whosonfirst/go-whosonfirst-flags v0.1.0
 github.com/whosonfirst/go-whosonfirst-flags
 github.com/whosonfirst/go-whosonfirst-flags/existential
@@ -61,7 +65,7 @@ github.com/whosonfirst/go-whosonfirst-tile38/client
 github.com/whosonfirst/go-whosonfirst-timer
 # github.com/whosonfirst/go-whosonfirst-uri v0.1.0
 github.com/whosonfirst/go-whosonfirst-uri
-# golang.org/x/net v0.0.0-20190311183353-d8887717615a
+# golang.org/x/net v0.0.0-20190628185345-da137c7871d7
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/context/ctxhttp

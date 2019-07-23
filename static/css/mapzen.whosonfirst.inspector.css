@@ -1,0 +1,90 @@
+#canvas {
+    margin: 1em;
+}
+
+#map {
+    height: 300px;
+}
+
+#query {
+    border: 2px solid #000;
+    height:50px;
+    max-height:50px;
+    margin-bottom:1em;
+}
+
+#query form {
+    padding: .5em;
+    padding-left: 1em;
+}
+
+#details {
+    border: 2px solid #000;
+    overflow: scroll !important;
+    height:300px;
+    max-height:300px;
+    margin-bottom:1em;
+}
+
+#results {
+    border: 2px solid #000;
+    overflow: scroll !important;
+    height: 300px;
+    max-height: 300px;
+    margin-bottom:1em;
+}
+
+#source {
+    max-height: 300px !important;
+    height: 300px !important;
+    overflow: scroll !important;
+}
+
+table {
+    line-height:2em;
+    font-family: sans-serif;
+    width:100%;
+    border-spacing: unset;
+}
+
+tr {
+    vertical-align: top;
+    padding: 0px;
+    margin: 0px;    
+}
+
+th {
+    background-color:#ededed;
+    border: solid thin;
+    text-align:left;
+    margin: 0px;
+    margin-bottom:.2em;
+    padding: .25em
+}
+
+td {
+    text-align:left;
+    padding: .25em;
+    margin: 0px;
+    border:solid thin !important;
+}
+
+#details table tr td {
+    width:48% !important;
+    overflow: scroll;
+}
+
+pre {
+    font-size:small;
+    height: 500px !important;
+    max-height: 500px !important;
+}
+
+.click-me {
+    color: blue;
+    text-decoration:underline;
+}
+
+.error {
+    background-color: pink !important;
+}

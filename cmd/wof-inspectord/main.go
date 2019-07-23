@@ -3,13 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/whosonfirst/go-http-nextjs"
-	"github.com/whosonfirst/go-http-rewrite"
+	"github.com/rs/cors"
+	"github.com/whosonfirst/go-http-nextzenjs"
 	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
 	"github.com/whosonfirst/go-whosonfirst-inspector/http"
 	"github.com/whosonfirst/go-whosonfirst-inspector/probe"
+	"github.com/whosonfirst/go-whosonfirst-inspector/templates"
 	"github.com/whosonfirst/go-whosonfirst-log"
-	gohttp "net/http"
+	"html/template"
+	go_http "net/http"
 	"os"
 )
 
@@ -34,10 +36,9 @@ func main() {
 	var host = flag.String("host", "localhost", "The hostname to listen for requests on.")
 	var port = flag.Int("port", 8080, "The port number to listen for requests on.")
 
-	var local = flag.String("local", "", "The path to a local directory containing HTML (and CSS/Javascript) assets that the wof-inspectord daemon should serve. The default behaviour is to served bundled assets.")
-	var root = flag.String("root", "/", "The root path to host the wof-inspectord daemon on.")
+	local_templates := flag.String("templates", "", "...")
 
-	var api_key = flag.String("api-key", "nextzen-xxxxxxx", "A valid Nextzen API key (necessary for displaying maps).")
+	var api_key = flag.String("nextzen-api-key", "nextzen-xxxxxxx", "A valid Nextzen API key (necessary for displaying maps).")
 
 	flag.Parse()
 
@@ -51,52 +52,69 @@ func main() {
 		logger.Fatal("Failed to create new probe because %v", err)
 	}
 
+	var www_templates *template.Template
+
+	if *local_templates != "" {
+
+		t, err := template.ParseGlob(*local_templates)
+
+		if err != nil {
+			logger.Fatal(err)
+		}
+
+		www_templates = t
+
+	} else {
+
+		t := template.New("templates")
+
+		for _, name := range templates.AssetNames() {
+
+			body, err := templates.Asset(name)
+
+			if err != nil {
+				logger.Fatal(err)
+			}
+
+			t, err = t.Parse(string(body))
+
+			if err != nil {
+				logger.Fatal(err)
+			}
+		}
+
+		www_templates = t
+	}
+
+	mux := go_http.NewServeMux()
+
+	index_handler, err := http.TemplateHandler(www_templates, "index")
+
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	nextzenjs_opts := nextzenjs.DefaultNextzenJSOptions()
+	nextzenjs_opts.APIKey = *api_key
+
+	index_handler, _ = nextzenjs.NextzenJSHandler(index_handler, nextzenjs_opts)
+
+	mux.Handle("/", index_handler)
+
 	id_handler, err := http.IDHandler(pr)
 
 	if err != nil {
 		logger.Fatal("failed to create ID handler because %s", err)
 	}
 
-	var www_handler gohttp.Handler
-	var www_fs gohttp.FileSystem
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"POST"},
+	})
 
-	if *local == "" {
+	id_handler = c.Handler(id_handler)
 
-		asset_handler, err := http.WWWHandler()
-
-		if err != nil {
-			logger.Fatal("failed to create www handler because %s", err)
-		}
-
-		asset_fs := http.WWWFileSystem()
-
-		www_handler = asset_handler
-		www_fs = asset_fs
-
-	} else {
-
-		local_fs := http.LocalFileSystem(*local)
-		local_handler, err := http.LocalHandler(local_fs)
-
-		if err != nil {
-			logger.Fatal("failed to create www handler because %s", err)
-		}
-
-		www_handler = local_handler
-		www_fs = local_fs
-	}
-
-	root_handler, err := nextzenjs.NextzenAPIKeyHandler(www_handler, www_fs, *api_key)
-
-	if err != nil {
-		logger.Fatal("failed to create query handler because %s", err)
-	}
-
-	nextzenjs_handler, err := nextzenjs.NextzenJSHandler()
-
-	if err != nil {
-		logger.Fatal("failed to create nextzen.js handler because %s", err)
-	}
+	mux.Handle("/id", id_handler)
 
 	ping_handler, err := http.PingHandler()
 
@@ -104,48 +122,31 @@ func main() {
 		logger.Fatal("failed to create ping handler because %s", err)
 	}
 
-	handlers := map[string]gohttp.Handler{
-		"/":                          root_handler,
-		"/id/":                       id_handler,
-		"/ping/":                     ping_handler,
-		"/javascript/nextzen.min.js":  nextzenjs_handler,
-		"/javascript/tangram.min.js": nextzenjs_handler,
-		"/css/nextzen.js.css":         nextzenjs_handler,
-		"/tangram/refill-style.zip":  nextzenjs_handler,
+	mux.Handle("/ping", ping_handler)
+
+	assets_handler, err := nextzenjs.NextzenJSAssetsHandler()
+
+	if err != nil {
+		logger.Fatal(err)
 	}
 
-	if *root != "/" {
+	mux.Handle("/javascript/nextzen.js", assets_handler)
+	mux.Handle("/javascript/nextzen.min.js", assets_handler)
+	mux.Handle("/javascript/tangram.js", assets_handler)
+	mux.Handle("/javascript/tangram.min.js", assets_handler)
+	mux.Handle("/css/nextzen.js.css", assets_handler)
+	mux.Handle("/tangram/refill-style.zip", assets_handler)
 
-		opts := rewrite.DefaultRewriteRuleOptions()
+	err = http.AppendStaticAssetHandlers(mux)
 
-		rule := rewrite.RemovePrefixRewriteRule(*root, opts)
-		rules := []rewrite.RewriteRule{rule}
-
-		for path, handler := range handlers {
-
-			rw_path := *root + path
-			rw_handler, err := rewrite.RewriteHandler(rules, handler)
-
-			if err != nil {
-				logger.Fatal("failed to create rewrite handler for %s (%s) because %s", rw_path, path, err)
-			}
-
-			delete(handlers, path)
-			handlers[rw_path] = rw_handler
-		}
-	}
-
-	mux := gohttp.NewServeMux()
-
-	for path, handler := range handlers {
-		logger.Status("configure %s handler", path)
-		mux.Handle(path, handler)
+	if err != nil {
+		logger.Fatal(err)
 	}
 
 	endpoint := fmt.Sprintf("%s:%d", *host, *port)
 	logger.Status("listening on %s", endpoint)
 
-	err = gohttp.ListenAndServe(endpoint, mux)
+	err = go_http.ListenAndServe(endpoint, mux)
 
 	if err != nil {
 		logger.Fatal("failed to start server because %s", err)

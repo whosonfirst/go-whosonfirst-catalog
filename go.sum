@@ -1,5 +1,8 @@
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/MichaelTJones/walk v0.0.0-20161122175330-4748e29d5718/go.mod h1:VVwKsx9Dc8rNG55BWqogoJzGubjKnRoXdUvpGbWqeCc=
+github.com/aaronland/go-http-bootstrap v0.0.2 h1:5lMN2tY7ID8Tv5bFtAuKonX1CxLHEOs1VcwAKza17n8=
+github.com/aaronland/go-http-bootstrap v0.0.2/go.mod h1:qDKoTlgqhqnYHcvSHGkH7Jrx7uz0t25HpsDv6MIFQio=
+github.com/aaronland/go-http-rewrite v0.0.1 h1:nQ4qqtOC0QHpEhQeFpRRwdXAEwuhHhgsxQaV3hDT8iw=
 github.com/aaronland/go-http-rewrite v0.0.1/go.mod h1:g62jjXpsArD0lzJLs9bVLR9Locdt3f4OmqFkkJL2rQU=
 github.com/briandowns/spinner v1.6.1 h1:LBxHu5WLyVuVEtTD72xegiC7QJGx598LBpo3ywKTapA=
 github.com/briandowns/spinner v1.6.1/go.mod h1://Zf9tMcxfRUA36V23M6YGEAv+kECGfvpnLTnb8n4XQ=
@@ -48,6 +51,8 @@ github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaR
 github.com/patrickmn/go-cache v2.1.0+incompatible/go.mod h1:3Qf8kWWT7OJRJbdiICTKqZju1ZixQ/KpMGzzAfe6+WQ=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/rs/cors v1.6.0 h1:G9tHG9lebljV9mfp9SNPDL36nCDxmo3zTlAf1YgvzmI=
+github.com/rs/cors v1.6.0/go.mod h1:gFx+x8UowdsKA9AchylcLynDq+nNFfI8FkUZdN/jGCU=
 github.com/shaxbee/go-spatialite v0.0.0-20180425212100-9b4c81899e0e/go.mod h1:tRDdwai9gBsMVwqexZx2+O5F9QY49MxJFo1zlI/MdkU=
 github.com/skelterjohn/geom v0.0.0-20180103000000-96f3e8a219c5f4276b0dda3568d80c4e02a50116 h1:3viuBF2tRGd2HlEs/uL4LLmdjOj8kAO6Y2c8Ii4H0oI=
 github.com/skelterjohn/geom v0.0.0-20180103000000-96f3e8a219c5f4276b0dda3568d80c4e02a50116/go.mod h1:w8cQIijHlvvZM7afYlixPThHAdD+AkRFw3Mb9yQ2Y+I=
@@ -65,10 +70,13 @@ github.com/tidwall/match v1.0.1/go.mod h1:LujAq0jyVjBy028G1WhWfIzbpQfMO8bBZ6Tyb0
 github.com/tidwall/pretty v0.0.0-20190325153808-1166b9ac2b65/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/tidwall/pretty v1.0.0 h1:HsD+QiTn7sK6flMKIvNmpqz1qrpP3Ps6jOKIKMooyg4=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
+github.com/whosonfirst/go-bindata v0.1.0 h1:SIjIa/+blKoda8iTaWqxzwFtEc00jNcB2M9dRwGemrg=
 github.com/whosonfirst/go-bindata v0.1.0/go.mod h1:qaBkVepgCeknoVuYsUXTJpnlxqrEcZzaIaqZ6XaK+Hk=
+github.com/whosonfirst/go-bindata-assetfs v1.0.1 h1:AA328GrND8/uDkf5+5U9Fakgr7QkzET/a6uuXDYpQp0=
 github.com/whosonfirst/go-bindata-assetfs v1.0.1/go.mod h1:ZCQnq9roYYk19IAwLQyMnDPSmE+lns9K85+85JSQ4DI=
 github.com/whosonfirst/go-http-mapzenjs v0.0.0-20180419175126-3d9284bd66ce h1:/u0IE7QR6e0/NgNKdN2JjpLcxMUC9aIyjlii7cgt7Jo=
 github.com/whosonfirst/go-http-mapzenjs v0.0.0-20180419175126-3d9284bd66ce/go.mod h1:Ddv2HnfmdSK3USFdfCzR1fEQ2eqwjeyZeS11N+sAELM=
+github.com/whosonfirst/go-http-nextzenjs v0.1.0 h1:bEAweC7oCB9x2GxYDysna9EFyXABksz1ntmnU+BFPjM=
 github.com/whosonfirst/go-http-nextzenjs v0.1.0/go.mod h1:Wn7C4qlWF0H5TTu1gasyqiRowHTo7G05HTEO/AUDKLA=
 github.com/whosonfirst/go-http-rewrite v0.0.0-20170922163152-18b1c50538dd h1:vGbzgG281gm3uLaGdhN7h3a78wrBPBssH+ndibd+Qmg=
 github.com/whosonfirst/go-http-rewrite v0.0.0-20170922163152-18b1c50538dd/go.mod h1:HiatHp1b4eW0qGx53qzvaWHaUDMTIpXG0Lrld13adrU=

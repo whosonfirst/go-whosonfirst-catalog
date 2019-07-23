@@ -1,16 +1,16 @@
 package http
 
 import (
-	gohttp "net/http"
+	go_http "net/http"
 )
 
-func PingHandler() (gohttp.Handler, error) {
+func PingHandler() (go_http.Handler, error) {
 
-	fn := func(rsp gohttp.ResponseWriter, req *gohttp.Request) {
+	fn := func(rsp go_http.ResponseWriter, req *go_http.Request) {
 		rsp.Header().Set("Content-Type", "text/plain")
 		rsp.Write([]byte("PONG"))
 	}
 
-	h := gohttp.HandlerFunc(fn)
+	h := go_http.HandlerFunc(fn)
 	return h, nil
 }

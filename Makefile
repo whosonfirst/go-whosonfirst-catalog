@@ -1,9 +1,11 @@
-# assets:	self
-# 	go build -o bin/go-bindata ./vendor/github.com/jteeuwen/go-bindata/go-bindata/
-# 	go build -o bin/go-bindata-assetfs vendor/github.com/elazarl/go-bindata-assetfs/go-bindata-assetfs/main.go
-# 	rm -f www/*~ www/css/*~ www/javascript/*~
-# 	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -pkg http www www/javascript www/css
-# 	mv bindata_assetfs.go http/assets.go
+CWD=$(shell pwd)
+
+assets:
+	go build -o bin/go-bindata cmd/go-bindata/main.go
+	go build -o bin/go-bindata-assetfs cmd/go-bindata-assetfs/main.go
+	bin/go-bindata -o templates/templates.go -pkg templates -prefix static/templates/ static/templates/*.html
+	rm -f static/*~ static/css/*~ static/javascript/*~
+	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -o http/assets.go -pkg http static static/javascript static/css
 
 tools:
 	go build -o bin/wof-inspector cmd/wof-inspector.go
