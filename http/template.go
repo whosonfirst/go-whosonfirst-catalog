@@ -1,18 +1,18 @@
 package http
 
 import (
-       "errors"
-       go_http "net/http"
-       "html/template"
+	"errors"
+	"html/template"
+	go_http "net/http"
 )
 
 func TemplateHandler(templates *template.Template, name string) (go_http.Handler, error) {
 
-     t := templates.Lookup(name)
+	t := templates.Lookup(name)
 
-     if t == nil {
-     	return nil, errors.New("Missing template")
-     }
+	if t == nil {
+		return nil, errors.New("Missing template")
+	}
 
 	fn := func(rsp go_http.ResponseWriter, req *go_http.Request) {
 

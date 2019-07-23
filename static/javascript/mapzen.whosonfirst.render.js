@@ -8,7 +8,7 @@ mapzen.whosonfirst.render = (function(){
 		'render_data': function(d, ctx){
 
 			var wrapper = document.createElement("div");
-			wrapper.setAttribute("class", "dumper");
+			wrapper.setAttribute("class", "dumper table-responsive");
 
 			var render;
 			

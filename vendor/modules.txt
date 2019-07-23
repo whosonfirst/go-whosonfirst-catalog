@@ -1,3 +1,6 @@
+# github.com/aaronland/go-http-bootstrap v0.0.2
+github.com/aaronland/go-http-bootstrap
+github.com/aaronland/go-http-bootstrap/resources
 # github.com/aaronland/go-http-rewrite v0.0.1
 github.com/aaronland/go-http-rewrite
 # github.com/garyburd/redigo v1.6.0

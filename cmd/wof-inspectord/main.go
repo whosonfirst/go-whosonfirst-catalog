@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/rs/cors"
+	"github.com/aaronland/go-http-bootstrap"
 	"github.com/whosonfirst/go-http-nextzenjs"
 	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
 	"github.com/whosonfirst/go-whosonfirst-inspector/http"
@@ -114,7 +115,7 @@ func main() {
 
 	id_handler = c.Handler(id_handler)
 
-	mux.Handle("/id", id_handler)
+	mux.Handle("/id/", id_handler)
 
 	ping_handler, err := http.PingHandler()
 
@@ -138,6 +139,12 @@ func main() {
 	mux.Handle("/tangram/refill-style.zip", assets_handler)
 
 	err = http.AppendStaticAssetHandlers(mux)
+
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	err = bootstrap.AppendAssetHandlers(mux)
 
 	if err != nil {
 		logger.Fatal(err)

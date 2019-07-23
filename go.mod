@@ -3,7 +3,7 @@ module github.com/whosonfirst/go-whosonfirst-inspector
 go 1.12
 
 require (
-	github.com/aaronland/go-http-bootstrap v0.0.2 // indirect
+	github.com/aaronland/go-http-bootstrap v0.0.2
 	github.com/elazarl/go-bindata-assetfs v1.0.0 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/facebookgo/grace v0.0.0-20180706040059-75cf19382434 // indirect

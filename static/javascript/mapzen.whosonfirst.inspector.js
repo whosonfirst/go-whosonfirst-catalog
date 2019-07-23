@@ -21,7 +21,7 @@ mapzen.whosonfirst.inspector = (function(){
 		}
 		
 		var status_code = target['status'];
-				var status_text = target['statusText'];
+		var status_text = target['statusText'];
 		
 		var raw = target['responseText'];
 		var data = null;
@@ -82,6 +82,9 @@ mapzen.whosonfirst.inspector = (function(){
 	    
 	    var hash_header = document.createElement("th");
 	    hash_header.appendChild(document.createTextNode("hash"));
+
+	    var lastmod_header = document.createElement("th");
+	    lastmod_header.appendChild(document.createTextNode("last modified"));
 	    
 	    var uri_header = document.createElement("th");
 	    uri_header.appendChild(document.createTextNode("uri"));
@@ -99,6 +102,7 @@ mapzen.whosonfirst.inspector = (function(){
 	    header_row.appendChild(source_header);
 	    header_row.appendChild(type_header);
 	    header_row.appendChild(hash_header);
+	    header_row.appendChild(lastmod_header);
 	    header_row.appendChild(uri_header);
 	    header_row.appendChild(timing_header);
 	    header_row.appendChild(details_header);
@@ -126,8 +130,6 @@ mapzen.whosonfirst.inspector = (function(){
 		   
 		    var hash = data["hash"];			
 		   
-		    console.log("DATA", uri, hash); 
-
 		    var source_cell = document.createElement("th");
 		    source_cell.appendChild(document.createTextNode(source));
 		    
@@ -137,8 +139,10 @@ mapzen.whosonfirst.inspector = (function(){
 		    var hash_cell = document.createElement("td");
 		    hash_cell.appendChild(document.createTextNode(hash));
 
+		    var lastmod_cell = document.createElement("td");
+		    lastmod_cell.appendChild(document.createTextNode("{last modified}"));
+
 		    var uri_cell = document.createElement("td");
-		    // uri_cell.setAttribute("data-remote-uri", uri);		  
 		    uri_cell.appendChild(document.createTextNode(uri));
 		    
 		    var timing_cell = document.createElement("td");
@@ -158,6 +162,7 @@ mapzen.whosonfirst.inspector = (function(){
 		    meta_row.appendChild(source_cell);
 		    meta_row.appendChild(type_cell);
 		    meta_row.appendChild(hash_cell);
+		    meta_row.appendChild(lastmod_cell);
 		    meta_row.appendChild(uri_cell);
 		    meta_row.appendChild(timing_cell);
 		    meta_row.appendChild(details_cell);
@@ -238,13 +243,20 @@ mapzen.whosonfirst.inspector = (function(){
 	    var sw = L.latLng(bbox[1], bbox[0]);
 	    var ne = L.latLng(bbox[3], bbox[2]);
 
-	    console.log("BOUNDS", sw, ne);
-	    console.log("TEST", (sw == ne));
+	    var api_key = document.body.getAttribute("data-nextzen-api-key");
 
-            L.Mapzen.apiKey = document.body.getAttribute("data-mapzen-api-key");
+            map = L.Nextzen.map('map', {
+		    tangramOptions: {
+			apiKey: api_key,
+			debug: false,
+			scene: {
+			    import: [
+				     '/tangram/refill-style.zip',
+				     ],
+			}
+		    }
+		});
 	    
-            map = L.Mapzen.map('map');
-
 	    if ((sw["lat"] == ne["lat"]) && (sw["lng"] == ne["lng"])){
 		map.setView(sw, 12);
 	    }
@@ -361,7 +373,6 @@ mapzen.whosonfirst.inspector = (function(){
 		return feature;
 	    }
 
-	    console.log("FIX ME", data);
 	    return data["body"];
 	}
 
