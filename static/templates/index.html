@@ -1,0 +1,40 @@
+{{ define "index" }}
+<html>
+  <head>
+    <title>Who's On First Inspector</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="/javascript/bootstrap.min.js" />
+
+    <link type="text/css" rel="stylesheet" href="/css/nextzen.js.css" />
+    <script type="text/javascript" src="/javascript/nextzen.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="/css/mapzen.whosonfirst.inspector.css" />
+    <link type="text/css" rel="stylesheet" href="/css/mapzen.whosonfirst.render.css" />
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.geojson.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.render.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.inspector.js"></script>
+    <script type="text/javascript" src="/javascript/mapzen.whosonfirst.inspector.init.js"></script>        
+  </head>
+  <body>
+    <div id="canvas" class="container">
+
+      <div class="card">
+	<div id="query" class="card-header">
+	  <form class="form-inline">
+	    <div class="form-group">
+	      <!-- <label for="wof_id">Who's On First (WOF) ID</label> -->
+	      <input type="text" id="wof_id" name="wof_id" value="" placeholder="Enter a WOF ID" class="form-control"/>
+	    </div>
+	    <button type="submit" id="lookup" class="btn btn-primary">Inspect</button>
+	    <span class="spinner-border spinner-border-sm" role="status" id="spinner"></span>
+	  </form>
+	</div>
+      
+	<div id="details" class="card-body"></div>
+	<div id="results" class="card-footer"></div>
+      </div>
+      
+    </div>
+  </body>
+</html>
+{{ end }}

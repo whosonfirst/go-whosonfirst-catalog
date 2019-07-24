@@ -1,73 +1,15 @@
 CWD=$(shell pwd)
-GOPATH := $(CWD)
 
-prep:
-	if test -d pkg; then rm -rf pkg; fi
-
-self:   prep rmdeps
-	if test -d src; then rm -rf src; fi
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/flags
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/http
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/index
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/probe
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/record
-	mkdir -p src/github.com/whosonfirst/go-whosonfirst-inspector/utils
-	cp *.go src/github.com/whosonfirst/go-whosonfirst-inspector
-	cp flags/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/flags
-	cp http/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/http
-	cp index/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/index
-	cp probe/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/probe
-	cp record/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/record
-	cp utils/*.go src/github.com/whosonfirst/go-whosonfirst-inspector/utils
-	cp -r vendor/* src/
-
-rmdeps:
-	if test -d src; then rm -rf src; fi 
-
-build:	fmt bin
-
-deps:
-	@GOPATH=$(GOPATH) go get -u "github.com/jteeuwen/go-bindata/"
-	@GOPATH=$(GOPATH) go get -u "github.com/elazarl/go-bindata-assetfs/"
-	@GOPATH=$(GOPATH) go get -u "github.com/tidwall/gjson/"
-	@GOPATH=$(GOPATH) go get -u "github.com/patrickmn/go-cache"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-http-mapzenjs"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-http-rewrite"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-github/organizations"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-hash"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-log"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-uri"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-tile38"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-pgis"
-	rm -rf src/github.com/jteeuwen/go-bindata/testdata
-
-vendor-deps: rmdeps deps
-	if test -d vendor; then rm -rf vendor; fi
-	cp -r src vendor
-	find vendor -name '.git' -print -type d -exec rm -rf {} +
-	rm -rf src
-
-fmt:
-	go fmt cmd/*.go
-	go fmt flags/*.go
-	go fmt http/*.go
-	go fmt index/*.go
-	go fmt probe/*.go
-	go fmt record/*.go
-	go fmt utils/*.go
-	go fmt *.go
-
-assets:	self
-	@GOPATH=$(GOPATH) go build -o bin/go-bindata ./vendor/github.com/jteeuwen/go-bindata/go-bindata/
-	@GOPATH=$(GOPATH) go build -o bin/go-bindata-assetfs vendor/github.com/elazarl/go-bindata-assetfs/go-bindata-assetfs/main.go
-	rm -f www/*~ www/css/*~ www/javascript/*~
-	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -pkg http www www/javascript www/css
-	mv bindata_assetfs.go http/assets.go
+assets:
+	go build -o bin/go-bindata cmd/go-bindata/main.go
+	go build -o bin/go-bindata-assetfs cmd/go-bindata-assetfs/main.go
+	bin/go-bindata -o templates/templates.go -pkg templates -prefix static/templates/ static/templates/*.html
+	rm -f static/*~ static/css/*~ static/javascript/*~
+	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -o http/assets.go -pkg http static static/javascript static/css
 
 tools:
-	@GOPATH=$(GOPATH) go build -o bin/wof-inspector cmd/wof-inspector.go
-	@GOPATH=$(GOPATH) go build -o bin/wof-inspectord cmd/wof-inspectord.go
+	go build -o bin/wof-inspector cmd/wof-inspector.go
+	go build -o bin/wof-inspectord cmd/wof-inspectord.go
 
 maps: wwwdirs mapzenjs tangram refill
 

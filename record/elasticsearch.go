@@ -12,14 +12,15 @@ import (
 )
 
 type ElasticsearchRecord struct {
-	catalog.Record `json:",omitempty"`
-	RecordType     string        `json:"type"`
-	RecordSource   string        `json:"source"`
-	RecordID       int64         `json:"id"`
-	RecordURI      string        `json:"uri"`
-	RecordBody     interface{}   `json:"body"`
-	RecordHash     string        `json:"hash"`
-	RecordTiming   time.Duration `json:"timing"`
+	catalog.Record     `json:",omitempty"`
+	RecordType         string        `json:"type"`
+	RecordSource       string        `json:"source"`
+	RecordID           int64         `json:"id"`
+	RecordURI          string        `json:"uri"`
+	RecordBody         interface{}   `json:"body"`
+	RecordHash         string        `json:"hash"`
+	RecordTiming       time.Duration `json:"timing"`
+	RecordLastModified int64         `json:"lastmodified"`
 }
 
 func (r *ElasticsearchRecord) Id() int64 {
@@ -46,6 +47,10 @@ func (r *ElasticsearchRecord) Timing() time.Duration {
 	return r.RecordTiming
 }
 
+func (r *ElasticsearchRecord) LastModified() int64 {
+	return r.RecordLastModified
+}
+
 func NewElasticsearchRecord(id int64, uri string, body interface{}, t time.Duration) (catalog.Record, error) {
 
 	b, err := json.Marshal(body)
@@ -59,14 +64,14 @@ func NewElasticsearchRecord(id int64, uri string, body interface{}, t time.Durat
 	// (20170928/thisisaaronland)
 
 	path := "hits.hits.0._source"
-	rsp := gjson.GetBytes(b, path)
+	source_rsp := gjson.GetBytes(b, path)
 
-	if !rsp.Exists() {
+	if !source_rsp.Exists() {
 		msg := fmt.Sprintf("Unable to find result for path '%s'", path)
 		return nil, errors.New(msg)
 	}
 
-	body = rsp.Value()
+	body = source_rsp.Value()
 
 	hash, err := utils.HashInterface(body)
 
@@ -74,14 +79,17 @@ func NewElasticsearchRecord(id int64, uri string, body interface{}, t time.Durat
 		return nil, err
 	}
 
+	lastmod := LastModified(body)
+
 	r := ElasticsearchRecord{
-		RecordType:   "elasticsearch",
-		RecordSource: "elasticsearch",
-		RecordID:     id,
-		RecordURI:    uri,
-		RecordBody:   body,
-		RecordHash:   hash,
-		RecordTiming: t,
+		RecordType:         "elasticsearch",
+		RecordSource:       "elasticsearch",
+		RecordID:           id,
+		RecordURI:          uri,
+		RecordBody:         body,
+		RecordHash:         hash,
+		RecordTiming:       t,
+		RecordLastModified: lastmod,
 	}
 
 	return &r, nil

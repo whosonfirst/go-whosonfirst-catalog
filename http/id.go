@@ -3,52 +3,49 @@ package http
 import (
 	"encoding/json"
 	"github.com/whosonfirst/go-whosonfirst-inspector"
-	gohttp "net/http"
+	go_http "net/http"
 	"path/filepath"
 	"strconv"
-	_ "strings"
 )
 
-func IDHandler(pr catalog.Probe) (gohttp.Handler, error) {
+func IDHandler(pr catalog.Probe) (go_http.Handler, error) {
 
-	fn := func(rsp gohttp.ResponseWriter, req *gohttp.Request) {
+	fn := func(rsp go_http.ResponseWriter, req *go_http.Request) {
 
 		req_path := req.URL.Path
 
 		str_id := filepath.Base(req_path)
 
 		if str_id == "" {
-			gohttp.Error(rsp, "Missing ID", gohttp.StatusBadRequest)
+			go_http.Error(rsp, "Missing ID", go_http.StatusBadRequest)
 			return
 		}
 
 		id, err := strconv.ParseInt(str_id, 10, 64)
 
 		if err != nil {
-			gohttp.Error(rsp, err.Error(), gohttp.StatusBadRequest)
+			go_http.Error(rsp, err.Error(), go_http.StatusBadRequest)
 			return
 		}
 
 		results, err := pr.GetById(id)
 
 		if err != nil {
-			gohttp.Error(rsp, err.Error(), gohttp.StatusInternalServerError)
+			go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
 			return
 		}
 
 		js, err := json.Marshal(results)
 
 		if err != nil {
-			gohttp.Error(rsp, err.Error(), gohttp.StatusInternalServerError)
+			go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
 			return
 		}
 
 		rsp.Header().Set("Content-Type", "application/json")
-		rsp.Header().Set("Access-Control-Allow-Origin", "*")
-
 		rsp.Write(js)
 	}
 
-	h := gohttp.HandlerFunc(fn)
+	h := go_http.HandlerFunc(fn)
 	return h, nil
 }

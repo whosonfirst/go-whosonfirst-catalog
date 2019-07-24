@@ -2,9 +2,11 @@
 
 Who's On First datastore inspector.
 
+![](docs/images/20190724-wof-inspectord.png)
+
 ## Install
 
-You will need to have both `Go` (specifically a version of Go more recent than 1.7 so let's just assume you need [Go 1.9](https://golang.org/dl/) or higher) and the `make` programs installed on your computer. Assuming you do just type:
+You will need to have both `Go` (specifically version [1.12](https://golang.org/dl/) or higher) and the `make` programs installed on your computer. Assuming you do just type:
 
 ```
 make bin
@@ -89,8 +91,6 @@ For example:
 ```
 ./bin/wof-inspectord -h
 Usage of ./bin/wof-inspectord:
-  -api-key string
-    	A valid Mapzen API key (necessary for displaying maps). (default "mapzen-xxxxxxx")
   -es value
     	The endpoint of an Elasticsearch database to inspect. Endpoints are defined as HOST + ':' + PORT + '#' + INDEX
   -fs value
@@ -101,6 +101,8 @@ Usage of ./bin/wof-inspectord:
     	The hostname to listen for requests on. (default "localhost")
   -local string
     	The path to a local directory containing HTML (and CSS/Javascript) assets that the wof-inspectord daemon should serve.
+  -nextzen-api-key string
+    	A valid Nextzen API key (necessary for displaying maps). (default "nextzen-xxxxxxx")
   -pg value
     	The DSN of a PostgreSQL endpoint to inspect.
   -port int
@@ -118,20 +120,13 @@ Usage of ./bin/wof-inspectord:
 For example:
 
 ```
-./bin/wof-inspectord -wof -gh '*' -api-key mapzen-xxxxxx -fs /usr/local/data#whosonfirst-data
-15:54:01.191421 [wof-inspectord] STATUS configure /javascript/mapzen.min.js handler
-15:54:01.191577 [wof-inspectord] STATUS configure /javascript/tangram.min.js handler
-15:54:01.191583 [wof-inspectord] STATUS configure /css/mapzen.js.css handler
-15:54:01.191587 [wof-inspectord] STATUS configure /tangram/refill-style.zip handler
-15:54:01.191591 [wof-inspectord] STATUS configure / handler
-15:54:01.191599 [wof-inspectord] STATUS configure /id/ handler
-15:54:01.191605 [wof-inspectord] STATUS configure /ping/ handler
-15:54:01.191617 [wof-inspectord] STATUS listening on localhost:8080
+./bin/wof-inspectord -s3 data.whosonfirst.org -gh 'whosonfirst-data-admin-ca' -nextzen-api-key {APIKEY}
+15:54:01.191617 listening on localhost:8080
 ```
 
 And then if you inspected ID `101736545` you'd see something like this:
 
-![](docs/images/2017-inspectord-101736545.png)
+![](docs/images/20190724-wof-inspectord.png)
 
 _Note: The UI/UX of `wof-inspectord` is in its very early days. Some things it doesn't do well and some things it can't do at all, yet._
 

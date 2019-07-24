@@ -2,6 +2,8 @@ package probe
 
 import (
 	"github.com/whosonfirst/go-whosonfirst-inspector"
+	_ "log"
+	"sort"
 	"time"
 )
 
@@ -86,10 +88,39 @@ func (p *DefaultProbe) GetById(id int64) (catalog.ProbeResults, error) {
 		}
 	}
 
+	lookup := make(map[int64][]catalog.Record)
+	timestamps := make([]int64, 0)
+
+	for _, r := range records {
+
+		lastmod := r.LastModified()
+
+		lastmod_records, ok := lookup[lastmod]
+
+		if !ok {
+			lastmod_records = make([]catalog.Record, 0)
+			timestamps = append(timestamps, lastmod)
+		}
+
+		lastmod_records = append(lastmod_records, r)
+		lookup[lastmod] = lastmod_records
+	}
+
+	sort.Slice(timestamps, func(i, j int) bool { return i > j })
+
+	sorted_records := make([]catalog.Record, 0)
+
+	for _, ts := range timestamps {
+
+		for _, r := range lookup[ts] {
+			sorted_records = append(sorted_records, r)
+		}
+	}
+
 	t2 := time.Since(t1)
 
 	rs := DefaultRecordSet{
-		DefaultRecords: records,
+		DefaultRecords: sorted_records,
 	}
 
 	pr := DefaultProbeResults{
