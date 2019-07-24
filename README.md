@@ -144,4 +144,11 @@ And then:
 
 ![](docs/images/201907-inspectord-101736545.png)
 
-The missing map tiles is because of all the old Mapzen assumptions that haven't been updated yet. They will be but not today.
+## Docker
+
+[Yes](Dockerfile). For example:
+
+```
+$> docker build -t whosonfirst-inspector .
+$> docker run -it -p 8080:8080 whosonfirst-inspector /usr/local/bin/wof-inspectord -host 0.0.0.0 -gh whosonfirst-data-admin-ca -s3 data.whosonfirst.org
+```
