@@ -78,6 +78,8 @@ github.com/whosonfirst/go-http-mapzenjs v0.0.0-20180419175126-3d9284bd66ce h1:/u
 github.com/whosonfirst/go-http-mapzenjs v0.0.0-20180419175126-3d9284bd66ce/go.mod h1:Ddv2HnfmdSK3USFdfCzR1fEQ2eqwjeyZeS11N+sAELM=
 github.com/whosonfirst/go-http-nextzenjs v0.1.0 h1:bEAweC7oCB9x2GxYDysna9EFyXABksz1ntmnU+BFPjM=
 github.com/whosonfirst/go-http-nextzenjs v0.1.0/go.mod h1:Wn7C4qlWF0H5TTu1gasyqiRowHTo7G05HTEO/AUDKLA=
+github.com/whosonfirst/go-http-nextzenjs v0.1.1 h1:0I/gbYPbw6qNGNfqb/ME4KCjgCg8RZk677lZjFmndpw=
+github.com/whosonfirst/go-http-nextzenjs v0.1.1/go.mod h1:Wn7C4qlWF0H5TTu1gasyqiRowHTo7G05HTEO/AUDKLA=
 github.com/whosonfirst/go-http-rewrite v0.0.0-20170922163152-18b1c50538dd h1:vGbzgG281gm3uLaGdhN7h3a78wrBPBssH+ndibd+Qmg=
 github.com/whosonfirst/go-http-rewrite v0.0.0-20170922163152-18b1c50538dd/go.mod h1:HiatHp1b4eW0qGx53qzvaWHaUDMTIpXG0Lrld13adrU=
 github.com/whosonfirst/go-sanitize v0.1.0 h1:ygSqCnakwdzH/m8UEa15zXGDsoo5/JJeRkgmAjXZrBU=

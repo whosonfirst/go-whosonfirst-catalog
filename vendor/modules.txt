@@ -34,7 +34,7 @@ github.com/tidwall/pretty
 github.com/whosonfirst/go-bindata
 # github.com/whosonfirst/go-bindata-assetfs v1.0.1
 github.com/whosonfirst/go-bindata-assetfs
-# github.com/whosonfirst/go-http-nextzenjs v0.1.0
+# github.com/whosonfirst/go-http-nextzenjs v0.1.1
 github.com/whosonfirst/go-http-nextzenjs
 # github.com/whosonfirst/go-whosonfirst-flags v0.1.0
 github.com/whosonfirst/go-whosonfirst-flags

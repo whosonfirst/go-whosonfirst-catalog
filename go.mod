@@ -18,7 +18,7 @@ require (
 	github.com/tidwall/gjson v1.3.2
 	github.com/whosonfirst/go-bindata v0.1.0
 	github.com/whosonfirst/go-bindata-assetfs v1.0.1
-	github.com/whosonfirst/go-http-nextzenjs v0.1.0
+	github.com/whosonfirst/go-http-nextzenjs v0.1.1
 	github.com/whosonfirst/go-http-rewrite v0.0.0-20170922163152-18b1c50538dd // indirect
 	github.com/whosonfirst/go-sanitize v0.1.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-bbox v0.0.0-20170913151722-e1a4abe43723 // indirect

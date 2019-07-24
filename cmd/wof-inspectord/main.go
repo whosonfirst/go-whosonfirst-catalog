@@ -44,7 +44,10 @@ func main() {
 
 	flag.Parse()
 
+	// this isn't working properly... (20190724/thisisaaronland)
+
 	logger := log.SimpleWOFLogger()
+	logger.AddLogger(os.Stdout, "info")
 
 	indexes, err := flags.ToIndexes(gh_flags, s3_flags, wof_flags, es_flags, t38_flags, pg_flags, fs_flags)
 
@@ -96,6 +99,10 @@ func main() {
 		logger.Fatal(err)
 	}
 
+	if *api_key == "" {
+		logger.Warning("Nextzen API key is empty. No maps for you!")
+	}
+
 	nextzenjs_opts := nextzenjs.DefaultNextzenJSOptions()
 	nextzenjs_opts.APIKey = *api_key
 
@@ -126,20 +133,13 @@ func main() {
 
 	mux.Handle("/ping", ping_handler)
 
-	assets_handler, err := nextzenjs.NextzenJSAssetsHandler()
+	err = http.AppendStaticAssetHandlers(mux)
 
 	if err != nil {
 		logger.Fatal(err)
 	}
 
-	mux.Handle("/javascript/nextzen.js", assets_handler)
-	mux.Handle("/javascript/nextzen.min.js", assets_handler)
-	mux.Handle("/javascript/tangram.js", assets_handler)
-	mux.Handle("/javascript/tangram.min.js", assets_handler)
-	mux.Handle("/css/nextzen.js.css", assets_handler)
-	mux.Handle("/tangram/refill-style.zip", assets_handler)
-
-	err = http.AppendStaticAssetHandlers(mux)
+	err = nextzenjs.AppendAssetHandlers(mux)
 
 	if err != nil {
 		logger.Fatal(err)
