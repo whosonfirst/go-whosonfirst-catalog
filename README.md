@@ -126,10 +126,6 @@ And then if you inspected ID `101736545` you'd see something like this:
 
 _Note: The UI/UX of `wof-inspectord` is in its very early days. Some things it doesn't do well and some things it can't do at all, yet._
 
-And then:
-
-![](docs/images/201907-inspectord-101736545.png)
-
 ## Docker
 
 [Yes](Dockerfile). For example:
