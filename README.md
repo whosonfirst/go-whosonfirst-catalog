@@ -14,10 +14,6 @@ make bin
 
 All of this package's dependencies are bundled with the code in the `vendor` directory.
 
-## Important
-
-This works but still has a bunch of old Mapzen-isms baked in to it (like map tiles) so those things... don't work.
-
 ## Usage
 
 _Please write me_
