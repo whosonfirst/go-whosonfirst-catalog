@@ -1,16 +1,21 @@
-#canvas {
-    margin: 1em;
+
+.container {
+	   max-width: none !important;
+	   margin-top:1rem;
+	   margin-bottom:1rem;
+}
+
+#spinner {
+	 display:none;
+}
+
+.form-inline button {
+	     margin-left:.5rem;
+	     margin-right:.5rem;
 }
 
 #map {
     height: 300px;
-}
-
-#x-query {
-    border: 2px solid #000;
-    height:50px;
-    max-height:50px;
-    margin-bottom:1em;
 }
 
 #query form {

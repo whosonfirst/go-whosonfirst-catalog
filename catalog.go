@@ -29,6 +29,7 @@ type Record interface {
 	Body() interface{}
 	Hash() string
 	Timing() time.Duration
+	LastModified() int64
 }
 
 type RecordSet interface {

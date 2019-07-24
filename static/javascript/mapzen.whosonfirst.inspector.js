@@ -129,7 +129,10 @@ mapzen.whosonfirst.inspector = (function(){
 		    var timing = data["timing"] / 1000000000;	// nanoseconds
 		   
 		    var hash = data["hash"];			
-		   
+		    var lastmod = data["lastmodified"];
+
+		    var dt = new Date(lastmod * 1000);
+
 		    var source_cell = document.createElement("th");
 		    source_cell.appendChild(document.createTextNode(source));
 		    
@@ -140,7 +143,7 @@ mapzen.whosonfirst.inspector = (function(){
 		    hash_cell.appendChild(document.createTextNode(hash));
 
 		    var lastmod_cell = document.createElement("td");
-		    lastmod_cell.appendChild(document.createTextNode("{last modified}"));
+		    lastmod_cell.appendChild(document.createTextNode(dt.toISOString()));
 
 		    var uri_cell = document.createElement("td");
 		    uri_cell.appendChild(document.createTextNode(uri));

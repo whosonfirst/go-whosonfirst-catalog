@@ -20,8 +20,12 @@ window.addEventListener("load", function load(event){
 		    return false;
 		}
 
+		var spinner = document.getElementById("spinner");
+		spinner.style.display = "inline";
 		mapzen.whosonfirst.inspector.lookup(id, function(rsp){
 		    
+			spinner.style.display = "none";
+
 		    var r = mapzen.whosonfirst.inspector.render(rsp);
 		    
 		    var results = document.getElementById("results");

@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/rs/cors"
 	"github.com/aaronland/go-http-bootstrap"
+	"github.com/rs/cors"
 	"github.com/whosonfirst/go-http-nextzenjs"
 	"github.com/whosonfirst/go-whosonfirst-inspector/flags"
 	"github.com/whosonfirst/go-whosonfirst-inspector/http"
@@ -12,6 +12,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-inspector/templates"
 	"github.com/whosonfirst/go-whosonfirst-log"
 	"html/template"
+	go_log "log"
 	go_http "net/http"
 	"os"
 )
@@ -151,7 +152,7 @@ func main() {
 	}
 
 	endpoint := fmt.Sprintf("%s:%d", *host, *port)
-	logger.Status("listening on %s", endpoint)
+	go_log.Printf("listening on %s\n", endpoint)
 
 	err = go_http.ListenAndServe(endpoint, mux)
 
