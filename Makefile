@@ -7,7 +7,7 @@ assets:
 	rm -f static/*~ static/css/*~ static/javascript/*~
 	@PATH=$(PATH):$(CWD)/bin bin/go-bindata-assetfs -o http/assets.go -pkg http static static/javascript static/css
 
-tools:
+cli:
 	go build -mod vendor -o bin/wof-inspector cmd/wof-inspector/main.go
 	go build -mod vendor -o bin/wof-inspectord cmd/wof-inspectord/main.go
 

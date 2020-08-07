@@ -4,21 +4,15 @@ Who's On First datastore inspector.
 
 ![](docs/images/20190724-wof-inspectord.png)
 
-## Install
-
-You will need to have both `Go` (specifically version [1.12](https://golang.org/dl/) or higher) and the `make` programs installed on your computer. Assuming you do just type:
-
-```
-make bin
-```
-
-All of this package's dependencies are bundled with the code in the `vendor` directory.
-
-## Usage
-
-_Please write me_
-
 ## Tools
+
+To build binary versions of these tools run the `cli` Makefile target. For example:
+
+```
+> make cli
+go build -mod vendor -o bin/wof-inspector cmd/wof-inspector/main.go
+go build -mod vendor -o bin/wof-inspectord cmd/wof-inspectord/main.go
+```
 
 ### wof-inspector
 
