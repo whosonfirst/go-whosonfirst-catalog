@@ -7,6 +7,7 @@ import (
 	"io"
 	_ "log"
 	"net/http"
+	"path/filepath"
 	"strings"
 )
 
@@ -34,6 +35,28 @@ func DefaultNextzenJSOptions() *NextzenJSOptions {
 }
 
 func NextzenJSHandler(next http.Handler, opts *NextzenJSOptions) (http.Handler, error) {
+	return AppendResourcesHandlerWithPrefix(next, opts, ""), nil
+}
+
+func AppendResourcesHandler(next http.Handler, opts *NextzenJSOptions) http.Handler {
+	return AppendResourcesHandlerWithPrefix(next, opts, "")
+}
+
+func AppendResourcesHandlerWithPrefix(next http.Handler, opts *NextzenJSOptions, prefix string) http.Handler {
+
+	js := opts.JS
+	css := opts.CSS
+
+	if prefix != "" {
+
+		for i, path := range js {
+			js[i] = appendPrefix(prefix, path)
+		}
+
+		for i, path := range css {
+			css[i] = appendPrefix(prefix, path)
+		}
+	}
 
 	var cb rewrite.RewriteHTMLFunc
 
@@ -43,7 +66,7 @@ func NextzenJSHandler(next http.Handler, opts *NextzenJSOptions) (http.Handler, 
 
 			if opts.AppendJS {
 
-				for _, js := range opts.JS {
+				for _, js := range js {
 
 					script_type := html.Attribute{"", "type", "text/javascript"}
 					script_src := html.Attribute{"", "src", js}
@@ -63,7 +86,7 @@ func NextzenJSHandler(next http.Handler, opts *NextzenJSOptions) (http.Handler, 
 
 			if opts.AppendCSS {
 
-				for _, css := range opts.CSS {
+				for _, css := range css {
 					link_type := html.Attribute{"", "type", "text/css"}
 					link_rel := html.Attribute{"", "rel", "stylesheet"}
 					link_href := html.Attribute{"", "href", css}
@@ -98,7 +121,7 @@ func NextzenJSHandler(next http.Handler, opts *NextzenJSOptions) (http.Handler, 
 		}
 	}
 
-	return rewrite.RewriteHTMLHandler(next, cb), nil
+	return rewrite.RewriteHTMLHandler(next, cb)
 }
 
 func NextzenJSAssetsHandler() (http.Handler, error) {
@@ -107,18 +130,63 @@ func NextzenJSAssetsHandler() (http.Handler, error) {
 	return http.FileServer(fs), nil
 }
 
-func AppendAssetHandlers(mux *http.ServeMux) error {
+func NextzenJSAssetsHandlerWithPrefix(prefix string) (http.Handler, error) {
 
-	asset_handler, err := NextzenJSAssetsHandler()
+	fs_handler, err := NextzenJSAssetsHandler()
+
+	if err != nil {
+		return nil, err
+	}
+
+	prefix = strings.TrimRight(prefix, "/")
+	
+	if prefix == "" {
+		return fs_handler, nil
+	}
+
+	rewrite_func := func(req *http.Request) (*http.Request, error){
+		req.URL.Path = strings.Replace(req.URL.Path, prefix, "", 1)
+		return req, nil
+	}
+
+	rewrite_handler := rewrite.RewriteRequestHandler(fs_handler, rewrite_func)
+	return rewrite_handler, nil
+}
+
+func AppendAssetHandlers(mux *http.ServeMux) error {
+	return AppendAssetHandlersWithPrefix(mux, "")
+}
+
+func AppendAssetHandlersWithPrefix(mux *http.ServeMux, prefix string) error {
+
+	asset_handler, err := NextzenJSAssetsHandlerWithPrefix(prefix)
 
 	if err != nil {
 		return nil
 	}
 
 	for _, path := range AssetNames() {
+
 		path := strings.Replace(path, "static", "", 1)
+
+		if prefix != "" {
+			path = appendPrefix(prefix, path)
+		}
+
 		mux.Handle(path, asset_handler)
 	}
 
 	return nil
+}
+
+func appendPrefix(prefix string, path string) string {
+
+	prefix = strings.TrimRight(prefix, "/")
+
+	if prefix != "" {
+		path = strings.TrimLeft(path, "/")
+		path = filepath.Join(prefix, path)
+	}
+
+	return path
 }

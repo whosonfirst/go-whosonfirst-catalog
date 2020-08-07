@@ -1,18 +1,68 @@
-# github.com/aaronland/go-http-bootstrap v0.0.2
+# github.com/aaronland/go-http-bootstrap v0.0.6
 github.com/aaronland/go-http-bootstrap
 github.com/aaronland/go-http-bootstrap/resources
-# github.com/aaronland/go-http-rewrite v0.0.1
+# github.com/aaronland/go-http-rewrite v0.0.5
 github.com/aaronland/go-http-rewrite
-# github.com/garyburd/redigo v1.6.0
-github.com/garyburd/redigo/redis
+# github.com/alexbrainman/sspi v0.0.0-20180613141037-e580b900e9f5
+github.com/alexbrainman/sspi
+github.com/alexbrainman/sspi/negotiate
+# github.com/garyburd/redigo v1.6.2
 github.com/garyburd/redigo/internal
+github.com/garyburd/redigo/redis
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
-# github.com/google/go-github v17.0.0+incompatible
-github.com/google/go-github/github
+# github.com/google/go-github/v27 v27.0.6
+github.com/google/go-github/v27/github
 # github.com/google/go-querystring v1.0.0
 github.com/google/go-querystring/query
-# github.com/lib/pq v1.2.0
+# github.com/hashicorp/go-uuid v1.0.2
+github.com/hashicorp/go-uuid
+# github.com/jcmturner/aescts/v2 v2.0.0
+github.com/jcmturner/aescts/v2
+# github.com/jcmturner/dnsutils/v2 v2.0.0
+github.com/jcmturner/dnsutils/v2
+# github.com/jcmturner/gofork v1.0.0
+github.com/jcmturner/gofork/encoding/asn1
+github.com/jcmturner/gofork/x/crypto/pbkdf2
+# github.com/jcmturner/goidentity/v6 v6.0.1
+github.com/jcmturner/goidentity/v6
+# github.com/jcmturner/gokrb5/v8 v8.2.0
+github.com/jcmturner/gokrb5/v8/asn1tools
+github.com/jcmturner/gokrb5/v8/client
+github.com/jcmturner/gokrb5/v8/config
+github.com/jcmturner/gokrb5/v8/credentials
+github.com/jcmturner/gokrb5/v8/crypto
+github.com/jcmturner/gokrb5/v8/crypto/common
+github.com/jcmturner/gokrb5/v8/crypto/etype
+github.com/jcmturner/gokrb5/v8/crypto/rfc3961
+github.com/jcmturner/gokrb5/v8/crypto/rfc3962
+github.com/jcmturner/gokrb5/v8/crypto/rfc4757
+github.com/jcmturner/gokrb5/v8/crypto/rfc8009
+github.com/jcmturner/gokrb5/v8/gssapi
+github.com/jcmturner/gokrb5/v8/iana
+github.com/jcmturner/gokrb5/v8/iana/addrtype
+github.com/jcmturner/gokrb5/v8/iana/adtype
+github.com/jcmturner/gokrb5/v8/iana/asnAppTag
+github.com/jcmturner/gokrb5/v8/iana/chksumtype
+github.com/jcmturner/gokrb5/v8/iana/errorcode
+github.com/jcmturner/gokrb5/v8/iana/etypeID
+github.com/jcmturner/gokrb5/v8/iana/flags
+github.com/jcmturner/gokrb5/v8/iana/keyusage
+github.com/jcmturner/gokrb5/v8/iana/msgtype
+github.com/jcmturner/gokrb5/v8/iana/nametype
+github.com/jcmturner/gokrb5/v8/iana/patype
+github.com/jcmturner/gokrb5/v8/kadmin
+github.com/jcmturner/gokrb5/v8/keytab
+github.com/jcmturner/gokrb5/v8/krberror
+github.com/jcmturner/gokrb5/v8/messages
+github.com/jcmturner/gokrb5/v8/pac
+github.com/jcmturner/gokrb5/v8/service
+github.com/jcmturner/gokrb5/v8/spnego
+github.com/jcmturner/gokrb5/v8/types
+# github.com/jcmturner/rpc/v2 v2.0.2
+github.com/jcmturner/rpc/v2/mstypes
+github.com/jcmturner/rpc/v2/ndr
+# github.com/lib/pq v1.6.0
 github.com/lib/pq
 github.com/lib/pq/oid
 github.com/lib/pq/scram
@@ -20,40 +70,40 @@ github.com/lib/pq/scram
 github.com/mmcloughlin/geohash
 # github.com/patrickmn/go-cache v2.1.0+incompatible
 github.com/patrickmn/go-cache
-# github.com/rs/cors v1.6.0
+# github.com/rs/cors v1.7.0
 github.com/rs/cors
-# github.com/skelterjohn/geom v0.0.0-20180103000000-96f3e8a219c5f4276b0dda3568d80c4e02a50116
+# github.com/skelterjohn/geom v0.0.0-20180103142417-96f3e8a219c5
 github.com/skelterjohn/geom
-# github.com/tidwall/gjson v1.3.2
+# github.com/tidwall/gjson v1.6.0
 github.com/tidwall/gjson
 # github.com/tidwall/match v1.0.1
 github.com/tidwall/match
-# github.com/tidwall/pretty v1.0.0
+# github.com/tidwall/pretty v1.0.1
 github.com/tidwall/pretty
 # github.com/whosonfirst/go-bindata v0.1.0
 github.com/whosonfirst/go-bindata
 # github.com/whosonfirst/go-bindata-assetfs v1.0.1
 github.com/whosonfirst/go-bindata-assetfs
-# github.com/whosonfirst/go-http-nextzenjs v0.1.1
+# github.com/whosonfirst/go-http-nextzenjs v0.1.4
 github.com/whosonfirst/go-http-nextzenjs
 # github.com/whosonfirst/go-whosonfirst-flags v0.1.0
 github.com/whosonfirst/go-whosonfirst-flags
 github.com/whosonfirst/go-whosonfirst-flags/existential
-# github.com/whosonfirst/go-whosonfirst-geojson-v2 v0.10.2
+# github.com/whosonfirst/go-whosonfirst-geojson-v2 v0.12.3
 github.com/whosonfirst/go-whosonfirst-geojson-v2
 github.com/whosonfirst/go-whosonfirst-geojson-v2/properties/geometry
 github.com/whosonfirst/go-whosonfirst-geojson-v2/properties/whosonfirst
 github.com/whosonfirst/go-whosonfirst-geojson-v2/utils
-# github.com/whosonfirst/go-whosonfirst-github v0.1.0
+# github.com/whosonfirst/go-whosonfirst-github v0.2.1
 github.com/whosonfirst/go-whosonfirst-github/organizations
 github.com/whosonfirst/go-whosonfirst-github/util
 # github.com/whosonfirst/go-whosonfirst-hash v0.1.0
 github.com/whosonfirst/go-whosonfirst-hash
 # github.com/whosonfirst/go-whosonfirst-log v0.1.0
 github.com/whosonfirst/go-whosonfirst-log
-# github.com/whosonfirst/go-whosonfirst-pgis v0.0.0-20180623220051-5150e1ab3d77
+# github.com/whosonfirst/go-whosonfirst-pgis v0.1.0
 github.com/whosonfirst/go-whosonfirst-pgis/client
-# github.com/whosonfirst/go-whosonfirst-placetypes v0.1.0
+# github.com/whosonfirst/go-whosonfirst-placetypes v0.2.3
 github.com/whosonfirst/go-whosonfirst-placetypes
 github.com/whosonfirst/go-whosonfirst-placetypes/placetypes
 # github.com/whosonfirst/go-whosonfirst-sources v0.1.0
@@ -66,21 +116,32 @@ github.com/whosonfirst/go-whosonfirst-tile38
 github.com/whosonfirst/go-whosonfirst-tile38/client
 # github.com/whosonfirst/go-whosonfirst-timer v0.0.0-20170816172956-4fbceb7369af
 github.com/whosonfirst/go-whosonfirst-timer
-# github.com/whosonfirst/go-whosonfirst-uri v0.1.0
+# github.com/whosonfirst/go-whosonfirst-uri v0.2.0
 github.com/whosonfirst/go-whosonfirst-uri
-# golang.org/x/net v0.0.0-20190628185345-da137c7871d7
+# golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+golang.org/x/crypto/cast5
+golang.org/x/crypto/md4
+golang.org/x/crypto/openpgp
+golang.org/x/crypto/openpgp/armor
+golang.org/x/crypto/openpgp/elgamal
+golang.org/x/crypto/openpgp/errors
+golang.org/x/crypto/openpgp/packet
+golang.org/x/crypto/openpgp/s2k
+golang.org/x/crypto/pbkdf2
+# golang.org/x/net v0.0.0-20200707034311-ab3426394381
+golang.org/x/net/context
+golang.org/x/net/context/ctxhttp
 golang.org/x/net/html
 golang.org/x/net/html/atom
-golang.org/x/net/context/ctxhttp
-golang.org/x/net/context
-# golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
+golang.org/x/net/http2/hpack
+# golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
 # google.golang.org/appengine v1.4.0
-google.golang.org/appengine/urlfetch
 google.golang.org/appengine/internal
-google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/internal/base
 google.golang.org/appengine/internal/datastore
 google.golang.org/appengine/internal/log
 google.golang.org/appengine/internal/remote_api
+google.golang.org/appengine/internal/urlfetch
+google.golang.org/appengine/urlfetch
